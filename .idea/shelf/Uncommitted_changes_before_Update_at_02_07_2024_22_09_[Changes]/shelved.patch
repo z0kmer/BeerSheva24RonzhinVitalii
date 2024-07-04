@@ -1,0 +1,68 @@
+Index: calculations/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Default ignored files\r\n/target/\r\n/../.vscode/
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/calculations/.gitignore b/calculations/.gitignore
+--- a/calculations/.gitignore	(revision 1a5cf0ce8ccef840005c57e8a2fa058f12bcb37c)
++++ b/calculations/.gitignore	(date 1719947182113)
+@@ -1,3 +1,4 @@
+ # Default ignored files
+ /target/
+-/../.vscode/
+\ No newline at end of file
++/../.vscode/
++/../.ideaa/
+\ No newline at end of file
+Index: calculations/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>telran.twentyfour</groupId>\r\n    <artifactId>calculations</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n\r\n    <properties>\r\n        <maven.compiler.source>17</maven.compiler.source>\r\n        <maven.compiler.target>17</maven.compiler.target>\r\n    </properties>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/calculations/pom.xml b/calculations/pom.xml
+--- a/calculations/pom.xml	(revision 1a5cf0ce8ccef840005c57e8a2fa058f12bcb37c)
++++ b/calculations/pom.xml	(date 1719936619038)
+@@ -13,4 +13,15 @@
+         <maven.compiler.target>17</maven.compiler.target>
+     </properties>
+ 
+-</project>
+\ No newline at end of file
++    <dependencies>
++        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
++        <dependency>
++            <groupId>org.junit.jupiter</groupId>
++            <artifactId>junit-jupiter-api</artifactId>
++            <version>5.10.3</version>
++            <scope>test</scope>
++        </dependency>
++    </dependencies>
++
++</project>
++
+Index: calculations/.idea/calculations.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/calculations/.idea/calculations.iml b/calculations/.idea/calculations.iml
+new file mode 100644
+--- /dev/null	(date 1719936124139)
++++ b/calculations/.idea/calculations.iml	(date 1719936124139)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+diff --git a/calculations/.idea/.gitignore b/calculations/.idea/.gitignore
+new file mode 100644
