@@ -37,6 +37,8 @@ void insertTest(){
     assertArrayEquals(expected2, insert(numbers, 0, newNumber));
     int [] expected3 = {10, 7, 12, -4, 13, 3, 14, newNumber} ;  
     assertArrayEquals(expected3, insert(numbers, 7, newNumber));
+    assertArrayEquals(expected3, insert(numbers, 100, newNumber));
+    assertArrayEquals(expected2, insert(numbers, -1, newNumber));
 }
 
 void removeTest(){
@@ -47,6 +49,8 @@ void removeTest(){
     assertArrayEquals(expected2, remove(numbers, 0));
     int [] expected3 = {10, 7, 12, -4, 13, 3} ;  
     assertArrayEquals(expected3, remove(numbers, 6));
+    assertArrayEquals(numbers, remove(numbers, 100));
+    assertArrayEquals(numbers, remove(numbers, -1));
 }
 
 
