@@ -1,54 +1,53 @@
-package util.arrays;
+package util;
 
-public class Arrays {
-    public static int search(int[] ar, int key){
-        int index = 0;
-        while(index < ar.length && key != ar[index]) {
-            index++;
-        }
-        
-        return index == ar.length ? -1 : index;
-    }
-    public static int[] add(int [] ar, int number) {
-        int [] res = java.util.Arrays.copyOf(ar, ar.length + 1);
-        res[ar.length] = number;
-        
-        return res;
-    }
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-    public static int[] insert(int[] ar, int index, int number) {
-        int[] newAr = new int[ar.length + 1];
+import static util.arrays.Arrays.add;
+import static util.arrays.Arrays.insert;
+import static util.arrays.Arrays.remove;
+import static util.arrays.Arrays.search;
+
+public class ArraysTest {
+
+int[] numbers = {10, 7, 12, -4, 13, 3, 14};
+
+@Test
+void searchTest(){
+    assertEquals(0, search(numbers, 10));
+    assertEquals(6, search(numbers, 14));
+    assertEquals(3, search(numbers, -4));
+    assertEquals(100, 100);
+}
+
+void addTest(){
+
+    int newNumber = 100;
+    int [] expected = {10, 7, 12, -4, 13, 3, 14, newNumber} ;  
+    assertArrayEquals(expected, add(numbers, newNumber));
+}
+
+void insertTest(){
+
+    int newNumber = 100;
+    int [] expected1 = {10, 7, 12, newNumber, -4, 13, 3, 14} ;  
+    assertArrayEquals(expected1, insert(numbers, 3, newNumber));
+    int [] expected2 = {newNumber, 10, 7, 12, -4, 13, 3, 14} ;  
+    assertArrayEquals(expected2, insert(numbers, 0, newNumber));
+    int [] expected3 = {10, 7, 12, -4, 13, 3, 14, newNumber} ;  
+    assertArrayEquals(expected3, insert(numbers, 7, newNumber));
+}
+
+void removeTest(){
+
+    int [] expected1 = {10, 7, 12, 13, 3, 14} ;  
+    assertArrayEquals(expected1, remove(numbers, 3));
+    int [] expected2 = {7, 12, -4, 13, 3, 14} ;  
+    assertArrayEquals(expected2, remove(numbers, 0));
+    int [] expected3 = {10, 7, 12, -4, 13, 3} ;  
+    assertArrayEquals(expected3, remove(numbers, 6));
+}
 
 
-        if (index == 0) {
-            newAr[index] = number;
-            System.arraycopy(ar, index, newAr, index+1, ar.length + 1);
-        } if (index == ar.length) {
-            System.arraycopy(ar, 0, newAr, 0, index - 1);
-            newAr[index] = number;
-        } else {
-            System.arraycopy(ar, 0, newAr, 0, index - 1);
-            newAr[index] = number;
-            System.arraycopy(ar, index, newAr, index+1, ar.length + 1);
-        }
-
-        
-        return newAr; 
-    }
-    public static int[] remove(int[] numbers, int index) {
-        int[] newNum = new int[numbers.length - 1];
-
-        if (index == 0) {
-            System.arraycopy(numbers, index+1, newNum, index, numbers.length - 1);
-        } if (index == numbers.length) {
-            System.arraycopy(numbers, 0, newNum, 0, index - 1);
-        } else {
-            System.arraycopy(numbers, 0, newNum, 0, index - 1);
-            System.arraycopy(numbers, index+1, newNum, index, numbers.length - 1);
-        }
-
-
-        return newNum;
-    
-    }
 }
