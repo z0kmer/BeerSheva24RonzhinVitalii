@@ -242,9 +242,9 @@ public class BinaryArrays {
         return left > right ? -(left + 1) : middle;
     }
 
-    public static <T extends Comparable<T>> int binarySearch(T[] array, T key) {
+    public static <T> int binarySearch(T[] array, T key) {
         //The code should be base on binarySearch
-        return binarySearch(array, key, Comparator.naturalOrder());
+        return binarySearch(array, key, (Comparator<T>) Comparator.naturalOrder());
     }
 
     /*
