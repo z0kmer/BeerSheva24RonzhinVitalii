@@ -22,8 +22,8 @@ public class RegularExpressionsTest {
     @Test
     void testValidJavaVariable() {
         String result = RegularExpressions.javaVariable();
-        String[] arraysTrue = {"myVar", "m", "_myVar", "$myyVar"};
-        String[] arraysFalse = {"123Var", "my Var", "myVar!", "_", "cашуня", ""};
+        String[] arraysTrue = {"myVar", "m", "_myVar", "$myyVar", "_1","V", "$"};
+        String[] arraysFalse = {"123Var", "my Var", "myVar!", "_", "cашуня", "", "0"};
     for(int i = 0; i < arraysTrue.length; i++) {
         assertTrue(arraysTrue[i].matches(result));
     }
