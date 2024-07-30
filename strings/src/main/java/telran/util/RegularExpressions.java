@@ -10,7 +10,7 @@ public class RegularExpressions {
     public static String javaVariable() {
         //regular expression for testing syntax of Java variable names
         //only ACII symbols are allowed
-        return "^[a-z][a-zA-Z_$0-9]*|^[_$][a-zA-Z_$0-9]{2,}";
+        return "^[a-zA-Z$][a-zA-Z_$0-9]*|^[_][a-zA-Z_$0-9]{1,}";
     }
 
 }
