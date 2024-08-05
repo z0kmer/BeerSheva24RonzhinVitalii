@@ -6,6 +6,7 @@ public class Canvas implements Shape{
     shapes = new Shape[0];
     }
 
+    int counter = 0;
     public void addShape(Shape shape) {
         Shape[] newShapes = new Shape[shapes.length + 1];
         System.arraycopy(shapes, 0, newShapes, 0, shapes.length);
