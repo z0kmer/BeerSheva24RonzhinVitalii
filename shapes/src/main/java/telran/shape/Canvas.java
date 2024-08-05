@@ -13,13 +13,16 @@ public class Canvas implements Shape{
         shapes = newShapes;
     }
 
-    public int countOfShapes() {
-        //sum of all shapes on canvas
-        int totalCounter = 0;
+    public int count() {
+        int totalShapes = 0;
         for (Shape shape : shapes) {
-            totalCounter ++;
+            if (shape instanceof Canvas) {
+                totalShapes += ((Canvas) shape).count();
+            } else {
+                totalShapes++;
+            }
         }
-        return totalCounter;
+        return totalShapes;
     }
 
     @Override
