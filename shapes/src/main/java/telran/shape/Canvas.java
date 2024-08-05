@@ -18,6 +18,7 @@ public class Canvas implements Shape{
         for (Shape shape : shapes) {
             if (shape instanceof Canvas) {
                 totalShapes += ((Canvas) shape).count();
+                totalShapes++;
             } else {
                 totalShapes++;
             }
