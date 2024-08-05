@@ -6,18 +6,20 @@ public class Canvas implements Shape{
     shapes = new Shape[0];
     }
 
-    int counter = 0;
     public void addShape(Shape shape) {
         Shape[] newShapes = new Shape[shapes.length + 1];
         System.arraycopy(shapes, 0, newShapes, 0, shapes.length);
         newShapes[shapes.length] = shape;
         shapes = newShapes;
-        countOfShapes();
     }
 
     public int countOfShapes() {
         //sum of all shapes on canvas
-        return counter++;
+        int totalCounter = 0;
+        for (Shape shape : shapes) {
+            totalCounter ++;
+        }
+        return totalCounter;
     }
 
     @Override
