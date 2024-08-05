@@ -17,10 +17,24 @@ class CanvasTest {
         canvas.addShape(square2);
         canvas.addShape(rectangle);
 
+        Canvas canvas1 = new Canvas();
+        canvas1.addShape(square1);
+        canvas1.addShape(square2);
+        canvas1.addShape(canvas);
+        canvas1.addShape(rectangle);
+
+        Canvas canvas2 = new Canvas();
+        canvas2.addShape(square1);
+        canvas2.addShape(canvas1);
+
         int expectedPerimeter = square1.perimiter() + square2.perimiter() + rectangle.perimiter();
         assertEquals(expectedPerimeter, canvas.perimiter());
 
         int expectedSquare = square1.square() + square2.square() + rectangle.square();
         assertEquals(expectedSquare, canvas.square());
+
+        assertEquals(3, canvas.count());
+        assertEquals(7, canvas1.count());
+        assertEquals(9, canvas2.count());
     }
 }
