@@ -11,6 +11,12 @@ public class Canvas implements Shape{
         System.arraycopy(shapes, 0, newShapes, 0, shapes.length);
         newShapes[shapes.length] = shape;
         shapes = newShapes;
+        countOfShapes();
+    }
+
+    public int countOfShapes() {
+        //sum of all shapes on canvas
+        return counter++;
     }
 
     @Override
