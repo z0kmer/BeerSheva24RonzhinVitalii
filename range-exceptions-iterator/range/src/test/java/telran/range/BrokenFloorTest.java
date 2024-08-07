@@ -10,7 +10,7 @@ private int getMinimalBrokenFloor(BallBrokenFloor bbf) {
 //binary search algorithm
 
 int left = 1;
-int right = bbf.nFloors;
+int right = Integer.MAX_VALUE;
 int res = -1;
 
 while (left <= right) {
