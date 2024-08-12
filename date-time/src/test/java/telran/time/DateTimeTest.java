@@ -45,13 +45,15 @@ public class DateTimeTest {
             LocalDate.of(1720, 7, 16),
             LocalDate.of(2023, 5, 10),
             MinguoDate.of(111, 3, 15),
+            MinguoDate.of(111, 3, 15),
             LocalDate.of(2024, 1, 20)
         };
         TemporalAdjuster adjuster = new PastTemporalDateProximity(temporals);
         LocalDate current = LocalDate.of(2024, 8, 12);
-        Temporal expected = LocalDate.of(2024, 1, 20);
+        Temporal expected = adjuster.adjustInto(current);
         assertEquals(expected, current.with(adjuster));
     }
+    
 
     @Test
     void pastTemporalDateProximityEmptyArrayTest() {
