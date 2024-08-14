@@ -5,16 +5,14 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.Locale;
-import java.util.Scanner;
 
 record MonthYear(int month, int year) {}
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         try {
-            MonthYear monthYear = getMonthYear(scanner, args); //if no arguments current year and month should be applied
-            DayOfWeek startDayOfWeek = getStartDayOfWeek(scanner, args);
+            MonthYear monthYear = getMonthYear(args); //if no arguments current year and month should be applied
+            int startDayOfWeek = getStartDayOfWeek(args); // get the start day of the week from args
             printCalendar(monthYear, startDayOfWeek);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -23,23 +21,24 @@ public class Main {
         }
     }
 
-    private static void printCalendar(MonthYear monthYear, DayOfWeek startDayOfWeek) {
+    private static void printCalendar(MonthYear monthYear, int startDayOfWeek) {
         printTitle(monthYear);
         printWeekDays(startDayOfWeek);
         printDates(monthYear, startDayOfWeek);
     }
 
-    private static void printDates(MonthYear monthYear, DayOfWeek startDayOfWeek) {
+    private static void printDates(MonthYear monthYear, int startDayOfWeek) {
+        YearMonth yearMonth = YearMonth.of(monthYear.year(), monthYear.month());
         int firstDayOfWeek = getFirstDayOfWeek(monthYear);
         int offset = getOffset(firstDayOfWeek, startDayOfWeek);
         int lastDay = getLastDayOfMonth(monthYear);
 
         for (int i = 0; i < offset; i++) {
-            System.out.print("    ");
+            System.out.print("     ");
         }
 
         for (int day = 1; day <= lastDay; day++) {
-            System.out.printf("%4d", day);
+            System.out.printf("%5d", day);
             if ((day + offset) % 7 == 0) {
                 System.out.println();
             }
@@ -47,101 +46,40 @@ public class Main {
         System.out.println();
     }
 
-    private static void printWeekDays(DayOfWeek startDayOfWeek) {
+    private static void printWeekDays(int startDayOfWeek) {
         DayOfWeek[] daysOfWeek = DayOfWeek.values();
-        int startIndex = startDayOfWeek.getValue() - 1;
-
         for (int i = 0; i < 7; i++) {
-            DayOfWeek day = daysOfWeek[(startIndex + i) % 7];
-            System.out.print(day.getDisplayName(TextStyle.SHORT, Locale.US) + " ");
+            System.out.printf("%5s", daysOfWeek[(i + startDayOfWeek - 1) % 7].getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
         }
         System.out.println();
     }
 
     private static void printTitle(MonthYear monthYear) {
-        String title = String.format("%d, %s", monthYear.year(), YearMonth.of(monthYear.year(), monthYear.month()).getMonth().getDisplayName(TextStyle.FULL, Locale.US));
-        System.out.printf("%" + (((28 - title.length()) / 2) + title.length()) + "s%n", title);
+        YearMonth yearMonth = YearMonth.of(monthYear.year(), monthYear.month());
+        String title = yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + monthYear.year();
+        int padding = ((7 * 5) - title.length()) / 2; // 7 days * 5 characters per day
+        System.out.printf("%" + padding + "s%s%n", "", title);
     }
 
-    private static MonthYear getMonthYear(Scanner scanner, String[] args) throws Exception {
-        int month = 0;
-        int year = 0;
-        boolean validMonth = false;
-        boolean validYear = false;
-
-        while (!validMonth) {
-            if (args.length > 0) {
-                month = Integer.parseInt(args[0]);
-            } else {
-                System.out.print("Введите номер месяца (1-12) или нажмите Enter для текущего месяца: ");
-                String monthInput = scanner.nextLine();
-                if (monthInput.isEmpty()) {
-                    month = LocalDate.now().getMonthValue();
-                    validMonth = true;
-                } else {
-                    month = Integer.parseInt(monthInput);
-                }
-            }
-
-            if (month < 1 || month > 12) {
-                System.out.println("Некорректный номер месяца. Попробуйте снова.");
-                args = new String[0];
-            } else {
-                validMonth = true;
-            }
+    private static MonthYear getMonthYear(String[] args) throws Exception {
+        LocalDate now = LocalDate.now();
+        int month = args.length > 0 ? Integer.parseInt(args[0]) : now.getMonthValue();
+        int year = args.length > 1 ? Integer.parseInt(args[1]) : now.getYear();
+        if (month < 1 || month > 12) {
+            throw new Exception("Invalid month: " + month);
         }
-
-        while (!validYear) {
-            if (args.length > 1) {
-                year = Integer.parseInt(args[1]);
-            } else {
-                System.out.print("Введите год (1-9999) или нажмите Enter для текущего года: ");
-                String yearInput = scanner.nextLine();
-                if (yearInput.isEmpty()) {
-                    year = LocalDate.now().getYear();
-                    validYear = true;
-                } else {
-                    year = Integer.parseInt(yearInput);
-                }
-            }
-
-            if (year < 1 || year > 9999) {
-                System.out.println("Некорректный год. Попробуйте снова.");
-                args = new String[0];
-            } else {
-                validYear = true;
-            }
+        if (year < 1) {
+            throw new Exception("Invalid year: " + year);
         }
-
         return new MonthYear(month, year);
     }
 
-    private static DayOfWeek getStartDayOfWeek(Scanner scanner, String[] args) {
-        int dayOfWeek = 0;
-        boolean validDayOfWeek = false;
-
-        while (!validDayOfWeek) {
-            if (args.length > 2) {
-                dayOfWeek = Integer.parseInt(args[2]);
-            } else {
-                System.out.print("Введите номер дня недели, с которого начинать (1 - Понедельник, 7 - Воскресенье) или нажмите Enter для начала с Понедельника: ");
-                String dayOfWeekInput = scanner.nextLine();
-                if (dayOfWeekInput.isEmpty()) {
-                    return DayOfWeek.MONDAY;
-                } else {
-                    dayOfWeek = Integer.parseInt(dayOfWeekInput);
-                }
-            }
-
-            if (dayOfWeek < 1 || dayOfWeek > 7) {
-                System.out.println("Некорректный номер дня недели. Попробуйте снова.");
-                args = new String[0];
-            } else {
-                validDayOfWeek = true;
-            }
+    private static int getStartDayOfWeek(String[] args) throws Exception {
+        int startDayOfWeek = args.length > 2 ? Integer.parseInt(args[2]) : 1; // default to Monday
+        if (startDayOfWeek < 1 || startDayOfWeek > 7) {
+            throw new Exception("Invalid start day of the week: " + startDayOfWeek);
         }
-
-        return DayOfWeek.of(dayOfWeek);
+        return startDayOfWeek;
     }
 
     private static int getFirstDayOfWeek(MonthYear monthYear) {
@@ -149,9 +87,8 @@ public class Main {
         return firstDay.getDayOfWeek().getValue();
     }
 
-    private static int getOffset(int firstWeekDay, DayOfWeek startDayOfWeek) {
-        int startDayValue = startDayOfWeek.getValue();
-        return (firstWeekDay - startDayValue + 7) % 7;
+    private static int getOffset(int firstWeekDay, int startDayOfWeek) {
+        return (firstWeekDay - startDayOfWeek + 7) % 7;
     }
 
     private static int getLastDayOfMonth(MonthYear monthYear) {
