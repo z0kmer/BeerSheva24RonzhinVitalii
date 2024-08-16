@@ -1,9 +1,11 @@
 package telran.range;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Iterator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import telran.range.exceptions.OutOfRangeMaxValueException;
@@ -28,23 +30,23 @@ public class RangeTest {
     }
 
     @Test
-void iteratorTest() {
-    range.setPredicate(null); // No predicate, should iterate all numbers
-    Iterator<Integer> iterator = range.iterator();
-    for (int i = MIN; i <= MAX; i++) {
-        assertTrue(iterator.hasNext());
-        assertEquals(i, iterator.next());
-    }
-    assertFalse(iterator.hasNext());
-
-    range.setPredicate(n -> n % 2 == 0); // Only even numbers
-    iterator = range.iterator();
-    for (int i = MIN; i <= MAX; i++) {
-        if (i % 2 == 0) {
+    void iteratorTest() {
+        range.setPredicate(null); // Без условия, должны перебираться все числа
+        Iterator<Integer> iterator = range.iterator();
+        for (int i = MIN; i <= MAX; i++) {
             assertTrue(iterator.hasNext());
             assertEquals(i, iterator.next());
         }
+        assertFalse(iterator.hasNext());
+
+        range.setPredicate(n -> n % 2 == 0); // Только четные числа
+        iterator = range.iterator();
+        for (int i = MIN; i <= MAX; i++) {
+            if (i % 2 == 0) {
+                assertTrue(iterator.hasNext());
+                assertEquals(i, iterator.next());
+            }
+        }
+        assertFalse(iterator.hasNext());
     }
-    assertFalse(iterator.hasNext());
-}
 }
