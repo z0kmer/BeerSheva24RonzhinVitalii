@@ -51,14 +51,20 @@ public class Range implements Iterable<Integer>{
 
         @Override
         public Integer next() {
-            while (current <= max) {
-                int temp = current++;
-                if (predicate == null || predicate.test(temp)) {
-                    return temp;
-                }
+            if (!hasNext()) {
+                throw new NoSuchElementException();
             }
-            throw new NoSuchElementException();
+            int temp = current;
+            setCurrent();
+            return temp;
         }
-        
+    
+        private void setCurrent() {
+            while (current <= max) {
+                if (predicate == null || predicate.test(current)) {
+                    return;
+                }
+                current++;
+            }
+        }
     }
-}
