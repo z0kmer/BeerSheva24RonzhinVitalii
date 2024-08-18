@@ -9,11 +9,13 @@ public class StreamTasks {
         //only one pipeline for getting new array of int whith all numbers from a given array but with different order each method call returns new array in some random order
         
         Random random = new Random();
-        return IntStream.of(arr)
-                        .boxed()
-                        .sorted((a, b) -> random.nextInt(3) - 1)
-                        .mapToInt(Integer::intValue)
-                        .toArray();
+        int[] shuffled = arr.clone();
+        IntStream.range(0, shuffled.length).forEach(i -> {
+            int j = random.nextInt(shuffled.length);
+            int temp = shuffled[i];
+            shuffled[i] = shuffled[j];
+            shuffled[j] = temp;
+        });
+        return shuffled;
     }
-
 }
