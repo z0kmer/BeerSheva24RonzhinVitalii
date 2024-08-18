@@ -1,31 +1,32 @@
 package telran.stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Arrays;
+import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class StreamTasksTest {
     @Test
     void shuffleTest() {
-        int[] original = {1, 2, 3, 4, 5};
-        int[] shuffled = StreamTasks.shuffle(original);
+        Random random = new Random();
+        int length = random.nextInt(100);
+        int[] input = random.ints(length, 0, 100).toArray();
 
-        // Check that the shuffled array has the same elements as the original
-        assertEquals(original.length, shuffled.length);
-        assertTrue(Arrays.stream(original).allMatch(x -> Arrays.stream(shuffled).anyMatch(y -> y == x)));
+        int[] output = StreamTasks.shuffle(input);
 
-        // Check that the shuffled array is not in the same order as the original
-        assertFalse(Arrays.equals(original, shuffled));
-    }
+        int[] sortedInput = Arrays.copyOf(input, input.length);
+        int[] sortedOutput = Arrays.copyOf(output, output.length);
+        Arrays.sort(sortedInput);
+        Arrays.sort(sortedOutput);
+        assertArrayEquals(sortedInput, sortedOutput);
 
-    @Test
-    void shuffleEmptyArrayTest() {
-        int[] emptyArray = {};
-        int[] shuffled = StreamTasks.shuffle(emptyArray);
-
-        // Check that the shuffled array is also empty
-        assertEquals(0, shuffled.length);
+        if (input.length > 1) {
+            assertFalse(Arrays.equals(input, output));
+        } else {
+            assertTrue(Arrays.equals(input, output));
+        }
     }
 }
