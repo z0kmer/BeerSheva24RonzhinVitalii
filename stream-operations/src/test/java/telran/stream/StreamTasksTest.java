@@ -1,32 +1,35 @@
 package telran.stream;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Arrays;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class StreamTasksTest {
     @Test
     void shuffleTest() {
         Random random = new Random();
-        int length = random.nextInt(100);
-        int[] input = random.ints(length, 0, 100).toArray();
+        int[] original = random.ints(100, 0, 1000).toArray();
+        int[] copyOfOriginal = Arrays.copyOf(original, original.length);
+        int[] shuffled = StreamTasks.shuffle(original);
+        
+        // Check if both arrays contain the same elements
+        int[] sortedOriginal = Arrays.copyOf(copyOfOriginal, copyOfOriginal.length);
+        int[] sortedShuffled = Arrays.copyOf(shuffled, shuffled.length);
+        Arrays.sort(sortedOriginal);
+        Arrays.sort(sortedShuffled);
+        assertArrayEquals(sortedOriginal, sortedShuffled);
+        // Check if the arrays are not in the same order
+        assertFalse(Arrays.equals(copyOfOriginal, shuffled));
 
-        int[] output = StreamTasks.shuffle(input);
+        // Check empty array
+        int[] emptyArray = {};
+        assertArrayEquals(emptyArray, StreamTasks.shuffle(emptyArray));
 
-        int[] sortedInput = Arrays.copyOf(input, input.length);
-        int[] sortedOutput = Arrays.copyOf(output, output.length);
-        Arrays.sort(sortedInput);
-        Arrays.sort(sortedOutput);
-        assertArrayEquals(sortedInput, sortedOutput);
-
-        if (input.length > 1) {
-            assertFalse(Arrays.equals(input, output));
-        } else {
-            assertTrue(Arrays.equals(input, output));
-        }
+        // Check single element array
+        int[] singleElementArray = {42};
+        assertArrayEquals(singleElementArray, StreamTasks.shuffle(singleElementArray));
     }
 }
