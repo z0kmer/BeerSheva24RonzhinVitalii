@@ -1,7 +1,7 @@
 package telran.stream;
 
 import java.util.Random;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 public class StreamTasks {
     public static int[] shuffle(int [] arr){
