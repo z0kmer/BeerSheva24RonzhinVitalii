@@ -1,6 +1,7 @@
 package telran.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedList<T> implements List<T> {
     private static class Node<T> {
@@ -12,18 +13,34 @@ public class LinkedList<T> implements List<T> {
             this.obj = obj;
         }
     }
+
     private class LinkedListIterator implements Iterator<T> {
         private Node<T> current = head;
+        private Node<T> lastReturned = null;
 
         @Override
         public boolean hasNext() {
-            return current.next != null;
+            return current != null;
         }
 
         @Override
         public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            lastReturned = current;
+            T res = current.obj;
             current = current.next;
-            return current.obj;
+            return res;
+        }
+
+        @Override
+        public void remove() {
+            if (lastReturned == null) {
+                throw new IllegalStateException();
+            }
+            removeNode(lastReturned);
+            lastReturned = null;
         }
     }
 
@@ -31,12 +48,6 @@ public class LinkedList<T> implements List<T> {
     Node<T> tail;
     int size = 0;
 
-    private void checkIndex(int index, boolean sizeInclusive) {
-        int limit = sizeInclusive ? size : size - 1;
-        if (index < 0 || index > limit) {
-        throw new IndexOutOfBoundsException(index);
-        }
-    }
     private Node<T> getNode(int index) {
         return index < size / 2 ? getNodeFromHead(index) : getNodeFromTail(index);
     }
@@ -74,14 +85,19 @@ public class LinkedList<T> implements List<T> {
         nodeToInsert.next = nodeBefore;
         nodeToInsert.prev = nodeAfter;
         nodeBefore.prev = nodeToInsert;
-        nodeAfter.next = nodeToInsert;
-
+        if (nodeAfter != null) {
+            nodeAfter.next = nodeToInsert;
+        }
     }
 
     private void addTail(Node<T> node) {
-        tail.next = node;
-        node.prev = tail;
-        tail = node;
+        if (tail == null) {
+            head = tail = node;
+        } else {
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
+        }
     }
 
     private void addHead(Node<T> node) {
@@ -105,30 +121,15 @@ public class LinkedList<T> implements List<T> {
     public boolean remove(T pattern) {
         Node<T> current = head;
         boolean res = false;
-            while (current != null) {
-                if (current.obj.equals(pattern)) {
-                    removeNode(current);
-                    res = true;
-                }
-                current = current.next;
+        while (current != null) {
+            if (current.obj.equals(pattern)) {
+                removeNode(current);
+                res = true;
             }
+            current = current.next;
+        }
         return res;
     }
-
-    private void removeNode(Node<T> node) {
-        if (node.prev != null) {
-            node.prev.next = node.next;
-        } else {
-            head = node.next;
-        }
-        if (node.next != null) {
-            node.next.prev = node.prev;
-        } else {
-            tail = node.prev;
-        }
-        size--;
-    }
-
 
     @Override
     public int size() {
@@ -161,8 +162,48 @@ public class LinkedList<T> implements List<T> {
     public T remove(int index) {
         checkIndex(index, false);
         Node<T> nodeToRemove = getNode(index);
+        if (nodeToRemove == null) {
+            throw new NullPointerException("Node to remove is null");
+        }
         removeNode(nodeToRemove);
         return nodeToRemove.obj;
+    }
+
+    private void removeNode(Node<T> toRemoveNode) {
+        if (toRemoveNode == head) {
+            removeHead();
+        } else if (toRemoveNode == tail) {
+            removeTail();
+        } else {
+            toRemoveNode.prev.next = toRemoveNode.next;
+            toRemoveNode.next.prev = toRemoveNode.prev;
+        }
+        size--;
+        clearReferences(toRemoveNode);
+    }
+
+    private void clearReferences(Node<T> node) {
+        node.next = null;
+        //node.obj = null;
+        node.prev = null;
+    }
+
+    private void removeTail() {
+        tail = tail.prev;
+        if (tail != null) {
+            tail.next = null;
+        } else {
+            head = null;
+        }
+    }
+
+    private void removeHead() {
+        head = head.next;
+        if (head == null) {
+            tail = null;
+        } else {
+            head.prev = null;
+        }
     }
 
     @Override
@@ -181,19 +222,24 @@ public class LinkedList<T> implements List<T> {
         return findIndex(pattern, false);
     }
 
+
     private int findIndex(T pattern, boolean fromHead) {
         Node<T> current = fromHead ? head : tail;
         int index = fromHead ? 0 : size - 1;
         int step = fromHead ? 1 : -1;
-        int res = -1;
-        
-        while (current != null && res == -1) {
-            if (current.obj.equals(pattern)) {
-                res = index;
+        while (current != null) {
+            if (current.obj == null ? pattern == null : current.obj.equals(pattern)) {
+                return index;
             }
             current = fromHead ? current.next : current.prev;
             index += step;
         }
-        return res;
+        return -1;
+    }
+
+    public void checkIndex(int index, boolean add) {
+        if (index < 0 || index >= size + (add ? 1 : 0)) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 }
