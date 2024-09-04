@@ -95,7 +95,6 @@ public class TreeSet<T> implements Set<T> {
             return false;
         }
         removeNode(node);
-        size--;
         return true;
     }
 
@@ -109,9 +108,9 @@ public class TreeSet<T> implements Set<T> {
                 node.parent.right = null;
             }
         } else if (node.left != null && node.right != null) {
-            Node<T> successor = findMin(node.right);
-            node.obj = successor.obj;
-            removeNode(successor);
+            Node<T> predecessor = findMax(node.left);
+            node.obj = predecessor.obj;
+            removeNode(predecessor);
         } else {
             Node<T> child = (node.left != null) ? node.left : node.right;
             if (node.parent == null) {
@@ -123,6 +122,7 @@ public class TreeSet<T> implements Set<T> {
             }
             child.parent = node.parent;
         }
+        size--;
     }
 
     @Override
@@ -184,6 +184,13 @@ public class TreeSet<T> implements Set<T> {
         return node;
     }
 
+    private Node<T> findMax(Node<T> node) {
+        while (node != null && node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
     private Node<T> findSuccessor(Node<T> node) {
         if (node.right != null) {
             return findMin(node.right);
@@ -212,7 +219,19 @@ public class TreeSet<T> implements Set<T> {
 
     @Override
     public void clear() {
+        clearNode(root);
         root = null;
         size = 0;
+    }
+
+    private void clearNode(Node<T> node) {
+        if (node != null) {
+            clearNode(node.left);
+            clearNode(node.right);
+            node.left = null;
+            node.right = null;
+            node.parent = null;
+            node.obj = null;
+        }
     }
 }

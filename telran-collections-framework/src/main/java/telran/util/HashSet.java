@@ -11,7 +11,7 @@ public class HashSet<T> implements Set<T> {
     float factor;
     int size;
     private class HashSetIterator implements Iterator<T> {
-       Iterator<T> iterator;
+        Iterator<T> iterator;
 		Iterator<T> prevIterator;
 		int iteratorIndex;
 
@@ -106,14 +106,14 @@ public class HashSet<T> implements Set<T> {
     }
 
     private void hashTableReallocation() {
-       List<T> []tempTable = new List[hashTable.length * 2];
-       for(List<T> list: hashTable) {
+        List<T> []tempTable = new List[hashTable.length * 2];
+        for(List<T> list: hashTable) {
         if(list != null) {
             list.forEach(obj -> addObjInHashTable(obj, tempTable));
             list.clear(); 
         }
-       }
-       hashTable = tempTable;
+        }
+        hashTable = tempTable;
 
     }
 
@@ -138,7 +138,7 @@ public class HashSet<T> implements Set<T> {
 
     @Override
     public boolean isEmpty() {
-       return size == 0;
+        return size == 0;
     }
 
     @Override
