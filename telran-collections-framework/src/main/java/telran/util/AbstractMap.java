@@ -19,14 +19,14 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         Entry<K, V> newEntry = new Entry<>(key, value);
         Entry<K, V> existingEntry = set.get(newEntry);
+        V oldValue = null;
         if (existingEntry != null) {
-            V oldValue = existingEntry.getValue();
+            oldValue = existingEntry.getValue();
             existingEntry.setValue(value);
-            return oldValue;
         } else {
             set.add(newEntry);
-            return null;
         }
+        return oldValue;
     }
 
     @Override
@@ -37,12 +37,7 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        for (Entry<K, V> entry : set) {
-            if (entry.getValue().equals(value)) {
-                return true;
-            }
-        }
-        return false;
+        return set.stream().anyMatch(entry -> entry.getValue().equals(value));
     }
 
     @Override
