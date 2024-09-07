@@ -54,5 +54,9 @@ public interface Map<K, V> {
     Collection<V> values();
     int size();
     boolean isEmpty();
+<<<<<<< HEAD
+    V remove(Object key);
+=======
 
+>>>>>>> origin/main
 }

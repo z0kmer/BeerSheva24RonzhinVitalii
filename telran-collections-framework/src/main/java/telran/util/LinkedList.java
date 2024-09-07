@@ -4,7 +4,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class LinkedList<T> implements List<T> {
+<<<<<<< HEAD
+    public static class Node<T> {
+=======
     private static class Node<T> {
+>>>>>>> origin/main
         T obj;
         Node<T> next;
         Node<T> prev;
@@ -67,7 +71,11 @@ public class LinkedList<T> implements List<T> {
         return current;
     }
 
+<<<<<<< HEAD
+    void addNode(Node<T> node, int index) {
+=======
     private void addNode(Node<T> node, int index) {
+>>>>>>> origin/main
         if (index == 0) {
             addHead(node);
         } else if (index == size) {
@@ -141,7 +149,11 @@ public class LinkedList<T> implements List<T> {
         return res;
     }
 
+<<<<<<< HEAD
+    public void removeNode(Node<T> toRemoveNode) {
+=======
     private void removeNode(Node<T> toRemoveNode) {
+>>>>>>> origin/main
         if(toRemoveNode == head) {
             removeHead();
         } else if (toRemoveNode == tail) {
