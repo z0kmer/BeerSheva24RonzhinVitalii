@@ -24,14 +24,23 @@ public class RecursionMethods {
      * 3. bitwise operators like >>, <<, &&, etc disallowe
      */
     public static long pow(int num, int degree){
-        if (degree < 0) {
-            throw new IllegalArgumentException("Степень должна быть неотрицательной");
-        }
-        if (degree == 0) {
-            return 1;
-        }
-        return num * pow(num, degree - 1);
+        return powHelper(num, degree, 1);
+}
+private static long powHelper(int num, int degree, long result) {
+    if (degree == 0) {
+        return result;
     }
+    return powHelper(num, degree - 1, multiply(num, result));
+}
+private static long multiply(int a, long b) {
+    if (b == 0) {
+        return 0;
+    }
+    if (b > 0) {
+        return a + multiply(a, b - 1);
+    }
+    return -multiply(a, -b);
+}
     public static int sum(int [] array) {
 
         return sum(array, array.length);
@@ -51,10 +60,10 @@ public class RecursionMethods {
      * 5. no additional fields of the class RecursionMethods are allowed
      */
     public static int square(int x) {
-        if (x == 0) {
-            return 0;
+        if (x < 0) {
+            x = -x;
         }
-        return x + square(x - 1) + (x - 1);
+        return x == 0 ? 0 : x + square(x - 1) + (x - 1);
     }
     /**
      *
@@ -69,15 +78,20 @@ public class RecursionMethods {
      *     2.3 substring(int beginIndex)
      */
     public static boolean isSubstring(String string, String subString) {
+        return isSubstringHelper(string, subString, 0);
+    }
+
+    private static boolean isSubstringHelper(String string, String subString, int index) {
+        boolean result;
         if (subString.length() == 0) {
-            return true;
+            result = true;
+        } else if (index + subString.length() > string.length()) {
+            result = false;
+        } else if (string.substring(index, index + subString.length()).equals(subString)) {
+            result = true;
+        } else {
+            result = isSubstringHelper(string, subString, index + 1);
         }
-        if (string.length() < subString.length()) {
-            return false;
-        }
-        if (string.substring(0, subString.length()).equals(subString)) {
-            return true;
-        }
-        return isSubstring(string.substring(1), subString);
+        return result;
     }
 }
