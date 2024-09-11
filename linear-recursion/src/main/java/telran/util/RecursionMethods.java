@@ -24,25 +24,12 @@ public class RecursionMethods {
      * 3. bitwise operators like >>, <<, &&, etc disallowe
      */
     public static long pow(int num, int degree){
-        return powHelper(num, degree, 1);
-}
-private static long powHelper(int num, int degree, long result) {
-    if (degree == 0) {
-        return result;
+        return pow(num, degree, 1);
     }
-    return powHelper(num, degree - 1, multiply(num, result));
-}
-private static long multiply(int a, long b) {
-    if (b == 0) {
-        return 0;
+    private static long pow(int num, int degree, long result) {
+        return degree == 0 ? result : pow(num, degree - 1, result * num);
     }
-    if (b > 0) {
-        return a + multiply(a, b - 1);
-    }
-    return -multiply(a, -b);
-}
     public static int sum(int [] array) {
-
         return sum(array, array.length);
     }
     private static int sum(int[] array, int length) {
@@ -60,10 +47,10 @@ private static long multiply(int a, long b) {
      * 5. no additional fields of the class RecursionMethods are allowed
      */
     public static int square(int x) {
-        if (x < 0) {
-            x = -x;
-        }
-        return x == 0 ? 0 : x + square(x - 1) + (x - 1);
+        return square(x < 0 ? -x : x, x < 0 ? -x : x, 0);
+    }
+    private static int square(int x, int y, int result) {
+        return y == 0 ? result : square(x, y - 1, result + x);
     }
     /**
      *
@@ -78,10 +65,10 @@ private static long multiply(int a, long b) {
      *     2.3 substring(int beginIndex)
      */
     public static boolean isSubstring(String string, String subString) {
-        return isSubstringHelper(string, subString, 0);
+        return isSubstring(string, subString, 0);
     }
 
-    private static boolean isSubstringHelper(String string, String subString, int index) {
+    private static boolean isSubstring(String string, String subString, int index) {
         boolean result;
         if (subString.length() == 0) {
             result = true;
@@ -90,7 +77,7 @@ private static long multiply(int a, long b) {
         } else if (string.substring(index, index + subString.length()).equals(subString)) {
             result = true;
         } else {
-            result = isSubstringHelper(string, subString, index + 1);
+            result = isSubstring(string, subString, index + 1);
         }
         return result;
     }
