@@ -8,10 +8,10 @@ public class RecursionMethods {
     }
     public static long factorial(int n) {
         //n! = 1 * 2 * 3 *.....*n
-        if(n < 0) {
-            n = -n;
+        if (x < 0) {
+            x = -x;
         }
-        return n == 0 ? 1 : n * factorial(n - 1);
+        return x == 0 ? 0 : x + x - 1 + square(x - 1);
     }
     /**
      *
