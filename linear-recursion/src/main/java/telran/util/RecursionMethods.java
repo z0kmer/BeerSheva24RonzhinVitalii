@@ -24,16 +24,19 @@ public class RecursionMethods {
      * 3. bitwise operators like >>, <<, &&, etc disallowe
      */
     public static long pow(int num, int degree){
-        return pow(num, degree, 1);
+        return pow(num, degree, 1, 0);
     }
-    private static long pow(int num, int degree, long result) {
-        return degree == 0 ? result : pow(num, degree - 1, result * num);
-    }
-    public static int sum(int [] array) {
-        return sum(array, array.length);
-    }
-    private static int sum(int[] array, int length) {
-        return length == 0 ? 0 : array[length - 1] + sum(array, length - 1);
+
+    private static long pow(int num, int degree, long result, int sum) {
+        long res = result;
+        if (degree == 0) {
+            res = result;
+        } else if (sum == num) {
+            res = pow(num, degree - 1, result + result, 0);
+        } else {
+            res = pow(num, degree, result, sum + 1);
+        }
+        return res;
     }
     /**
      *
@@ -47,10 +50,10 @@ public class RecursionMethods {
      * 5. no additional fields of the class RecursionMethods are allowed
      */
     public static int square(int x) {
-        return square(x < 0 ? -x : x, x < 0 ? -x : x, 0);
-    }
-    private static int square(int x, int y, int result) {
-        return y == 0 ? result : square(x, y - 1, result + x);
+        if(x < 0) {
+            x = -x;
+        }
+        return x == 0 ? 1 : x + x - 1 + square (x - 1);
     }
     /**
      *
@@ -65,19 +68,29 @@ public class RecursionMethods {
      *     2.3 substring(int beginIndex)
      */
     public static boolean isSubstring(String string, String subString) {
-        return isSubstring(string, subString, 0);
+        return isSubstringHelper(string, subString, 0);
     }
-
-    private static boolean isSubstring(String string, String subString, int index) {
+    private static boolean isSubstringHelper(String string, String subString, int index) {
         boolean result;
         if (subString.length() == 0) {
             result = true;
         } else if (index + subString.length() > string.length()) {
             result = false;
-        } else if (string.substring(index, index + subString.length()).equals(subString)) {
+        } else if (matches(string, subString, index, 0)) {
             result = true;
         } else {
-            result = isSubstring(string, subString, index + 1);
+            result = isSubstringHelper(string, subString, index + 1);
+        }
+        return result;
+    }
+    private static boolean matches(String string, String subString, int index, int subIndex) {
+        boolean result;
+        if (subIndex == subString.length()) {
+            result = true;
+        } else if (string.charAt(index + subIndex) != subString.charAt(subIndex)) {
+            result = false;
+        } else {
+            result = matches(string, subString, index, subIndex + 1);
         }
         return result;
     }
