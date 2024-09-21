@@ -1,12 +1,12 @@
-package telran.util;
+package telran.util
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeEach
 
-public class TreeSetStandardTest extends SortedSetTest{
+class TreeSetStandardTest : SortedSetTest() {
     @BeforeEach
     @Override
-    void setUp() {
-        collection = new TreeSetStandard<>();
-        super.setUp();
+    fun setUp() {
+        collection = TreeSetStandard()
+        super.setUp()
     }
 }
