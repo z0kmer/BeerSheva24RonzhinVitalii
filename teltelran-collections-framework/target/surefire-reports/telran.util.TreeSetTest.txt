@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: telran.util.TreeSetTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.009 s <<< FAILURE! -- in telran.util.TreeSetTest
+telran.util.TreeSetTest -- Time elapsed: 0.009 s <<< ERROR!
+java.lang.NoClassDefFoundError: SortedSet
+	at java.base/java.lang.Class.getDeclaredFields0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredFields(Class.java:3496)
+	at java.base/java.lang.Class.getDeclaredFields(Class.java:2552)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+Caused by: java.lang.ClassNotFoundException: SortedSet
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	... 4 more
+
