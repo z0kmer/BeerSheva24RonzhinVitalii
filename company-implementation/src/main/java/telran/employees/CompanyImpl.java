@@ -15,7 +15,7 @@ public class CompanyImpl implements Company {
 
     @Override
     public Iterator<Employee> iterator() {
-        return new CompanyIterator(employees, employeesDepartment, managersFactor);
+        return new CompanyIterator();
     }
 
     @Override
@@ -82,5 +82,52 @@ public class CompanyImpl implements Company {
         }
         List<Manager> managers = managersFactor.lastEntry().getValue();
         return managers.toArray(new Manager[0]);
+    }
+
+    private class CompanyIterator implements Iterator<Employee> {
+        private Iterator<Employee> iterator = employees.values().iterator();
+        private Employee current;
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public Employee next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            current = iterator.next();
+            return current;
+        }
+
+        @Override
+        public void remove() {
+            if (current == null) {
+                throw new IllegalStateException();
+            }
+            Employee employee = current;
+            current = null;
+            iterator.remove();
+            employees.remove(employee.getId());
+            List<Employee> departmentEmployees = employeesDepartment.get(employee.getDepartment());
+            if (departmentEmployees != null) {
+                departmentEmployees.remove(employee);
+                if (departmentEmployees.isEmpty()) {
+                    employeesDepartment.remove(employee.getDepartment());
+                }
+            }
+            if (employee instanceof Manager) {
+                Manager manager = (Manager) employee;
+                List<Manager> managers = managersFactor.get(manager.getFactor());
+                if (managers != null) {
+                    managers.remove(manager);
+                    if (managers.isEmpty()) {
+                        managersFactor.remove(manager.getFactor());
+                    }
+                }
+            }
+        }
     }
 }
