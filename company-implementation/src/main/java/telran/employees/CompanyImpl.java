@@ -15,7 +15,7 @@ public class CompanyImpl implements Company {
 
     @Override
     public Iterator<Employee> iterator() {
-        return employees.values().iterator();
+        return new CompanyIterator(employees, employeesDepartment, managersFactor);
     }
 
     @Override
