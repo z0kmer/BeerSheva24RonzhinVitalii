@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -70,12 +71,8 @@ public class MapTasks {
     }
 
     public static void displayDigitsDistribution() {
-        int[] randomNumbers = new int[1_000_000];
-        for (int i = 0; i < randomNumbers.length; i++) {
-            randomNumbers[i] = (int) (Math.random() * Integer.MAX_VALUE);
-        }
-        Map<Integer, Long> digitDistribution = Arrays.stream(randomNumbers)
-                .mapToObj(Integer::toString)
+        Map<Integer, Long> digitDistribution = new Random().longs(1_000_000, 0, Integer.MAX_VALUE)
+                .mapToObj(Long::toString)
                 .flatMapToInt(String::chars)
                 .map(Character::getNumericValue)
                 .boxed()
@@ -87,12 +84,10 @@ public class MapTasks {
     }
 
     public static ParenthesesMaps getParenthesesMaps(Character[][] openCloseParentheses) {
-        Map<Character, Character> openCloseMap = new HashMap<>();
-        Map<Character, Character> closeOpenMap = new HashMap<>();
-        for (Character[] pair : openCloseParentheses) {
-            openCloseMap.put(pair[0], pair[1]);
-            closeOpenMap.put(pair[1], pair[0]);
-        }
+        Map<Character, Character> openCloseMap = Stream.of(openCloseParentheses)
+                .collect(Collectors.toMap(pair -> pair[0], pair -> pair[1]));
+        Map<Character, Character> closeOpenMap = Stream.of(openCloseParentheses)
+                .collect(Collectors.toMap(pair -> pair[1], pair -> pair[0]));
         return new ParenthesesMaps(openCloseMap, closeOpenMap);
     }
 }

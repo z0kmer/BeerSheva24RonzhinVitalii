@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="telran.collections.MapTasksTest" time="0.284" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="telran.collections.MapTasksTest" time="0.255" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="RU"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Users\cyber\z0kmer\Oracle_JDK-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\cyber\AppData\Local\Temp\surefire13928619718615286578\surefirebooter-20240925145008237_3.jar C:\Users\cyber\AppData\Local\Temp\surefire13928619718615286578 2024-09-25T14-50-08_111-jvmRun1 surefire-20240925145008237_1tmp surefire_0-20240925145008237_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\cyber\AppData\Local\Temp\surefire3052212494389848246\surefirebooter-20240925204510297_3.jar C:\Users\cyber\AppData\Local\Temp\surefire3052212494389848246 2024-09-25T20-45-10_196-jvmRun1 surefire-20240925204510297_1tmp surefire_0-20240925204510297_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="telran.collections.MapTasksTest"/>
     <property name="surefire.test.class.path" value="C:\Users\cyber\BeerSheva24RonzhinVitalii\map-tasks\target\test-classes;C:\Users\cyber\BeerSheva24RonzhinVitalii\map-tasks\target\classes;C:\Users\cyber\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\cyber\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\cyber\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\cyber\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\cyber\AppData\Local\Temp\surefire13928619718615286578\surefirebooter-20240925145008237_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\cyber\AppData\Local\Temp\surefire3052212494389848246\surefirebooter-20240925204510297_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="22.0.1+8-16"/>
@@ -60,10 +60,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="66.0"/>
   </properties>
-  <testcase name="getParenthesesmapsTest" classname="telran.collections.MapTasksTest" time="0.028"/>
-  <testcase name="distributionByNumberOfdigitsTest" classname="telran.collections.MapTasksTest" time="0.006"/>
+  <testcase name="getParenthesesmapsTest" classname="telran.collections.MapTasksTest" time="0.03"/>
+  <testcase name="distributionByNumberOfdigitsTest" classname="telran.collections.MapTasksTest" time="0.005"/>
   <testcase name="groupingByNumberOfdigitsTest" classname="telran.collections.MapTasksTest" time="0.002"/>
-  <testcase name="displayOccurrencesTest" classname="telran.collections.MapTasksTest" time="0.004">
+  <testcase name="displayOccurrencesTest" classname="telran.collections.MapTasksTest" time="0.002">
     <system-out><![CDATA[lpm -> 3 
 c -> 2 
 cb -> 2 
@@ -71,20 +71,20 @@ a -> 1
 ab -> 1 
 ]]></system-out>
   </testcase>
-  <testcase name="digitsDistributionTest" classname="telran.collections.MapTasksTest" time="0.22">
-    <system-out><![CDATA[1 -> 1383616
-2 -> 964565
-3 -> 895049
-4 -> 893764
-5 -> 892138
-9 -> 891555
-6 -> 891230
-8 -> 890987
-7 -> 890369
-0 -> 889880
+  <testcase name="digitsDistributionTest" classname="telran.collections.MapTasksTest" time="0.187">
+    <system-out><![CDATA[1 -> 1384150
+2 -> 965247
+4 -> 894955
+3 -> 894310
+7 -> 891852
+6 -> 891658
+8 -> 891375
+5 -> 890573
+0 -> 889502
+9 -> 889371
 ]]></system-out>
   </testcase>
-  <testcase name="displayOccurrencesStreamTest" classname="telran.collections.MapTasksTest" time="0.002">
+  <testcase name="displayOccurrencesStreamTest" classname="telran.collections.MapTasksTest" time="0.003">
     <system-out><![CDATA[lpm -> 3
 c -> 2
 cb -> 2
