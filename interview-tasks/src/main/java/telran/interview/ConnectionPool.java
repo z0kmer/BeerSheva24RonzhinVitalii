@@ -30,9 +30,6 @@ public class ConnectionPool {
         if (connections.containsKey(connection.connectionId())) {
             throw new IllegalStateException("Connection already exists");
         }
-        if (connections.size() >= size) {
-            throw new IllegalStateException("Connection pool limit exceeded");
-        }
         connections.put(connection.connectionId(), connection);
     }
     public Connection getConnection(String connectionId) {
