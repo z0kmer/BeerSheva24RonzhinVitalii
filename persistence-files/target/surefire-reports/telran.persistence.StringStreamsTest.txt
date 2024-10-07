@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: telran.persistence.StringStreamsTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 12.59 s -- in telran.persistence.StringStreamsTest
