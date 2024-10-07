@@ -1,4 +1,6 @@
 package telran.persistence;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +13,6 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 public class StringStreamsTest {
@@ -57,6 +58,14 @@ public class StringStreamsTest {
         //Consider class Files
         //Consider method https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#walkFileTree(java.nio.file.Path,java.util.Set,int,java.nio.file.FileVisitor)
         
+        boolean success = walkFileTree(path, depth);
+        if (!success) {
+            System.err.println("An error occurred during directory traversal.");
+        }
+    }
+
+    private boolean walkFileTree(String path, int depth) {
+        boolean result = true;
         try {
             Files.walkFileTree(Paths.get(path), new SimpleFileVisitor<Path>() {
                 private int currentDepth = 0;
@@ -95,6 +104,8 @@ public class StringStreamsTest {
             });
         } catch (IOException e) {
             System.err.println("Error walking file tree: " + e.getMessage());
+            result = false;
         }
+        return result;
     }
 }

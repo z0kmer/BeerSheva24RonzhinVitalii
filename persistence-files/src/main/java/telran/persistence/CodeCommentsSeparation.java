@@ -26,6 +26,14 @@ public class CodeCommentsSeparation {
         String codeOutputFile = args[1];
         String commentsOutputFile = args[2];
 
+        boolean success = separateCodeAndComments(inputFile, codeOutputFile, commentsOutputFile);
+        if (!success) {
+            System.err.println("An error occurred during file processing.");
+        }
+    }
+
+    private static boolean separateCodeAndComments(String inputFile, String codeOutputFile, String commentsOutputFile) {
+        boolean result = true;
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              PrintWriter codeWriter = new PrintWriter(new FileWriter(codeOutputFile));
              PrintWriter commentsWriter = new PrintWriter(new FileWriter(commentsOutputFile))) {
@@ -46,6 +54,8 @@ public class CodeCommentsSeparation {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            result = false;
         }
+        return result;
     }
 }
