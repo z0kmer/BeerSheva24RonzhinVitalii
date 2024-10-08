@@ -40,22 +40,26 @@ public class CodeCommentsSeparation {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().startsWith("//")) {
-                    commentsWriter.println(line);
-                } else {
-                    int commentIndex = line.indexOf("//");
-                    if (commentIndex != -1) {
-                        codeWriter.println(line.substring(0, commentIndex).trim());
-                        commentsWriter.println(line.substring(commentIndex).trim());
-                    } else {
-                        codeWriter.println(line);
-                    }
-                }
+                processLine(line, codeWriter, commentsWriter);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
             result = false;
         }
         return result;
+    }
+
+    private static void processLine(String line, PrintWriter codeWriter, PrintWriter commentsWriter) {
+        if (line.trim().startsWith("//")) {
+            commentsWriter.println(line);
+        } else {
+            int commentIndex = line.indexOf("//");
+            if (commentIndex != -1) {
+                codeWriter.println(line.substring(0, commentIndex).trim());
+                commentsWriter.println(line.substring(commentIndex).trim());
+            } else {
+                codeWriter.println(line);
+            }
+        }
     }
 }
