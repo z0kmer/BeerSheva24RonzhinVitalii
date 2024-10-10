@@ -1,10 +1,9 @@
 package telran.employees;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,31 +13,34 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import telran.io.Persistable;
 
 public class CompanyImpl implements Company, Persistable{
-   private TreeMap<Long, Employee> employees = new TreeMap<>();
-   private HashMap<String, List<Employee>> employeesDepartment = new HashMap<>();
-   private TreeMap<Float, List<Manager>> managersFactor = new TreeMap<>();
-private class CompanyIterator implements Iterator<Employee> {
-    Iterator<Employee> iterator = employees.values().iterator();
-    Employee lastIterated;
-    @Override
-    public boolean hasNext() {
-       return iterator.hasNext();
-    }
+    private TreeMap<Long, Employee> employees = new TreeMap<>();
+    private HashMap<String, List<Employee>> employeesDepartment = new HashMap<>();
+    private TreeMap<Float, List<Manager>> managersFactor = new TreeMap<>();
+    private class CompanyIterator implements Iterator<Employee> {
+        Iterator<Employee> iterator = employees.values().iterator();
+        Employee lastIterated;
+        @Override
+        public boolean hasNext() {
+        return iterator.hasNext();
+        }
 
-    @Override
-    public Employee next() {
-       lastIterated = iterator.next();
-       return lastIterated;
+        @Override
+        public Employee next() {
+        lastIterated = iterator.next();
+        return lastIterated;
+        }
+        @Override
+        public void remove() {
+        iterator.remove();
+        removeFromIndexMaps(lastIterated);
+        }
     }
-    @Override
-    public void remove() {
-       iterator.remove();
-       removeFromIndexMaps(lastIterated);
-    }
-}
     @Override
     public Iterator<Employee> iterator() {
        return new CompanyIterator();
@@ -115,36 +117,45 @@ private class CompanyIterator implements Iterator<Employee> {
 
     @Override
     public void saveToFile(String fileName) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            out.writeObject(employees);
-            out.writeObject(employeesDepartment);
-            out.writeObject(managersFactor);
+        JSONArray employeesArray = new JSONArray();
+        for (Employee empl : employees.values()) {
+            employeesArray.put(new JSONObject(empl.toString()));
+        }
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("employees", employeesArray);
+        
+        try (FileWriter file = new FileWriter(fileName)) {
+            file.write(jsonObj.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
     @Override
     public void restoreFromFile(String fileName) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
-            TreeMap<Long, Employee> tempEmployees = (TreeMap<Long, Employee>) in.readObject();
-            HashMap<String, List<Employee>> tempEmployeesDepartment = (HashMap<String, List<Employee>>) in.readObject();
-            TreeMap<Float, List<Manager>> tempManagersFactor = (TreeMap<Float, List<Manager>>) in.readObject();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            StringBuilder jsonBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonBuilder.append(line);
+            }
+            JSONObject jsonObj = new JSONObject(jsonBuilder.toString());
+            JSONArray employeesArray = jsonObj.getJSONArray("employees");
             
             employees.clear();
             employeesDepartment.clear();
             managersFactor.clear();
             
-            for (Employee empl : tempEmployees.values()) {
+            for (int i = 0; i < employeesArray.length(); i++) {
+                Employee empl = Employee.getEmployeeFromJSON(employeesArray.getJSONObject(i).toString());
                 employees.put(empl.getId(), empl);
-                employeesDepartment.computeIfAbsent(empl.getDepartment(), k -> new ArrayList<>()).add(empl);
-                if (empl instanceof Manager manager) {
-                    managersFactor.computeIfAbsent(manager.getFactor(), k -> new ArrayList<>()).add(manager);
-                }
+                addIndexMaps(empl);
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     
 }
