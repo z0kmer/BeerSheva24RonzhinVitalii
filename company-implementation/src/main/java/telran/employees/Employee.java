@@ -1,11 +1,8 @@
 package telran.employees;
 
-import java.io.Serializable;
-
 import org.json.JSONObject;
 
-public class Employee implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Employee {
     private long id;
     private int basicSalary;
     private String department;

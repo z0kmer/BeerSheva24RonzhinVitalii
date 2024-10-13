@@ -143,7 +143,6 @@ void setCompany() {
 			Employee empl = Employee.getEmployeeFromJSON("{\"basicSalary\":1000,\"className\":\"telran.employees.Manager\",\"id\":123,\"department\":\"QA\",\"factor\":2}");
 			assertEquals(empl, new Manager(ID1,SALARY1,DEPARTMENT1,FACTOR1));
 		}
-
 		@Test
 		void persistenceTest() {
 			if (company instanceof Persistable persCompany) {
@@ -153,4 +152,7 @@ void setCompany() {
 				runTestIterator(comp);
 			}
 		}
+	
+	
+
 }

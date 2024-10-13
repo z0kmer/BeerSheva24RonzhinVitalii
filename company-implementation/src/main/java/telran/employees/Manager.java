@@ -1,11 +1,8 @@
 package telran.employees;
 
-import java.io.Serializable;
-
 import org.json.JSONObject;
 
-public class Manager extends Employee implements Serializable{
-    private static final long serialVersionUID = 1L;
+public class Manager extends Employee{
     private float factor;
     public Manager(){}
     public Manager(long id, int basicSalary, String department, float factor){
@@ -30,6 +27,5 @@ public class Manager extends Employee implements Serializable{
     protected void setObject(JSONObject jsonObj) {
         super.setObject(jsonObj);
         factor = jsonObj.getFloat("factor");
-    }
-    
+     }
 }
