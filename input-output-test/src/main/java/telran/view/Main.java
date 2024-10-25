@@ -1,8 +1,8 @@
 package telran.view;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 record Employee(long id, String name, String department, int salary, LocalDate birthDate) {
 }
@@ -23,10 +23,11 @@ public class Main {
 
     /*********************************** */
     public static void main(String[] args) {
-        readEmployeeAsObject();
+        readEmployeeBySeparateFields();
     }
 
     static void readEmployeeAsObject() {
+        io.writeLine("\n");
         Employee empl = io.readObject("Enter employee data in the format:" +
                 " <id>#<name>#<department>#<salary>#<yyyy-MM-DD> ",
                 "Wrong format for Employee data", str -> {
@@ -38,31 +39,30 @@ public class Main {
         io.writeLine("You are entered the following Employee data");
         io.writeLine(empl);
     }
-    static  void readEmployeeBySeparateFields() {
+       static  void readEmployeeBySeparateFields() {
+        io.writeLine("\n");
+
+        long id = io.readNumberRange(String.format("Enter ID value in the range [%d-%d]", MIN_ID, MAX_ID),
+        "Wrong ID value", MIN_ID, MAX_ID).longValue();
+        String name = io.readStringPredicate("Enter employee's name",
+         "must be at least 3 English letter, first - capital, others-lower case",
+          s -> s.matches("[A-Z][a-z]{2,}"));
+          HashSet<String> departmentsSet = new HashSet<>(List.of(DEPARTMENTS));
+        String department = io.readStringOptions("Enter department from " + departmentsSet, "Must be one out from " + departmentsSet, 
+        departmentsSet);
+        int salary = io.readNumberRange(String.format("Enter salary value in the range [%d-%d]", MIN_SALARY, MAX_SALARY),
+        "Wrong salary value", MIN_SALARY, MAX_SALARY).intValue();
+        LocalDate minBirthDate = getBirthDateFromAge(MAX_AGE);
+        LocalDate maxBirthDate = getBirthDateFromAge(MIN_AGE);
+        LocalDate birthdate = io.readIsoDateRange(String.format("Enter birthdate in the range [%s - %s]",
+        minBirthDate, maxBirthDate), "Wrong birthdate",minBirthDate, maxBirthDate);
         //Enter ID, Enter name, Enter department, Enter salary, Enter birthdate
-        long id = io.readObject("Enter ID (6 digits): ", "Invalid ID", str -> {
-            long val = Long.parseLong(str);
-            if (val < MIN_ID || val > MAX_ID) throw new IllegalArgumentException("ID out of range");
-            return val;
-        });
-
-        String name = io.readStringPredicate("Enter name (at least 3 English letters): ", "Invalid name",
-                str -> str.matches("[A-Z][a-z]{2,}"));
-
-        String department = io.readStringOptions("Enter department (QA, Audit, Development, Management): ",
-                "Invalid department", new HashSet<>(Arrays.asList(DEPARTMENTS)));
-
-        int salary = io.readObject("Enter salary: ", "Invalid salary", str -> {
-            int val = Integer.parseInt(str);
-            if (val < MIN_SALARY || val > MAX_SALARY) throw new IllegalArgumentException("Salary out of range");
-            return val;
-        });
-
-        LocalDate birthDate = io.readIsoDateRange("Enter birthdate (yyyy-MM-dd): ", "Invalid date",
-                LocalDate.now().minusYears(MAX_AGE), LocalDate.now().minusYears(MIN_AGE));
-
-        Employee empl = new Employee(id, name, department, salary, birthDate);
-        io.writeLine("You entered the following Employee data");
+        Employee empl = new Employee(id, name, department, salary, birthdate);
+        io.writeLine("You have entered employee:");
         io.writeLine(empl);
+     }
+
+    private static LocalDate getBirthDateFromAge(int age) {
+        return LocalDate.now().minusYears(age);
     }
 }
