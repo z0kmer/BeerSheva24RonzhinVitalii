@@ -39,20 +39,20 @@ public class InterviewTasksTest {
 	}
     @Test
 	void assignRoleDatesTest() {
-		List<DateRole> history =
-				List.of(new DateRole(LocalDate.of(2020, 1, 1), ROLE1),
-						new DateRole(LocalDate.of(2021, 1, 1), ROLE2),
-						new DateRole(LocalDate.of(2022, 1, 1), ROLE3));
-		List<LocalDate> dates = List.of(DATE1,
-				DATE2, DATE3,
-				DATE4);
-		List<DateRole> expected =
-				List.of(new DateRole(DATE1, null), 
-						new DateRole(DATE2,ROLE2),
-						new DateRole(DATE3, ROLE2),
-						new DateRole(DATE4, ROLE3));
-		assertIterableEquals(expected, InterviewTasks.assignRoleDates(history, dates));
-	}
+        List<DateRole> history = List.of(
+                new DateRole(LocalDate.of(2020, 1, 1), ROLE1),
+                new DateRole(LocalDate.of(2021, 1, 1), ROLE2),
+                new DateRole(LocalDate.of(2022, 1, 1), ROLE3)
+        );
+        List<LocalDate> dates = List.of(DATE1, DATE2, DATE3, DATE4);
+        List<DateRole> expected = List.of(
+                new DateRole(DATE1, null),
+                new DateRole(DATE2, ROLE2),
+                new DateRole(DATE3, ROLE2),
+                new DateRole(DATE4, ROLE3)
+        );
+        assertIterableEquals(expected, InterviewTasks.assignRoleDates(history, dates));
+    }
     @Test
 	void isAnagrmaTest() {
 		String word = "hello";

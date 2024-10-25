@@ -12,14 +12,17 @@ public class ConnectionPool {
 //is going to exceed the limit a connection should be removed from the connection
 //Policy should take in consideration the order of adding connections in pool
 // and using connection
+
+private final int maxSize;
 private LinkedHashMap<String, Connection> connectionsMap;
 public ConnectionPool(int size) {
-   connectionsMap = new LinkedHashMap<>(size * 2, 0.75f, true) {
-     @Override
-     protected boolean removeEldestEntry(Map.Entry<String, Connection> eldestEntry){
-        return size() > size;
-     }
-   };
+    this.maxSize = size;
+    connectionsMap = new LinkedHashMap<>(size * 2, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<String, Connection> eldestEntry){
+            return size() > maxSize;
+        }
+    };
 }
 public void addConnection(Connection connection) {
     String id = connection.connectionId();

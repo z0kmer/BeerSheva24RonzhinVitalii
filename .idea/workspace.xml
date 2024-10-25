@@ -2,9 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3388be8-13d0-411e-b1f3-fb80be02829d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/cli-view/src/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli-view/src/main/java/telran/view/InputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/cli-view/src/main/java/telran/view/InputOutput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli-view/src/main/java/telran/view/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input-output-test/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/input-output-test/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/AutoCompletion.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/AutoCompletion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/ConnectionPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/ConnectionPool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/InterviewTasks.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/InterviewTasks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyStackInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyStackInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/AutoCompletionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/AutoCompletionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/InterviewTasksTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/InterviewTasksTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/Connection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/InterviewTasks.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/InterviewTasks.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.ConnectionPoolTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.ConnectionPoolTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.InterviewTasksTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.InterviewTasksTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.ConnectionPoolTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.ConnectionPoolTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.InterviewTasksTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.InterviewTasksTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/ConnectionPoolTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/ConnectionPoolTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/InterviewTasksTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/InterviewTasksTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +34,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2nspOOVzdETEtU6HZa7acECUvwZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,7 +45,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Program Files",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
