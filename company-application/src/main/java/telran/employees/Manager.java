@@ -5,9 +5,13 @@ import java.time.LocalDate;
 public class Manager extends Employee {
     private double factor;
 
-    public Manager(long id, String name, String department, int salary, LocalDate birthDate, double factor) {
-        super(id, name, department, salary, birthDate);
+    public Manager(long id, String name, String department, int salary, double factor) {
+        super(id, name, department, salary, LocalDate.now());
         this.factor = factor;
+    }
+
+    public double getFactor() {
+        return factor;
     }
 
     @Override

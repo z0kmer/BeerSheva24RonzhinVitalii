@@ -19,6 +19,18 @@ public class Employee {
         this.birthDate = birthDate;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
     public static Employee getEmployeeFromJSON(String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);

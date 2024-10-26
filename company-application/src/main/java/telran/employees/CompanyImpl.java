@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import telran.io.Persistable;
 
 public class CompanyImpl implements Company, Persistable {
+    private Map<Long, Employee> employees = new HashMap<>();
 
     @Override
     public void restoreFromFile(String filePath) {
@@ -25,36 +28,43 @@ public class CompanyImpl implements Company, Persistable {
 
     @Override
     public void addEmployee(Employee employee) {
-        // Логика добавления сотрудника
+        employees.put(employee.getId(), employee);
     }
 
     @Override
     public void removeEmployee(long id) {
-        // Логика удаления сотрудника
+        employees.remove(id);
     }
 
     @Override
     public Employee getEmployee(long id) {
-        // Логика получения сотрудника по ID
-        return null;
+        return employees.get(id);
     }
 
     @Override
     public int getDepartmentSalaryBudget(String department) {
-        // Логика получения бюджета зарплат отдела
-        return 0;
+        return employees.values().stream()
+            .filter(e -> e.getDepartment().equals(department))
+            .mapToInt(Employee::getSalary)
+            .sum();
     }
 
     @Override
     public List<String> getDepartments() {
-        // Логика получения списка отделов
-        return null;
+        // Получаем уникальные названия отделов
+        return employees.values().stream()
+            .map(Employee::getDepartment)
+            .distinct()
+            .toList();
     }
 
     @Override
     public List<Manager> getManagersWithMostFactor() {
-        // Логика получения списка менеджеров с наибольшим фактором
-        return null;
+        return employees.values().stream()
+            .filter(e -> e instanceof Manager)
+            .map(e -> (Manager) e)
+            .sorted((m1, m2) -> Double.compare(m2.getFactor(), m1.getFactor()))
+            .toList();
     }
 
     @Override
