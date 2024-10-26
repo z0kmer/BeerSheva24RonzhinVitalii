@@ -2,29 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3388be8-13d0-411e-b1f3-fb80be02829d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/input-output-test/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/input-output-test/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/AutoCompletion.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/AutoCompletion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/ConnectionPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/ConnectionPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/InterviewTasks.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/InterviewTasks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyStackInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/main/java/telran/interview/MyStackInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/AutoCompletionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/AutoCompletionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/InterviewTasksTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/src/test/java/telran/interview/InterviewTasksTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/Connection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/ConnectionPool.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/InterviewTasks.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/classes/telran/interview/InterviewTasks.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.ConnectionPoolTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.ConnectionPoolTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.InterviewTasksTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/TEST-telran.interview.InterviewTasksTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.ConnectionPoolTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.ConnectionPoolTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.InterviewTasksTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/surefire-reports/telran.interview.InterviewTasksTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/ConnectionPoolTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/ConnectionPoolTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/InterviewTasksTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/interview-tasks/target/test-classes/telran/interview/InterviewTasksTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/company-application/company.data" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/company-application/company_restored.data" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/company-application/employees.data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/BeerSheva24RonzhinVitalii.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BeerSheva24RonzhinVitalii.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-application/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/company-application/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-application/src/main/java/telran/employees/CompanyItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/company-application/src/main/java/telran/employees/CompanyItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-application/src/main/java/telran/employees/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/company-application/src/main/java/telran/employees/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/company.data" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/company.data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/surefire-reports/TEST-telran.employees.CompanyTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/surefire-reports/telran.employees.CompanyTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/test-classes/telran/employees/CompanyTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/test-classes/telran/employees/CompanyTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,18 +31,70 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2nspOOVzdETEtU6HZa7acECUvwZ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Program Files",
+    "last_opened_file_path": "C:/Users/cyber/BeerSheva24RonzhinVitalii/company-application",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/company-application" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/company-application" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -71,5 +116,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
