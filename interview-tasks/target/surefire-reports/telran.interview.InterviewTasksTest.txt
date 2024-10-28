@@ -1,20 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: telran.interview.InterviewTasksTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.029 s <<< FAILURE! -- in telran.interview.InterviewTasksTest
-telran.interview.InterviewTasksTest.assignRoleDatesTest -- Time elapsed: 0.018 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: iterable contents differ at index [1], expected: <DateRole[date=2021-10-30, role=Senior Developer]> but was: <DateRole[date=2021-10-30, role=null]>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertIterableEquals.failIterablesNotEqual(AssertIterableEquals.java:179)
-	at org.junit.jupiter.api.AssertIterableEquals.assertIterableElementsEqual(AssertIterableEquals.java:123)
-	at org.junit.jupiter.api.AssertIterableEquals.assertIterableEquals(AssertIterableEquals.java:72)
-	at org.junit.jupiter.api.AssertIterableEquals.assertIterableEquals(AssertIterableEquals.java:51)
-	at org.junit.jupiter.api.AssertIterableEquals.assertIterableEquals(AssertIterableEquals.java:42)
-	at org.junit.jupiter.api.AssertIterableEquals.assertIterableEquals(AssertIterableEquals.java:38)
-	at org.junit.jupiter.api.Assertions.assertIterableEquals(Assertions.java:1508)
-	at telran.interview.InterviewTasksTest.assignRoleDatesTest(InterviewTasksTest.java:54)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.083 s -- in telran.interview.InterviewTasksTest

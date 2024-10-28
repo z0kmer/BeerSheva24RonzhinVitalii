@@ -1,27 +1,19 @@
 package telran.interview;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class AutoCompletion {
-    private final List<String> words = new ArrayList<>();
+    private final TreeSet<String> words = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
     public boolean addWord(String word) {
-		//adds new word into auto-completion variants
-		//returns true if added, false otherwise (if a given word already exists)
-		if (!words.contains(word)) {
-            words.add(word);
-            return true;
-        }
-        return false;
+        return words.add(word);
     }
 
     public String[] getVariants(String prefix) {
-		//returns all words beginning with a given prefix
-		//Complexity of finding the variants is O[logN]
-		return words.stream()
-                .filter(word -> word.toLowerCase().startsWith(prefix.toLowerCase()))
-                .sorted(String.CASE_INSENSITIVE_ORDER)
-                .toArray(String[]::new);
+        // Создаем верхний предел для подмножества
+        String upperBound = prefix + Character.MAX_VALUE;
+        SortedSet<String> subSet = words.subSet(prefix, upperBound);
+        return subSet.toArray(new String[0]);
     }
 }

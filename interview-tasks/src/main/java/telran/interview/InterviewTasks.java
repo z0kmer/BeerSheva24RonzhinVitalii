@@ -4,17 +4,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 public class InterviewTasks {
-    /**
-     * 
-     * @param array
-     * @param sum
-     * @return true if a given array comprises of two number,
-     *  summing of which gives the value equaled to a given "sum" value
+
+    /** 
+     * @param array 
+     * @param sum 
+     * @return true if a given array comprises of two number, 
+     * summing of which gives the value equaled to a given "sum" value 
      */
     public static boolean hasSumTwo(int[] array, int sum) {
         Set<Integer> complements = new HashSet<>();
@@ -41,23 +40,18 @@ public class InterviewTasks {
         }
         return max;
     }
-    public static List<DateRole> assignRoleDates(List<DateRole> rolesHistory,
-		List<LocalDate> dates) {
-        //rolesHistory is the list containg dates and roles assigned to the employees at the appropriate dates
-        //for example, date => 2019-01-01, role => Developer means that some employee (no matter who) was taken
-        //role Developer at 2019-01-01
-        //create List<DateRole> with roles matching with the given dates
-        //most effective data structure
-        Map<LocalDate, String> roleMap = rolesHistory.stream()
-            .collect(Collectors.toMap(DateRole::date, DateRole::role));
+
+    public static List<DateRole> assignRoleDates(List<DateRole> rolesHistory, List<LocalDate> dates) {
+        TreeMap<LocalDate, String> roleMap = new TreeMap<>();
+        for (DateRole role : rolesHistory) {
+            roleMap.put(role.date(), role.role());
+        }
 
         List<DateRole> result = new ArrayList<>();
         String currentRole = null;
 
         for (LocalDate date : dates) {
-            if (roleMap.containsKey(date)) {
-                currentRole = roleMap.get(date);
-            }
+            currentRole = roleMap.floorEntry(date) != null ? roleMap.floorEntry(date).getValue() : currentRole;
             result.add(new DateRole(date, currentRole));
         }
 
@@ -65,9 +59,6 @@ public class InterviewTasks {
     }
 
     public static boolean isAnagram(String word, String anagram) {
-        //returns true if "anagram" string contains all
-        // letters from "word" in another order (case sensitive)
-        //O[N] (sorting is disallowed)
         if (word.equals(anagram)) {
             return false;
         }
@@ -85,5 +76,4 @@ public class InterviewTasks {
         }
         return true;
     }
-    
 }
