@@ -1,42 +1,45 @@
 package telran.interview;
 
+import java.util.HashMap;
 
-//all methods must have complexity O[1]
 public class MyArray<T> {
-	private T[] array;
+    private final int size;  // Variable to store the size of the array
+    private HashMap<Integer, T> array;  // Use HashMap for values
+    private HashMap<Integer, Long> versions;  // Use HashMap for versions
     private T defaultValue;
     private long defaultVersion;
-    private long[] versions;
     private long currentVersion = 0;
 
-	public MyArray(int size) {
-		//creates the Array object for a given size
-		//with setting null's at each element
-        array = (T[]) new Object[size];
-        versions = new long[size];
+    public MyArray(int size) {
+        this.size = size;  // Store the size
+        array = new HashMap<>(size);  // Initialize HashMap for values
+        versions = new HashMap<>(size);  // Initialize HashMap for versions
     }
 
-	public void setAll(T value) {
-		//all array's elements should be set with a given value
-		defaultValue = value;
+    public void setAll(T value) {
+        defaultValue = value;
         defaultVersion = ++currentVersion;
-	}
-	public void set(int index, T value) {
-		//set new value at a given index
-		//throws ArrayIndexOutOfBoundsException for incorrect index
-		if (index < 0 || index >= array.length) {
+    }
+
+    public void set(int index, T value) {
+        checkIndex(index);  // Check for valid index
+        array.put(index, value);  // Save value in HashMap
+        versions.put(index, ++currentVersion);  // Update version in HashMap
+    }
+
+    public T get(int index) {
+        checkIndex(index);  // Check for valid index
+        Long version = versions.get(index);  // Get version from HashMap
+        if (version == null || version <= defaultVersion) {
+            return defaultValue;
+        }
+        return array.get(index);  // Return value from HashMap
+    }
+
+    // Method to check if the index is within bounds
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        array[index] = value;
-        versions[index] = ++currentVersion;
-	}
-	
-	public T get(int index) {
-		//returns a value at a given index
-		//throws ArrayIndexOutOfBoundsException for incorrect index
-		if (index < 0 || index >= array.length) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		return versions[index] > defaultVersion ? array[index] : defaultValue;
     }
 }

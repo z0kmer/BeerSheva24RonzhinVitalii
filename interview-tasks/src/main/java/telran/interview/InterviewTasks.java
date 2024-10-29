@@ -1,11 +1,13 @@
 package telran.interview;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class InterviewTasks {
 
@@ -42,38 +44,21 @@ public class InterviewTasks {
     }
 
     public static List<DateRole> assignRoleDates(List<DateRole> rolesHistory, List<LocalDate> dates) {
-        TreeMap<LocalDate, String> roleMap = new TreeMap<>();
-        for (DateRole role : rolesHistory) {
-            roleMap.put(role.date(), role.role());
-        }
-
-        List<DateRole> result = new ArrayList<>();
-        String currentRole = null;
-
-        for (LocalDate date : dates) {
-            currentRole = roleMap.floorEntry(date) != null ? roleMap.floorEntry(date).getValue() : currentRole;
-            result.add(new DateRole(date, currentRole));
-        }
-
-        return result;
+        TreeMap<LocalDate, String> roleMap = rolesHistory.stream() 
+            .collect(Collectors.toMap(DateRole::date, DateRole::role, (r1, r2) -> r2, TreeMap::new));
+            
+        return dates.stream()
+            .map(date -> new DateRole(date, roleMap.floorEntry(date) != null ? roleMap.floorEntry(date).getValue() : null))
+            .collect(Collectors.toList());
     }
 
     public static boolean isAnagram(String word, String anagram) {
-        if (word.equals(anagram)) {
+        if (word.equals(anagram) || word.length() != anagram.length()) {
             return false;
         }
-        if (word.length() != anagram.length()) {
-            return false;
-        }
-        int[] counts = new int[256];
-        for (char c : word.toCharArray()) {
-            counts[c]++;
-        }
-        for (char c : anagram.toCharArray()) {
-            if (--counts[c] < 0) {
-                return false;
-            }
-        }
-        return true;
+        Map<Character, Integer> charCount = new HashMap<>();
+        word.chars().forEach(c -> charCount.merge((char) c, 1, Integer::sum));
+        anagram.chars().forEach(c -> charCount.merge((char) c, -1, Integer::sum));
+        return charCount.values().stream().allMatch(count -> count == 0);
     }
 }
