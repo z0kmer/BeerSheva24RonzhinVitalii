@@ -11,7 +11,7 @@ public class AutoCompletion {
     }
 
     public String[] getVariants(String prefix) {
-        // Создаем верхний предел для подмножества
+        // Create an upper limit for a subset
         String upperBound = prefix + Character.MAX_VALUE;
         SortedSet<String> subSet = words.subSet(prefix, upperBound);
         return subSet.toArray(new String[0]);
