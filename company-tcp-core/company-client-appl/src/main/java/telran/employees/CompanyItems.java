@@ -1,4 +1,10 @@
 package telran.employees;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+
 import static telran.employees.CompanyConfigProperties.DEPARTMENTS;
 import static telran.employees.CompanyConfigProperties.MAX_BASIC_SALARY;
 import static telran.employees.CompanyConfigProperties.MAX_FACTOR;
@@ -14,18 +20,6 @@ import static telran.employees.CompanyConfigProperties.MIN_ID;
 import static telran.employees.CompanyConfigProperties.MIN_PERCENT;
 import static telran.employees.CompanyConfigProperties.MIN_SALES;
 import static telran.employees.CompanyConfigProperties.MIN_WAGE;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-
-import telran.employees.Company;
-import telran.employees.Employee;
-import telran.employees.Manager;
-import telran.employees.SalesPerson;
-import telran.employees.WageEmployee;
 import telran.view.InputOutput;
 import telran.view.Item;
 import telran.view.Menu;
