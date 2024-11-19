@@ -15,9 +15,11 @@ public class Main {
         if (company instanceof Persistable persistable) {
             persistable.restoreFromFile(FILE_NAME);
             EmployeesDataSaver dataSaver = new EmployeesDataSaver(persistable, SAVE_INTERVAL, TimeUnit.HOURS);
-            dataSaver.start();
 
-            Runtime.getRuntime().addShutdownHook(new Thread(dataSaver::stop));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                dataSaver.stop();
+                persistable.saveToFile(FILE_NAME);
+            }));
         }
         TcpServer tcpServer = new TcpServer(new CompanyProtocol(company), PORT);
         tcpServer.run();
