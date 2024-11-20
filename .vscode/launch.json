@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
+            "mainClass": "telran.multithreading.Main",
+            "projectName": "game-racer-threads"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
             "mainClass": "telran.employees.Main",
             "projectName": "company-application"
         },
