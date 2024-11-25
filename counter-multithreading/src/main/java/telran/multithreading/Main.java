@@ -3,8 +3,8 @@ package telran.multithreading;
 import java.util.Arrays;
 
 public class Main {
-    private static final int N_THREADS = 10000;
-    private static final int N_ITERATIONS = 10000;
+    private static final int N_THREADS = 5;
+    private static final int N_ITERATIONS = 3;
 
     public static void main(String[] args) {
         CounterThread[] threads = new CounterThread[N_THREADS];

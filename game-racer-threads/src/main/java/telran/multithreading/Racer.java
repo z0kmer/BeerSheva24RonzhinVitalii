@@ -1,34 +1,46 @@
 package telran.multithreading;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
-public class Racer extends Thread{
+public class Racer extends Thread implements Comparable<Racer> {
     private Race race;
     private int number;
-    
+    private long raceTime;
+
     public Racer(Race race, int number) {
         this.race = race;
         this.number = number;
     }
-    
+
     @Override
-    public void run(){
-        //Running cycle containing number of iterations from the Race reference as the distance
-        //Each iteration is printing out the number of the thread for game tracing to see game dynamics
-        
-        for (int i = 0; i < race.getDistance(); i++) {
-            System.out.printf("Гонщик №%d проходит дистанцию (выполняет итерацию) %d\n", number, i + 1);
+    public void run() {
+        int minSleep = race.getMinSleep();
+        int maxSleep = race.getMaxSleep();
+        int distance = race.getDistance();
+        Random random = new Random();
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i < distance; i++) {
             try {
-                Thread.sleep(ThreadLocalRandom.current().nextInt(1, 10)); // случайное время от 1 до 10 мс
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+                sleep(random.nextInt(minSleep, maxSleep + 1));
+                System.out.printf("%d - step %d\n", number, i);
+            } catch (InterruptedException e) {}
         }
-        
-        if (race.setWinner(number)) {
-            System.out.printf("Гонщик №%d закончил первым!\n", number);
-        }
-            
-        race.countDown();
+
+        raceTime = System.currentTimeMillis() - start;
+        race.winner.compareAndSet(-1, number);
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public long getRaceTime() {
+        return raceTime;
+    }
+
+    @Override
+    public int compareTo(Racer other) {
+        return Long.compare(this.raceTime, other.raceTime);
     }
 }
