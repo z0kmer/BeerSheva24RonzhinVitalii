@@ -9,6 +9,13 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "telran.multithreading.Main",
+            "projectName": "dead-lock"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "telran.multithreading.Main",
             "projectName": "game-racer-threads"
         },
         {
