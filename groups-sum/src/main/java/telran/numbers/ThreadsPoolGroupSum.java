@@ -4,28 +4,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class ThreadsPoolGroupSum extends ThreadsGroupSum{
+public class ThreadsPoolGroupSum extends ThreadsGroupSum {
+    private final ExecutorService executor;
 
-    private static final int N_THREADS = Runtime.getRuntime().availableProcessors();
-    private final ExecutorService executorService;
-
-    public ThreadsPoolGroupSum(int[][]groups) {
+    public ThreadsPoolGroupSum(int[][] groups) {
         super(groups);
-        executorService = Executors.newFixedThreadPool(N_THREADS);
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
+
     @Override
-   protected void startTasks(FutureTask<Long>[] tasks) {
-        //write this method by using threads pool
+    protected void startTasks(FutureTask<Long>[] tasks) {
         for (int i = 0; i < tasks.length; i++) {
             tasks[i] = new FutureTask<>(new OneGroupSum(groups[i]));
-            executorService.submit(tasks[i]);
+            executor.submit(tasks[i]);
         }
     }
 
-    @Override
-    public long computeSum() {
-        long sum = super.computeSum();
-        executorService.shutdown();
-        return sum;
+    public void shutdown() {
+        executor.shutdown();
     }
 }
