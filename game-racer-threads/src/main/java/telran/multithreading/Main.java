@@ -34,7 +34,7 @@ public class Main {
         static void startGame(InputOutput io) {
             int nThreads = io.readNumberRange("Enter number of the racers","Wrong number of the racers",
                     MIN_THREADS, MAX_THREADS).intValue();
-            int distance = io.readNumberRange("Enter distance", 
+            int distance = io.readNumberRange("Enter distance",
             "Wrong Distance",MIN_DISTANCE, MAX_DISTANCE).intValue();
             Race race = new Race(distance, MIN_SLEEP, MAX_SLEEP, new ArrayList<Racer>(), Instant.now());
             Racer[] racers = new Racer[nThreads];
