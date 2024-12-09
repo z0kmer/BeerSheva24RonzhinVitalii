@@ -1,44 +1,65 @@
 package telran.net;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class TcpServer implements Runnable {
     Protocol protocol;
     int port;
-    private ExecutorService executorService;
-    private static volatile boolean shutdownRequested = false;
+    private volatile boolean isShutdown = false;
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
     public TcpServer(Protocol protocol, int port) {
         this.protocol = protocol;
         this.port = port;
-        this.executorService = Executors.newFixedThreadPool(10); // Ограниченный пул потоков
     }
 
     @Override
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server is listening on the port " + port);
-            while (!shutdownRequested) {
+            serverSocket.setSoTimeout(500);
+            System.out.println("Server is listening on port " + port);
+            while (!executor.isShutdown()) {
                 try {
                     Socket socket = serverSocket.accept();
                     var session = new TcpClientServerSession(protocol, socket);
-                    executorService.submit(session);
-                } catch (Exception e) {
-                    if (shutdownRequested) break;
+                    executor.execute(session);
+                } catch (SocketTimeoutException e) {
+                    // timeout reached + check for shutdown signal
                 }
             }
-            executorService.shutdownNow(); // Остановка всех потоков выключая
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e);
+        } finally {
+            shutdownAndAwaitTermination();
         }
     }
 
     public void shutdown() {
-        //In the ExecutorService framework to provide shutdownNow (to ignore all not processing client sessions)
-        shutdownRequested = true;
-        TcpClientServerSession.requestShutdown();
+        isShutdown = true;
+        executor.shutdownNow();
+    }
+
+    private void shutdownAndAwaitTermination() {
+        executor.shutdown(); // disable new tasks from being submitted
+        try {
+            // wait some time for existing tasks to terminate
+            if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                executor.shutdownNow(); // Cancel currently executing tasks
+                // wait some time for tasks to respond to being cancelled
+                if (!executor.awaitTermination(60, TimeUnit.SECONDS))
+                    System.err.println("Executor did not terminate");
+            }
+        } catch (InterruptedException ie) {
+            // (re-)cancel if current thread also interrupted
+            executor.shutdownNow();
+            // preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
     }
 }
