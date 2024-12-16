@@ -1,67 +1,74 @@
 package telran.net;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class TcpClientServerSession implements Runnable {
-    private static final int MAX_ERRORS_IN_ROW = 5;
-    private static final int MAX_REQUESTS_PER_SECOND = 10;
-    private Protocol protocol;
-    private Socket socket;
-    private int errorCount = 0;
-    private long startTime;
-    private int requestCount = 0;
+    Protocol protocol;
+    Socket socket;
+    TcpServer server;
+    int idleTimeout;
+    int requestsPerSecond;
+    int nonOkResponses;
+    Instant timestamp = Instant.now();
 
-    public TcpClientServerSession(Protocol protocol, Socket socket) {
+    public TcpClientServerSession(Protocol protocol, Socket socket, TcpServer server) {
         this.protocol = protocol;
         this.socket = socket;
-        this.startTime = Instant.now().getEpochSecond();
+        this.server = server;
     }
 
     @Override
     public void run() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintStream writer = new PrintStream(socket.getOutputStream())) {
-             
-            socket.setSoTimeout(500); // set timeout for the socket operations
-            String request;
-            while ((request = reader.readLine()) != null) {
-                String response = protocol.getResponseWithJSON(request);
-                writer.println(response);
-                updateRequestCount();
 
-                if (shouldTerminateSession()) {
-                    break;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintStream writer = new PrintStream(socket.getOutputStream())) {
+            String request = null;
+            while (!server.executor.isShutdown() && !isIdleTimeout()) {
+                try {
+                    request = reader.readLine();
+                    idleTimeout = 0;
+                    if (request == null || isRequestsPerSecond()) {
+                        break;
+                    }
+                    String response = protocol.getResponseWithJSON(request);
+                    if (isNonOkResponses(response)) {
+                        break;
+                    }
+                    writer.println(response);
+                } catch (SocketTimeoutException e) {
+                    idleTimeout += server.socketTimeout;
                 }
             }
-        } catch (SocketTimeoutException e) {
-            // timeout reached, check if shutdown requested or handle DoS
+            socket.close();
         } catch (Exception e) {
             System.out.println(e);
-        } finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                System.out.println(e);
-            }
         }
     }
 
-    private void updateRequestCount() {
-        long currentTime = Instant.now().getEpochSecond();
-        if (currentTime != startTime) {
-            startTime = currentTime;
-            requestCount = 0;
+    private boolean isRequestsPerSecond() {
+        Instant current = Instant.now();
+        if (ChronoUnit.SECONDS.between(timestamp, current) > 1) {
+            requestsPerSecond = 0;
+            timestamp = current;
+        } else {
+            requestsPerSecond++;
         }
-        requestCount++;
+        return requestsPerSecond > server.limitRequestsPerSecond;
     }
 
-    private boolean shouldTerminateSession() {
-        return requestCount > MAX_REQUESTS_PER_SECOND || errorCount >= MAX_ERRORS_IN_ROW;
+    private boolean isNonOkResponses(String response) {
+        nonOkResponses = response.contains("OK") ? 0 : nonOkResponses + 1;
+        return nonOkResponses > server.limitNonOkResponsesInRow;
     }
+
+    private boolean isIdleTimeout() {
+        return idleTimeout > server.idleConnectionTimeout;
+    }
+
 }
