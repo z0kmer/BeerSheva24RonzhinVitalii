@@ -4,15 +4,13 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Arrays;
 
-import telran.net.NetworkClient;
-import telran.net.TcpClient;
 import telran.view.InputOutput;
 import telran.view.Item;
 import telran.view.Menu;
 import telran.view.StandardInputOutput;
 
 public class Main {
-    private static final String HOST = "localhost";
+    private static final String HOST = "34.228.155.150";
     private static final int PORT = 4000;
 
     public static void main(String[] args) {
