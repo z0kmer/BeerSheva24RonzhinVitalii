@@ -9,6 +9,13 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "telran.employees.Main",
+            "projectName": "db-creator"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "telran.employees.Main",
             "projectName": "company-server-appl"
         },
         {
