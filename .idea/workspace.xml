@@ -2,7 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3388be8-13d0-411e-b1f3-fb80be02829d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/Company.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/Company.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/CompanyImpl$CompanyIterator.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/CompanyImpl$CompanyIterator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/CompanyImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/CompanyImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/Employee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/Manager.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/Manager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/SalesPerson.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/SalesPerson.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/WageEmployee.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/classes/telran/employees/WageEmployee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-implementation/target/test-classes/telran/employees/CompanyTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/company-implementation/target/test-classes/telran/employees/CompanyTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company-tcp-core/company-server-appl/Dockerfile" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

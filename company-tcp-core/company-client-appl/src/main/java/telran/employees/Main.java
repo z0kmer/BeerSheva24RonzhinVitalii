@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Arrays;
 
+import telran.net.NetworkClient;
+import telran.net.TcpClient;
 import telran.view.InputOutput;
 import telran.view.Item;
 import telran.view.Menu;
