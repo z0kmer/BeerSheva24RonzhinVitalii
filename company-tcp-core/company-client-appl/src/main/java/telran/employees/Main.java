@@ -12,7 +12,7 @@ import telran.view.Menu;
 import telran.view.StandardInputOutput;
 
 public class Main {
-    private static final String HOST = "34.228.155.150";
+    private static final String HOST = "52.87.217.183";
     private static final int PORT = 4000;
 
     public static void main(String[] args) {

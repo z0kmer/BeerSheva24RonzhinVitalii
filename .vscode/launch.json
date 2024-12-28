@@ -8,6 +8,20 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
+            "mainClass": "telran.employees.Main",
+            "projectName": "company-server-appl"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "telran.employees.Main",
+            "projectName": "company-client-appl"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
             "mainClass": "telran.multithreading.Main",
             "projectName": "dead-lock"
         },
