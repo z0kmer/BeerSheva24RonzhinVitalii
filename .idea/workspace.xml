@@ -2,7 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3388be8-13d0-411e-b1f3-fb80be02829d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/src/main/java/telran/queries/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/src/main/java/telran/queries/config/BullsCowsPersistenceUnitInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/src/main/java/telran/queries/entities/Game.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/src/main/java/telran/queries/entities/GameGamer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/src/main/java/telran/queries/entities/Gamer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jpql-query-tool/src/main/java/telran/queries/entities/Move.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gameGamers.csv" beforeDir="false" afterPath="$PROJECT_DIR$/gameGamers.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/games.csv" beforeDir="false" afterPath="$PROJECT_DIR$/games.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moves.csv" beforeDir="false" afterPath="$PROJECT_DIR$/moves.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
