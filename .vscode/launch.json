@@ -1,40 +1,37 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main - Bulls and Cows",
             "request": "launch",
             "mainClass": "telran.bullsandcowls.Main",
             "projectName": "bulls-and-cows"
         },
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main - DB Creator",
             "request": "launch",
             "mainClass": "telran.employees.Main",
             "projectName": "db-creator"
         },
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main - Dead Lock",
             "request": "launch",
             "mainClass": "telran.multithreading.Main",
             "projectName": "dead-lock"
         },
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main - Game Racer Threads",
             "request": "launch",
             "mainClass": "telran.multithreading.Main",
             "projectName": "game-racer-threads"
         },
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main - Company Application",
             "request": "launch",
             "mainClass": "telran.employees.Main",
             "projectName": "company-application"
@@ -47,31 +44,47 @@
         },
         {
             "type": "java",
-            "name": "Main",
+            "name": "Main - CLI View",
             "request": "launch",
             "mainClass": "telran.view.Main",
             "projectName": "cli-view"
         },
         {
             "type": "java",
-            "name": "CodeCommentsSeparation",
+            "name": "Code Comments Separation",
             "request": "launch",
             "mainClass": "telran.persistence.CodeCommentsSeparation",
             "projectName": "persistence-files"
         },
         {
             "type": "java",
-            "name": "Main(1)",
+            "name": "Main - Stream Operations",
             "request": "launch",
             "mainClass": "telran.stream.Main",
             "projectName": "telran.stream-stream-operations"
         },
         {
             "type": "java",
-            "name": "Main(2)",
+            "name": "Main - Print Calendar",
             "request": "launch",
             "mainClass": "telran.time.Main",
             "projectName": "telran.time-print-calendar"
+        },
+        {
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}"
+            ],
+            "name": "Launch Extension",
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
+            ],
+            "preLaunchTask": "npm",
+            "request": "launch",
+            "type": "extensionHost",
+            "env": {
+                "POSTGRES_HOST": "54.210.134.88",
+                "POSTGRES_PASSWORD": "Qazzaq123"
+            }
         }
     ]
 }

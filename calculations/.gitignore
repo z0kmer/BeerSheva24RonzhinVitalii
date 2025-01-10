@@ -1,4 +1,4 @@
-# Default ignored files
-/target/
-/../.vscode/
-/../.ideaa/
+target
+.vscode
+../.vscode/
+../.ideaa/
