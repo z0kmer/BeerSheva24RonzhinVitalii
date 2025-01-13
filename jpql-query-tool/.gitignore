@@ -1,5 +1,7 @@
 target
 .vscode
 docker-compose.yml
+application.properties
 ../.vscode/
 ../.ideaa/
+.env
