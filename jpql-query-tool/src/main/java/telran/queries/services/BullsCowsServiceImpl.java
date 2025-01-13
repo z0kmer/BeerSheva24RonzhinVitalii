@@ -13,7 +13,6 @@ import telran.queries.entities.Move;
 import telran.queries.repositories.BullsCowsRepository;
 
 public class BullsCowsServiceImpl implements BullsCowsService {
-
     private final BullsCowsRepository repository;
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_]+$");
 
@@ -24,7 +23,8 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     @Override
     public Gamer registerGamer(Gamer gamer) {
         if (!USERNAME_PATTERN.matcher(gamer.getUsername()).matches()) {
-            throw new IllegalArgumentException("Имя пользователя может содержать только латинские буквы, цифры и подчеркивание.");
+            throw new IllegalArgumentException(
+                    "Имя пользователя может содержать только латинские буквы, цифры и подчеркивание.");
         }
         if (repository.findGamerByUsername(gamer.getUsername()) != null) {
             throw new IllegalArgumentException("Имя уже существует. Пожалуйста, выберите другое имя.");
@@ -84,8 +84,7 @@ public class BullsCowsServiceImpl implements BullsCowsService {
 
     @Override
     public List<Game> getGamerGames(String gamerUsername) {
-        return repository.findAllGamesByGamer(gamerUsername).stream()
-                .map(GameGamer::getGame)
+        return repository.findAllGamesByGamer(gamerUsername).stream().map(GameGamer::getGame)
                 .collect(Collectors.toList());
     }
 
@@ -95,10 +94,8 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     }
 
     private GameGamer findGameGamer(Game game, Gamer gamer) {
-        return repository.findAllGamesByGamer(gamer.getUsername()).stream()
-                .filter(gg -> gg.getGame().equals(game))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Игрок не найден в этой игре."));
+        return repository.findAllGamesByGamer(gamer.getUsername()).stream().filter(gg -> gg.getGame().equals(game))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Игрок не найден в этой игре."));
     }
 
     private String generateRandomSequence() {
@@ -106,10 +103,17 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     }
 
     private int calculateBulls(String move, String sequence) {
-        return (int) move.chars().filter(ch -> sequence.indexOf(ch) != -1 && move.indexOf(ch) == sequence.indexOf(ch)).count();
+        return (int) move.chars().filter(ch -> sequence.indexOf(ch) != -1 && move.indexOf(ch) == sequence.indexOf(ch))
+                .count();
     }
 
     private int calculateCows(String move, String sequence) {
-        return (int) move.chars().filter(ch -> sequence.indexOf(ch) != -1 && move.indexOf(ch) != sequence.indexOf(ch)).count();
+        return (int) move.chars().filter(ch -> sequence.indexOf(ch) != -1 && move.indexOf(ch) != sequence.indexOf(ch))
+                .count();
+    }
+
+    @Override
+    public List<Move> getMoves(String gameId) {
+        return repository.findAllMovesByGameId(gameId);
     }
 }

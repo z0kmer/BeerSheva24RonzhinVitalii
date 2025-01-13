@@ -11,7 +11,6 @@ import telran.queries.entities.Gamer;
 import telran.queries.entities.Move;
 
 public class BullsCowsRepositoryImpl implements BullsCowsRepository {
-
     private final EntityManager em;
 
     public BullsCowsRepositoryImpl(EntityManagerFactory emf) {
@@ -52,14 +51,17 @@ public class BullsCowsRepositoryImpl implements BullsCowsRepository {
 
     @Override
     public List<GameGamer> findAllGamesByGamer(String gamerUsername) {
-        TypedQuery<GameGamer> query = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.gamer.username = :username", GameGamer.class);
+        TypedQuery<GameGamer> query = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.gamer.username = :username",
+                GameGamer.class);
         query.setParameter("username", gamerUsername);
         return query.getResultList();
     }
 
     @Override
     public List<Game> findAllStartedGamesByGamer(String gamerUsername) {
-        TypedQuery<Game> query = em.createQuery("SELECT gg.game FROM GameGamer gg WHERE gg.gamer.username = :username AND gg.game.isFinished = false", Game.class);
+        TypedQuery<Game> query = em.createQuery(
+                "SELECT gg.game FROM GameGamer gg WHERE gg.gamer.username = :username AND gg.game.isFinished = false",
+                Game.class);
         query.setParameter("username", gamerUsername);
         return query.getResultList();
     }
