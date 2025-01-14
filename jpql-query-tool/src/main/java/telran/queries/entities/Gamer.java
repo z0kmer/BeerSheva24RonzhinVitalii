@@ -11,8 +11,6 @@ public class Gamer {
     private String username;
     private LocalDate birthdate;
 
-    // Геттеры и сеттеры
-
     public String getUsername() {
         return username;
     }

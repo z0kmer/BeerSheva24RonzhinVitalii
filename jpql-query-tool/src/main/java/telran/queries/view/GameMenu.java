@@ -21,13 +21,9 @@ public class GameMenu {
 
     public void run() {
         io.writeLine("Game Menu");
-        io.writeLine("---------------------------------");
-        io.writeLine("Choose an action:");
         Item[] items = getGameItems();
         Menu menu = new Menu("", items);
         menu.perform(io);
-        io.writeLine("---------------------------------");
-        io.writeLine("Select item");
     }
 
     private Item[] getGameItems() {
@@ -51,8 +47,8 @@ public class GameMenu {
         String gameId = String.valueOf(game.getId());
 
         Item[] items = {
-                Item.of("Start Game", x -> startGame(gameId)),
-                Item.of("Join Game", x -> joinGame(gameId)),
+                Item.of("Start Game", x -> startGame(gameId, io)),
+                Item.of("Join Game", x -> joinGame(gameId, io)),
                 Item.of("Return to Game Menu", x -> run())
         };
 
@@ -62,26 +58,14 @@ public class GameMenu {
 
     private void startGameOption(InputOutput io) {
         String gameId = io.readString("Enter game ID to start");
-        startGame(gameId);
+        startGame(gameId, io);
     }
 
-    private void startGame(String gameId) {
-        Game game = service.getAvailableGames().stream()
-                          .filter(g -> g.getId().toString().equals(gameId))
-                          .findFirst()
-                          .orElse(null);
-
-        if (game == null) {
-            io.writeLine("This game ID does not exist. Returning to Game Menu.");
-            run();
-        } else {
-            service.startGame(gameId, username);
-            io.writeLine("Game started successfully.");
-            new GamePlayMenu(service, io, username, gameId).run();
-        }
+    private void startGame(String gameId, InputOutput io) {
+        service.startGame(gameId, username, service, io);
     }
 
-    private void joinGame(String gameId) {
+    private void joinGame(String gameId, InputOutput io) {
         Game game = service.getAvailableGames().stream()
                           .filter(g -> g.getId().toString().equals(gameId))
                           .findFirst()
@@ -128,7 +112,7 @@ public class GameMenu {
 
     private void joinGameOption(InputOutput io) {
         String gameId = io.readString("Enter game ID to join");
-        joinGame(gameId);
+        joinGame(gameId, io);
     }
 
     private void exit(InputOutput io) {

@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "game_gamer") // Указываем название таблицы
+@Table(name = "game_gamer")
 public class GameGamer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,6 @@ public class GameGamer {
 
     @Column(name = "is_winner", nullable = false)
     private Boolean isWinner = false;
-
-    // Геттеры и сеттеры
 
     public Long getId() {
         return id;

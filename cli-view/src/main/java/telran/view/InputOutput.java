@@ -10,7 +10,8 @@ public interface InputOutput {
 	void writeString(String str);
 
 	default void writeLine(Object obj){
-		writeString(obj.toString() + "\n");
+		//writeString(obj.toString() + "\n");
+		writeString(obj.toString());
 	}
 
 	 default <T> T readObject(String prompt, String errorPrompt, Function<String, T> mapper){

@@ -22,7 +22,7 @@ public class Main {
         EntityManagerFactory emf = createEntityManagerFactory();
         em = emf.createEntityManager();
         BullsCowsRepositoryImpl repository = new BullsCowsRepositoryImpl(emf);
-        BullsCowsServiceImpl service = new BullsCowsServiceImpl(emf, repository); // Передача всех необходимых параметров
+        BullsCowsServiceImpl service = new BullsCowsServiceImpl(emf, repository); 
 
         MainMenu menu = new MainMenu(service, io);
         menu.run();

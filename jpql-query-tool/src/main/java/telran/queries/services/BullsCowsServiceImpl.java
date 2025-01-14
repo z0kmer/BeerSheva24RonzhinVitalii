@@ -6,6 +6,7 @@ import java.util.Random;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import telran.queries.entities.Game;
 import telran.queries.entities.GameGamer;
 import telran.queries.entities.Gamer;
@@ -36,17 +37,27 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     }
 
     @Override
-    public void startGame(String gameId, String username) {
+    public void startGame(String gameId, String username, BullsCowsService service, InputOutput io) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Game game = em.find(Game.class, Long.parseLong(gameId));
         if (game == null) {
+            io.writeLine("Game not found. Returning to the game menu.");
+            new GameMenu(service, io, username).run();
+            em.close();
+            return;
+        }
+        if (game.getDateGame() != null) {
+            io.writeLine("The game has already started. Returning to the game menu.");
+            new GameMenu(service, io, username).run();
+            em.getTransaction().commit();
             em.close();
             return;
         }
         game.setDateGame(LocalDate.now());
         em.getTransaction().commit();
         em.close();
+        io.writeLine("Game started successfully!");
     }
 
     @Override
@@ -54,23 +65,20 @@ public class BullsCowsServiceImpl implements BullsCowsService {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-        // Найдем игру и игрока
         Game game = em.find(Game.class, Long.parseLong(gameId));
         Gamer gamer = em.find(Gamer.class, username);
 
         if (game != null && gamer != null) {
-            // Проверим, есть ли уже запись в GameGamer
             List<GameGamer> existingGameGamers = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
                                                .setParameter("gameId", game.getId())
                                                .setParameter("username", username)
                                                .getResultList();
 
             if (existingGameGamers.isEmpty()) {
-                // Создадим новую запись в GameGamer
                 GameGamer gameGamer = new GameGamer();
                 gameGamer.setGame(game);
                 gameGamer.setGamer(gamer);
-                gameGamer.setIsWinner(false); // Устанавливаем значение is_winner
+                gameGamer.setIsWinner(false);
                 em.persist(gameGamer);
             }
         }
@@ -127,17 +135,25 @@ public class BullsCowsServiceImpl implements BullsCowsService {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         
-        // Логика для создания хода
-        GameGamer gameGamer = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
-                                .setParameter("gameId", Long.parseLong(gameId))
-                                .setParameter("username", username)
-                                .getSingleResult();
-        
-        if (gameGamer.getGame().isFinished()) {
-            io.writeLine("В игре уже есть победитель. Возвращаемся в меню игр.");
-            new GameMenu(service, io, username).run(); // Возвращаемся в меню игр
+        GameGamer gameGamer;
+        try {
+            gameGamer = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
+                          .setParameter("gameId", Long.parseLong(gameId))
+                          .setParameter("username", username)
+                          .getSingleResult();
+        } catch (NoResultException e) {
+            io.writeLine("No result found for the specified game and username. Returning to the game menu.");
             em.getTransaction().commit();
             em.close();
+            new GameMenu(service, io, username).run(); // Return to the game menu
+            return;
+        }
+
+        if (gameGamer.getGame().isFinished()) {
+            io.writeLine("The game already has a winner. Returning to the game menu.");
+            em.getTransaction().commit();
+            em.close();
+            new GameMenu(service, io, username).run(); // Return to the game menu
             return;
         }
 
@@ -147,28 +163,28 @@ public class BullsCowsServiceImpl implements BullsCowsService {
         move.setBulls(calculateBulls(moveSequence, gameGamer.getGame().getSequence()));
         move.setCows(calculateCows(moveSequence, gameGamer.getGame().getSequence()));
 
-        em.persist(move);
+        em.persist(move); // Запись хода в базу данных
 
-        // Вывод результата игроку
-        io.writeLine(String.format("%s - быков: %d - коров: %d", moveSequence, move.getBulls(), move.getCows()));
+        io.writeLine(String.format("%s - bulls: %d - cows: %d", moveSequence, move.getBulls(), move.getCows()));
 
-        // Проверка на победу
         if (move.getBulls() == 4) {
             Game game = gameGamer.getGame();
             game.setFinished(true);
             gameGamer.setIsWinner(true);
             em.merge(game);
             em.merge(gameGamer);
-            io.writeLine("Поздравляем с победой!");
+            io.writeLine("Congratulations on winning!");
+            em.getTransaction().commit(); // Применение изменений до выхода из метода
             try {
-                Thread.sleep(3000); // Подождать 3 секунды
+                Thread.sleep(3000); // Wait for 3 seconds
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            new GameMenu(service, io, username).run(); // Возвращаемся в меню игр
+            new GameMenu(service, io, username).run(); // Return to the game menu
+        } else {
+            em.getTransaction().commit(); // Применение изменений до выхода из метода
         }
 
-        em.getTransaction().commit();
         em.close();
     }
 

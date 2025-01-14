@@ -21,8 +21,6 @@ public class Move {
     @JoinColumn(name = "game_gamer_id")
     private GameGamer gameGamer;
 
-    // Геттеры и сеттеры
-
     public Long getId() {
         return id;
     }

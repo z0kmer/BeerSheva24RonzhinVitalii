@@ -24,8 +24,6 @@ public class Game {
     private String creator;
     private String name;
 
-    // Конструкторы, геттеры и сеттеры
-
     public Game() {
     }
 

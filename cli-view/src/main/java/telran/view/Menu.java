@@ -6,19 +6,22 @@ import java.util.stream.IntStream;
 public class Menu implements Item {
     private String name;
     private Item[] items;
-    private String symbol = "_";
-    private int nSymbols = 15;
+    private String symbol = ""; // Убираем линии в меню
+    private int nSymbols = 0; // Убираем линии в меню
     
-    public Menu(String name, Item...items){
+    public Menu(String name, Item...items) {
         this.items = Arrays.copyOf(items, items.length);
         this.name = name;
     }
+
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
+
     public void setNsymbols(int nSymbols) {
         this.nSymbols = nSymbols;
     }
+
     @Override
     public String displayName() {
         return name;
@@ -28,7 +31,7 @@ public class Menu implements Item {
     public void perform(InputOutput io) {
         displayTitle(io);
         Item item = null;
-        boolean running=true;
+        boolean running = true;
         do {
             displayItems(io);
             int itemIndex = io.readNumberRange("Select item", "Wrong item number", 1, items.length).intValue();
@@ -39,21 +42,19 @@ public class Menu implements Item {
             } catch (RuntimeException e) {
                 io.writeLine(e.getMessage());
             }
-        }while(running);
+        } while (running);
     }
 
     private void displayItems(InputOutput io) {
-       IntStream.range(0, items.length).forEach(i -> io.writeLine(String.format("%d. %s",i + 1, items[i].displayName())));
+       IntStream.range(0, items.length).forEach(i -> io.writeLine(String.format("%d. %s", i + 1, items[i].displayName())));
     }
+
     private void displayTitle(InputOutput io) {
-        io.writeLine("\n");
-        io.writeString(symbol.repeat(nSymbols));
-        io.writeString(name);
-        io.writeLine(symbol.repeat(nSymbols));
+        io.writeLine(symbol.repeat(nSymbols) + name + symbol.repeat(nSymbols)); // Убираем лишние символы
     }
+
     @Override
     public boolean isExit() {
         return false;
     }
-
 }

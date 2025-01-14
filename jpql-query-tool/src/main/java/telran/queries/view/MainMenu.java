@@ -18,14 +18,12 @@ public class MainMenu {
     }
 
     public void run() {
-        io.writeLine("Bulls & Cows (v.0.1)");
         io.writeLine("---------------------------------");
-        io.writeLine("Choose an action:");
+        io.writeLine("Bulls & Cows (v.0.1)");
         Item[] items = getMainItems();
         Menu menu = new Menu("", items);
-        menu.perform(io);
         io.writeLine("---------------------------------");
-        io.writeLine("Select item");
+        menu.perform(io);
     }
 
     private Item[] getMainItems() {
