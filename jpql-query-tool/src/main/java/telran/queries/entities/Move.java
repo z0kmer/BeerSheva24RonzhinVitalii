@@ -2,26 +2,41 @@ package telran.queries.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "move")
 public class Move {
     @Id
-    @GeneratedValue
-    long id;
-    int bulls;
-    int cows;
-    String sequence;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String sequence;
+    private int bulls;
+    private int cows;
+
     @ManyToOne
     @JoinColumn(name = "game_gamer_id")
-    GameGamer gameGamer;
+    private GameGamer gameGamer;
 
-    public long getId() {
+    // Геттеры и сеттеры
+
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
     }
 
     public int getBulls() {
@@ -40,24 +55,11 @@ public class Move {
         this.cows = cows;
     }
 
-    public String getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(String sequence) {
-        this.sequence = sequence;
-    }
-
     public GameGamer getGameGamer() {
         return gameGamer;
     }
 
     public void setGameGamer(GameGamer gameGamer) {
         this.gameGamer = gameGamer;
-    }
-
-    @Override
-    public String toString() {
-        return "Move [id=" + id + ", bulls=" + bulls + ", cows=" + cows + ", sequence=" + sequence + ", gameGamer=" + gameGamer.getId() + "]";
     }
 }

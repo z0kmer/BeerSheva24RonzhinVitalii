@@ -22,9 +22,13 @@ public class GamePlayMenu {
     }
 
     public void run() {
+        io.writeLine("Game Play Menu");
+        io.writeLine("---------------------------------");
         Item[] items = getGamePlayItems();
-        Menu menu = new Menu("Game Play Menu", items);
+        Menu menu = new Menu("", items);
         menu.perform(io);
+        io.writeLine("---------------------------------");
+        io.writeLine("Select item");
     }
 
     private Item[] getGamePlayItems() {
@@ -38,8 +42,7 @@ public class GamePlayMenu {
     private void makeMove(InputOutput io) {
         String moveSequence = io.readString("Enter your move sequence (four-digit number)");
         if (moveSequence.length() == 4) {
-            service.makeMove(gameId, username, moveSequence);
-            io.writeLine("Move made successfully.");
+            service.makeMove(gameId, username, moveSequence, service, io);
         } else {
             io.writeLine("Invalid move. Please enter a four-digit number.");
         }
@@ -49,7 +52,7 @@ public class GamePlayMenu {
     private void showAllMoves(InputOutput io) {
         List<Move> moves = service.getMoves(gameId);
         for (Move move : moves) {
-            io.writeLine(move.toString());
+            io.writeLine(String.format("%s - быков: %d - коров: %d", move.getSequence(), move.getBulls(), move.getCows()));
         }
         run();
     }

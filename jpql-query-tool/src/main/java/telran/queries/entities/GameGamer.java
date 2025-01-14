@@ -3,28 +3,38 @@ package telran.queries.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "game_gamer")
+@Table(name = "game_gamer") // Указываем название таблицы
 public class GameGamer {
     @Id
-    @GeneratedValue
-    long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "game_id")
-    Game game;
+    private Game game;
+
     @ManyToOne
     @JoinColumn(name = "gamer_id")
-    Gamer gamer;
-    @Column(name = "is_winner")
-    boolean isWinner;
+    private Gamer gamer;
 
-    public long getId() {
+    @Column(name = "is_winner", nullable = false)
+    private Boolean isWinner = false;
+
+    // Геттеры и сеттеры
+
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Game getGame() {
@@ -43,16 +53,11 @@ public class GameGamer {
         this.gamer = gamer;
     }
 
-    public boolean isWinner() {
+    public Boolean getIsWinner() {
         return isWinner;
     }
 
-    public void setWinner(boolean isWinner) {
+    public void setIsWinner(Boolean isWinner) {
         this.isWinner = isWinner;
-    }
-
-    @Override
-    public String toString() {
-        return "GameGamer [id=" + id + ", game=" + game.getId() + ", gamer=" + gamer.getUsername() + ", isWinner=" + isWinner + "]";
     }
 }

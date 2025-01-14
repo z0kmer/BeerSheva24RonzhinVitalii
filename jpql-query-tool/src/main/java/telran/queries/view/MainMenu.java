@@ -11,9 +11,6 @@ import telran.view.Menu;
 public class MainMenu {
     private final BullsCowsService service;
     private final InputOutput io;
-    //private static final String BLUE_COLOR = "\033[1;34m";
-    //private static final String WHITE_COLOR = "\033[0;37m";
-    //private static final String RESET_COLOR = "\033[0m";
 
     public MainMenu(BullsCowsService service, InputOutput io) {
         this.service = service;
@@ -21,21 +18,21 @@ public class MainMenu {
     }
 
     public void run() {
-        //io.writeLine(BLUE_COLOR + "Bulls & Cows" + RESET_COLOR);
-        //io.writeLine("---------------------------------");
-        //io.writeLine(WHITE_COLOR + "Choose an action:" + RESET_COLOR);
+        io.writeLine("Bulls & Cows (v.0.1)");
+        io.writeLine("---------------------------------");
+        io.writeLine("Choose an action:");
         Item[] items = getMainItems();
         Menu menu = new Menu("", items);
         menu.perform(io);
-        //io.writeLine(BLUE_COLOR + "---------------------------------" + RESET_COLOR);
-        //io.writeLine("v.0.1");
+        io.writeLine("---------------------------------");
+        io.writeLine("Select item");
     }
 
     private Item[] getMainItems() {
         return new Item[] {
                 Item.of("Sign In", this::signIn),
                 Item.of("Sign Up", this::signUp),
-                Item.ofExit()
+                Item.of("Exit", this::exit)
         };
     }
 
@@ -74,5 +71,10 @@ public class MainMenu {
             io.writeLine(e.getMessage());
         }
         run();
+    }
+
+    private void exit(InputOutput io) {
+        io.writeLine("Exiting the application. Goodbye!");
+        System.exit(0);
     }
 }

@@ -5,25 +5,17 @@ import java.util.List;
 import telran.queries.entities.Game;
 import telran.queries.entities.Gamer;
 import telran.queries.entities.Move;
+import telran.view.InputOutput;
 
 public interface BullsCowsService {
-    Gamer registerGamer(Gamer gamer);
-
-    Gamer loginGamer(String username);
-
-    Game createGame(String gameName, String creatorUsername);
-
-    void joinGame(String gameId, String gamerUsername);
-
-    void startGame(String gameId, String starterUsername);
-
-    Move makeMove(String gameId, String gamerUsername, String move);
-
+    Game createGame(String sequence, String creator, String name);
+    void startGame(String gameId, String username);
+    void joinGame(String gameId, String username);
     List<Game> getAvailableGames();
-
-    List<Game> getGamerGames(String gamerUsername);
-
-    List<Game> getStartedGames(String gamerUsername);
-
+    List<Game> getGamesWithWinners();
+    Gamer loginGamer(String username);
+    void registerGamer(Gamer gamer);
     List<Move> getMoves(String gameId);
+    void makeMove(String gameId, String username, String moveSequence, BullsCowsService service, InputOutput io); 
+    String getWinner(Long gameId);
 }
