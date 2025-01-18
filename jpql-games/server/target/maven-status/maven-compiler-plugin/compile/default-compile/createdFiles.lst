@@ -1,0 +1,16 @@
+telran\queries\config\BullsCowsPersistenceUnitInfo.class
+telran\queries\entities\Game.class
+telran\queries\entities\Move.class
+telran\view\InputOutput.class
+telran\queries\GameServer.class
+telran\view\Item$1.class
+telran\queries\entities\GameGamer.class
+telran\view\Menu.class
+telran\queries\ClientHandler.class
+telran\queries\services\BullsCowsService.class
+telran\queries\entities\Gamer.class
+telran\view\Item.class
+telran\queries\services\BullsCowsServiceImpl.class
+telran\queries\repositories\BullsCowsRepository.class
+telran\queries\repositories\BullsCowsRepositoryImpl.class
+telran\view\StandardInputOutput.class

@@ -10,7 +10,8 @@ public class StandardInputOutput implements InputOutput {
     PrintStream writer = System.out;
 
     public String readString(String prompt) {
-        writer.println(prompt);
+        //writer.println(prompt);
+        writer.print(prompt); //без перехода на новую строку
         try {
             return reader.readLine();
         } catch (IOException e) {
