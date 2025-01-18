@@ -16,6 +16,7 @@ import telran.view.StandardInputOutput;
 
 public class Main {
     static EntityManager em;
+    static EntityManager em;
     static InputOutput io = new StandardInputOutput();
 
     public static void main(String[] args) {
@@ -28,6 +29,7 @@ public class Main {
         menu.run();
     }
 
+    private static EntityManagerFactory createEntityManagerFactory() {
     private static EntityManagerFactory createEntityManagerFactory() {
         HashMap<String, Object> hibernateProperties = new HashMap<>();
         hibernateProperties.put("hibernate.hbm2ddl.auto", "update");

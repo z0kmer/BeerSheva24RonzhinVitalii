@@ -1,5 +1,6 @@
 package telran.queries.entities;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
 @Entity
 @Table(name = "game_gamer")
 public class GameGamer {
@@ -16,7 +18,13 @@ public class GameGamer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
+
     @JoinColumn(name = "game_id")
     private Game game;
 

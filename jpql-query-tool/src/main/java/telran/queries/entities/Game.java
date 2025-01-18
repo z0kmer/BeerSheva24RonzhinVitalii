@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+
 @Entity
 public class Game {
     @Id
@@ -93,5 +94,15 @@ public class Game {
                 ", creator='" + creator + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+        return "Game{" +
+                "id=" + id +
+                ", dateGame=" + dateGame +
+                ", isFinished=" + isFinished +
+                ", sequence='" + sequence + '\'' +
+                ", creator='" + creator + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
+}
+
 }

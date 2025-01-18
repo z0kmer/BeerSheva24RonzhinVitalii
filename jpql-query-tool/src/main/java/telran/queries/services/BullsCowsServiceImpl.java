@@ -12,7 +12,6 @@ import telran.queries.entities.GameGamer;
 import telran.queries.entities.Gamer;
 import telran.queries.entities.Move;
 import telran.queries.repositories.BullsCowsRepository;
-import telran.queries.view.GameMenu;
 import telran.view.InputOutput;
 
 public class BullsCowsServiceImpl implements BullsCowsService {
