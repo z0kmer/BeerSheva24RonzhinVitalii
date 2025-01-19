@@ -28,22 +28,23 @@ for(let i = 0; i < str.length; i++) {
 // должен вернуть число 1.
 // Если нет цифр, возвращать фразу "Not a nummber".
 
-*/
-
 function myIntParce(a) {
     let result = '';
     let i = 0;
-    //digits = /^[0-9]$/;
 
-    while(/^[0-9]$/.test(a[i]) && i < a.length) {
+    while((/^[0-9]$/.test(a[i]) && i < a.length) || (a[i] && i == 0)) {
         result += a[i];
         i++
     }
-    if (result == '') {
-        result = "We have not a digit"
+    if (result == '' || result === '-') {
+        result = "We don't have a digit"
     }
     console.log(result);
 }
 
 let dataForQuest = "123abc";
 myIntParce(dataForQuest);
+
+*/
+
+
