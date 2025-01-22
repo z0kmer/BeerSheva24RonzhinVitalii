@@ -19,15 +19,12 @@ public class BullsCowsServiceClientProxy implements BullsCowsService {
 
     private <T> T sendRequest(String command, Object... params) {
         try {
-            System.out.println("Sending request: " + command);
             oos.writeObject(command);
             for (Object param : params) {
                 oos.writeObject(param);
             }
             oos.flush();
-            Object response = ois.readObject();
-            System.out.println("Received response: " + response);
-            return (T) response;
+            return (T) ois.readObject();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -50,41 +47,17 @@ public class BullsCowsServiceClientProxy implements BullsCowsService {
 
     @Override
     public List<Game> getAvailableGames() {
-        Object response = sendRequest("GET_AVAILABLE_GAMES");
-        if (response instanceof List<?>) {
-            return (List<Game>) response;
-        } else {
-            throw new RuntimeException("Unexpected response type: " + response.getClass());
-        }
+        return sendRequest("GET_AVAILABLE_GAMES");
     }
 
     @Override
     public List<Game> getNonStartedGames() {
-        Object response = sendRequest("GET_NON_STARTED_GAMES");
-        if (response instanceof List<?>) {
-            return (List<Game>) response;
-        } else {
-            throw new RuntimeException("Unexpected response type: " + response.getClass());
-        }
+        return sendRequest("GET_NON_STARTED_GAMES");
     }
 
     @Override
     public Gamer loginGamer(String username) {
-        try {
-            System.out.println("Logging in gamer: " + username);
-            oos.writeObject("LOGIN_GAMER");
-            oos.writeObject(username);
-            oos.flush();
-            Object response = ois.readObject();
-            System.out.println("Received response for login: " + response);
-            if (response instanceof Gamer) {
-                return (Gamer) response;
-            } else {
-                throw new RuntimeException("Unexpected response type: " + response.getClass());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return sendRequest("LOGIN_GAMER", username);
     }
 
     @Override
@@ -94,12 +67,7 @@ public class BullsCowsServiceClientProxy implements BullsCowsService {
 
     @Override
     public List<Move> getMoves(String gameId) {
-        Object response = sendRequest("GET_MOVES", gameId);
-        if (response instanceof List<?>) {
-            return (List<Move>) response;
-        } else {
-            throw new RuntimeException("Unexpected response type: " + response.getClass());
-        }
+        return sendRequest("GET_MOVES", gameId);
     }
 
     @Override

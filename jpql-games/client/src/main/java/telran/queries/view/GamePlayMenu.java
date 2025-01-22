@@ -68,5 +68,9 @@ public class GamePlayMenu {
             return;
         }
         service.makeMove(gameId, username, input);
+        Move lastMove = service.getMoves(gameId).stream().reduce((first, second) -> second).orElse(null);
+        if (lastMove != null) {
+            System.out.printf("%s - bulls: %d - cows: %d%n", lastMove.getSequence(), lastMove.getBulls(), lastMove.getCows());
+        }
     }
 }
