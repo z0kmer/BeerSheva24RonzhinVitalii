@@ -1,122 +1,100 @@
 package telran.queries.view;
 
 import java.util.List;
+import java.util.Scanner;
 
 import telran.queries.entities.Game;
 import telran.queries.services.BullsCowsService;
-import telran.view.InputOutput;
-import telran.view.Item;
-import telran.view.Menu;
 
 public class GameMenu {
     private final BullsCowsService service;
-    private final InputOutput io;
+    private final Scanner scanner;
     private final String username;
 
-    public GameMenu(BullsCowsService service, InputOutput io, String username) {
+    public GameMenu(BullsCowsService service, Scanner scanner, String username) {
         this.service = service;
-        this.io = io;
+        this.scanner = scanner;
         this.username = username;
     }
 
     public void run() {
-        io.writeLine("Game Menu");
-        Item[] items = getGameItems();
-        Menu menu = new Menu("", items);
-        menu.perform(io);
-    }
-
-    private Item[] getGameItems() {
-        return new Item[] {
-                Item.of("Create Game", this::createGame),
-                Item.of("Start Game", this::startGameOption),
-                Item.of("List Available Games", this::listAvailableGames),
-                Item.of("List Games with Winners", this::listGamesWithWinners),
-                Item.of("Join Game", this::joinGameOption),
-                Item.of("Exit", this::exit)
-        };
-    }
-
-    private void createGame(InputOutput io) {
-        String sequence = "default_sequence";
-        String name = "Game" + (System.currentTimeMillis() % 1000);
-        Game game = service.createGame(sequence, username, name);
-        io.writeLine("Game created successfully. Game ID: " + game.getId());
-        io.writeLine("Sequence: " + game.getSequence());
-
-        String gameId = String.valueOf(game.getId());
-
-        Item[] items = {
-                Item.of("Start Game", x -> startGame(gameId, io)),
-                Item.of("Join Game", x -> joinGame(gameId, io)),
-                Item.of("Return to Game Menu", x -> run())
-        };
-
-        Menu menu = new Menu("Game Options", items);
-        menu.perform(io);
-    }
-
-    private void startGameOption(InputOutput io) {
-        String gameId = io.readString("Enter game ID to start");
-        startGame(gameId, io);
-    }
-
-    private void startGame(String gameId, InputOutput io) {
-        service.startGame(gameId, username, service, io);
-    }
-
-    private void joinGame(String gameId, InputOutput io) {
-        Game game = service.getAvailableGames().stream()
-                          .filter(g -> g.getId().toString().equals(gameId))
-                          .findFirst()
-                          .orElse(null);
-
-        if (game == null) {
-            io.writeLine("This game ID does not exist. Returning to Game Menu.");
-            run();
-        } else if (game.getDateGame() == null) {
-            io.writeLine("This game has not started yet. Returning to Game Menu.");
-            run();
-        } else {
-            service.joinGame(gameId, username);
-            io.writeLine("Joined game successfully.");
-            new GamePlayMenu(service, io, username, gameId).run();
-        }
-    }
-
-    private void listAvailableGames(InputOutput io) {
-        List<Game> games = service.getAvailableGames();
-        if (games.isEmpty()) {
-            io.writeLine("No available games found.");
-        } else {
-            for (Game game : games) {
-                io.writeLine(game.toString());
+        while (true) {
+            System.out.println("---------------------------------");
+            System.out.println("Game Menu");
+            System.out.println("---------------------------------");
+            System.out.println("1. Show Available Games");
+            System.out.println("2. Create Game");
+            System.out.println("3. Start Game");
+            System.out.println("4. Join Game");
+            System.out.println("5. Exit to Main Menu");
+            System.out.print("Select item: ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> showAvailableGames();
+                case 2 -> createGame();
+                case 3 -> startGame();
+                case 4 -> joinGame();
+                case 5 -> {
+                    return;
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
-        run();
     }
 
-    private void listGamesWithWinners(InputOutput io) {
-        List<Game> games = service.getGamesWithWinners();
-        if (games.isEmpty()) {
-            io.writeLine("No games with winners found.");
-        } else {
-            for (Game game : games) {
-                String winner = service.getWinner(game.getId());
-                io.writeLine(String.format("%d - %s - %s - creator: %s - winner: %s",
-                        game.getId(), game.getName(), game.getDateGame(), game.getCreator(), winner));
-            }
+    private void showAvailableGames() {
+        List<Game> availableGames = service.getAvailableGames();
+        if (availableGames == null || availableGames.isEmpty()) {
+            System.out.println("No available games found.");
+            return;
         }
-        run();
+        availableGames.forEach(game -> System.out.printf("%d - %s (by: %s)\n", game.getId(), game.getName(), game.getCreator()));
     }
 
-    private void joinGameOption(InputOutput io) {
-        String gameId = io.readString("Enter game ID to join");
-        joinGame(gameId, io);
+    private void createGame() {
+        System.out.print("Enter game name: ");
+        String gameName = scanner.nextLine();
+        service.createGame(service.generateRandomSequence(), username, gameName);
+        System.out.println("Game " + gameName + " created. To start the game, you need to start it.");
     }
 
-    private void exit(InputOutput io) {
-        io.writeLine("Exiting the application. Goodbye!");
-        System.exit(0);
+    private void startGame() {
+        List<Game> nonStartedGames = service.getNonStartedGames();
+        if (nonStartedGames == null || nonStartedGames.isEmpty()) {
+            System.out.println("No non-started games found.");
+            return;
+        }
+        nonStartedGames.forEach(game -> System.out.printf("%d - %s (by: %s) - Not started\n", game.getId(), game.getName(), game.getCreator()));
+        
+        System.out.print("Enter game ID to start: ");
+        String gameId = scanner.nextLine();
+        if (nonStartedGames.stream().noneMatch(game -> game.getId().equals(Long.parseLong(gameId)))) {
+            System.out.println("No such game in the list.");
+            return;
+        }
+
+        service.startGame(gameId, username);
+        System.out.println("Game with ID " + gameId + " started successfully.");
+    }
+
+    private void joinGame() {
+        List<Game> availableGames = service.getAvailableGames();
+        if (availableGames == null || availableGames.isEmpty()) {
+            System.out.println("No available games found.");
+            return;
+        }
+        availableGames.forEach(game -> System.out.printf("%d - %s (by: %s) - started: %s\n", game.getId(), game.getName(), game.getCreator(), game.getDateGame()));
+
+        System.out.print("Enter game ID to join: ");
+        String gameId = scanner.nextLine();
+        if (availableGames.stream().noneMatch(game -> game.getId().equals(Long.parseLong(gameId)))) {
+            System.out.println("No such game in the list.");
+            return;
+        }
+
+        service.joinGame(gameId, username);
+        System.out.println("Joined game with ID " + gameId + " successfully.");
+        GamePlayMenu gamePlayMenu = new GamePlayMenu(service, scanner, username, gameId);
+        gamePlayMenu.run();
     }
 }

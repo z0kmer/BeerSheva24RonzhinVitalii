@@ -1,5 +1,7 @@
 package telran.queries.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "game_gamer", uniqueConstraints={@UniqueConstraint(columnNames={"game_id", "gamer_id"})})
-public class GameGamer {
+@Table(name = "game_gamer", uniqueConstraints = { @UniqueConstraint(columnNames = { "game_id", "gamer_id" }) })
+public class GameGamer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

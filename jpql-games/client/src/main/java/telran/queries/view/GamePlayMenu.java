@@ -1,63 +1,72 @@
 package telran.queries.view;
 
 import java.util.List;
+import java.util.Scanner;
 
 import telran.queries.entities.Move;
 import telran.queries.services.BullsCowsService;
-import telran.view.InputOutput;
-import telran.view.Item;
-import telran.view.Menu;
 
 public class GamePlayMenu {
     private final BullsCowsService service;
-    private final InputOutput io;
+    private final Scanner scanner;
     private final String username;
     private final String gameId;
 
-    public GamePlayMenu(BullsCowsService service, InputOutput io, String username, String gameId) {
+    public GamePlayMenu(BullsCowsService service, Scanner scanner, String username, String gameId) {
         this.service = service;
-        this.io = io;
+        this.scanner = scanner;
         this.username = username;
         this.gameId = gameId;
     }
 
     public void run() {
-        io.writeLine("---------------------------------");
-        io.writeLine("Game Play Menu");
-        Item[] items = getGamePlayItems();
-        Menu menu = new Menu("", items);
-        io.writeLine("---------------------------------");
-        menu.perform(io);
-    }
-
-    private Item[] getGamePlayItems() {
-        return new Item[] {
-                Item.of("Make Move", this::makeMove),
-                Item.of("Show All Moves", this::showAllMoves),
-                Item.of("Return to Game Menu", this::returnToGameMenu)
-        };
-    }
-
-    private void makeMove(InputOutput io) {
-        String moveSequence = io.readString("Enter your move sequence (four-digit number)");
-        if (moveSequence.length() == 4) {
-            service.makeMove(gameId, username, moveSequence, service, io);
-        } else {
-            io.writeLine("Invalid move. Please enter a four-digit number.");
+        while (true) {
+            System.out.println("---------------------------------");
+            System.out.println("Game Play Menu");
+            System.out.println("---------------------------------");
+            System.out.println("1. View All Moves");
+            System.out.println("2. Make a Move");
+            System.out.println("3. Return to Game Menu");
+            System.out.println("4. Exit to Main Menu");
+            System.out.print("Select item: ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> viewAllMoves();
+                case 2 -> makeMove();
+                case 3 -> {
+                    GameMenu gameMenu = new GameMenu(service, scanner, username);
+                    gameMenu.run();
+                    return;
+                }
+                case 4 -> {
+                    return;
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
         }
-        run();
     }
 
-    private void showAllMoves(InputOutput io) {
+    private void viewAllMoves() {
         List<Move> moves = service.getMoves(gameId);
-        for (Move move : moves) {
-            io.writeLine(String.format("%s - bulls: %d - cows: %d", move.getSequence(), move.getBulls(), move.getCows()));
+        if (moves == null || moves.isEmpty()) {
+            System.out.println("No moves found.");
+            return;
         }
-        run();
+        for (Move move : moves) {
+            System.out.printf("%s - bulls: %d - cows: %d%n", move.getSequence(), move.getBulls(), move.getCows());
+        }
     }
 
-    private void returnToGameMenu(InputOutput io) {
-        GameMenu gameMenu = new GameMenu(service, io, username);
-        gameMenu.run();
+    private void makeMove() {
+        System.out.print("Enter a four-digit number (or q to return to Game Menu): ");
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("q")) {
+            return;
+        }
+        if (input.length() != 4 || !input.matches("\\d{4}")) {
+            System.out.println("Invalid input. Please enter a four-digit number.");
+            return;
+        }
+        service.makeMove(gameId, username, input);
     }
 }

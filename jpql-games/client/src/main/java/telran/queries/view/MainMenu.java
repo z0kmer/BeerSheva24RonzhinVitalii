@@ -1,78 +1,75 @@
 package telran.queries.view;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import telran.queries.entities.Gamer;
 import telran.queries.services.BullsCowsService;
-import telran.view.InputOutput;
-import telran.view.Item;
-import telran.view.Menu;
 
 public class MainMenu {
     private final BullsCowsService service;
-    private final InputOutput io;
+    private final Scanner scanner;
 
-    public MainMenu(BullsCowsService service, InputOutput io) {
+    public MainMenu(BullsCowsService service, Scanner scanner) {
         this.service = service;
-        this.io = io;
+        this.scanner = scanner;
     }
 
     public void run() {
-        io.writeLine("---------------------------------");
-        io.writeLine("Bulls & Cows (v.0.1)");
-        Item[] items = getMainItems();
-        Menu menu = new Menu("", items);
-        io.writeLine("---------------------------------");
-        menu.perform(io);
+        System.out.println("---------------------------------");
+        System.out.println("Bulls & Cows (v.0.1)");
+        while (true) {
+            System.out.println("1. Sign In");
+            System.out.println("2. Sign Up");
+            System.out.println("3. Exit");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> signIn();
+                case 2 -> signUp();
+                case 3 -> {
+                    System.out.println("Exiting the application. Goodbye!");
+                    System.exit(0);
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
+        }
     }
 
-    private Item[] getMainItems() {
-        return new Item[] {
-                Item.of("Sign In", this::signIn),
-                Item.of("Sign Up", this::signUp),
-                Item.of("Exit", this::exit)
-        };
-    }
-
-    private void signIn(InputOutput io) {
-        String username = io.readString("Enter username:");
+    private void signIn() {
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
         try {
             if (service.loginGamer(username) != null) {
-                io.writeLine("Welcome back, " + username + "!");
-                GameMenu gameMenu = new GameMenu(service, io, username);
+                System.out.println("Welcome back, " + username + "!");
+                GameMenu gameMenu = new GameMenu(service, scanner, username);
                 gameMenu.run();
             } else {
-                io.writeLine("This player is not registered.");
+                System.out.println("This player is not registered.");
             }
         } catch (IllegalArgumentException e) {
-            io.writeLine(e.getMessage());
+            System.out.println(e.getMessage());
         }
-        run();
     }
 
-    private void signUp(InputOutput io) {
-        String username = io.readString("Enter username:");
+    private void signUp() {
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
         try {
             if (service.loginGamer(username) == null) {
-                String birthdate = io.readString("Enter birthdate (YYYY-MM-DD)");
+                System.out.print("Enter birthdate (YYYY-MM-DD): ");
+                String birthdate = scanner.nextLine();
                 Gamer gamer = new Gamer();
                 gamer.setUsername(username);
                 gamer.setBirthdate(LocalDate.parse(birthdate));
                 service.registerGamer(gamer);
-                io.writeLine("Registration successful. Welcome, " + username + "!");
-                GameMenu gameMenu = new GameMenu(service, io, username);
+                System.out.println("Registration successful. Welcome, " + username + "!");
+                GameMenu gameMenu = new GameMenu(service, scanner, username);
                 gameMenu.run();
             } else {
-                io.writeLine("This player is already registered.");
+                System.out.println("This player is already registered.");
             }
         } catch (IllegalArgumentException e) {
-            io.writeLine(e.getMessage());
+            System.out.println(e.getMessage());
         }
-        run();
-    }
-
-    private void exit(InputOutput io) {
-        io.writeLine("Exiting the application. Goodbye!");
-        System.exit(0);
     }
 }

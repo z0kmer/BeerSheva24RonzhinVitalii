@@ -7,7 +7,6 @@ import java.util.List;
 import telran.queries.entities.Game;
 import telran.queries.entities.Gamer;
 import telran.queries.entities.Move;
-import telran.view.InputOutput;
 
 public class BullsCowsServiceClientProxy implements BullsCowsService {
     private final ObjectOutputStream oos;
@@ -20,11 +19,15 @@ public class BullsCowsServiceClientProxy implements BullsCowsService {
 
     private <T> T sendRequest(String command, Object... params) {
         try {
+            System.out.println("Sending request: " + command);
             oos.writeObject(command);
             for (Object param : params) {
                 oos.writeObject(param);
             }
-            return (T) ois.readObject();
+            oos.flush();
+            Object response = ois.readObject();
+            System.out.println("Received response: " + response);
+            return (T) response;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +39,7 @@ public class BullsCowsServiceClientProxy implements BullsCowsService {
     }
 
     @Override
-    public void startGame(String gameId, String username, BullsCowsService service, InputOutput io) {
+    public void startGame(String gameId, String username) {
         sendRequest("START_GAME", gameId, username);
     }
 
@@ -47,36 +50,70 @@ public class BullsCowsServiceClientProxy implements BullsCowsService {
 
     @Override
     public List<Game> getAvailableGames() {
-        return sendRequest("LIST_AVAILABLE_GAMES");
+        Object response = sendRequest("GET_AVAILABLE_GAMES");
+        if (response instanceof List<?>) {
+            return (List<Game>) response;
+        } else {
+            throw new RuntimeException("Unexpected response type: " + response.getClass());
+        }
     }
 
     @Override
-    public List<Game> getGamesWithWinners() {
-        return sendRequest("LIST_GAMES_WITH_WINNERS");
+    public List<Game> getNonStartedGames() {
+        Object response = sendRequest("GET_NON_STARTED_GAMES");
+        if (response instanceof List<?>) {
+            return (List<Game>) response;
+        } else {
+            throw new RuntimeException("Unexpected response type: " + response.getClass());
+        }
     }
 
     @Override
     public Gamer loginGamer(String username) {
-        return sendRequest("LOGIN_GAMER", username);
+        try {
+            System.out.println("Logging in gamer: " + username);
+            oos.writeObject("LOGIN_GAMER");
+            oos.writeObject(username);
+            oos.flush();
+            Object response = ois.readObject();
+            System.out.println("Received response for login: " + response);
+            if (response instanceof Gamer) {
+                return (Gamer) response;
+            } else {
+                throw new RuntimeException("Unexpected response type: " + response.getClass());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void registerGamer(Gamer gamer) {
-        sendRequest("REGISTER_GAMER_COMPLETE", gamer.getUsername(), gamer.getBirthdate().toString());
+        sendRequest("REGISTER_GAMER", gamer.getUsername(), gamer.getBirthdate().toString());
     }
 
     @Override
     public List<Move> getMoves(String gameId) {
-        return sendRequest("GET_MOVES", gameId);
+        Object response = sendRequest("GET_MOVES", gameId);
+        if (response instanceof List<?>) {
+            return (List<Move>) response;
+        } else {
+            throw new RuntimeException("Unexpected response type: " + response.getClass());
+        }
     }
 
     @Override
-    public void makeMove(String gameId, String username, String moveSequence, BullsCowsService service, InputOutput io) {
+    public void makeMove(String gameId, String username, String moveSequence) {
         sendRequest("MAKE_MOVE", gameId, username, moveSequence);
     }
 
     @Override
     public String getWinner(Long gameId) {
         return sendRequest("GET_WINNER", gameId);
+    }
+
+    @Override
+    public String generateRandomSequence() {
+        return sendRequest("GENERATE_RANDOM_SEQUENCE");
     }
 }

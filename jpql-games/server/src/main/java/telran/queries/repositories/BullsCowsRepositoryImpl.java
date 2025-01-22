@@ -57,7 +57,7 @@ public class BullsCowsRepositoryImpl implements BullsCowsRepository {
     @Override
     public List<Game> findAllUnstartedGames() {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Game> query = em.createQuery("SELECT g FROM Game g WHERE g.isFinished = false", Game.class);
+        TypedQuery<Game> query = em.createQuery("SELECT g FROM Game g WHERE g.dateGame = false", Game.class);
         List<Game> resultList = query.getResultList();
         em.close();
         return resultList;

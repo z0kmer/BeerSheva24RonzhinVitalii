@@ -13,7 +13,6 @@ import telran.queries.entities.GameGamer;
 import telran.queries.entities.Gamer;
 import telran.queries.entities.Move;
 import telran.queries.repositories.BullsCowsRepository;
-import telran.view.InputOutput;
 
 public class BullsCowsServiceImpl implements BullsCowsService {
 
@@ -37,25 +36,19 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     }
 
     @Override
-    public void startGame(String gameId, String username, BullsCowsService service, InputOutput io) {
+    public void startGame(String gameId, String username) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Game game = em.find(Game.class, Long.parseLong(gameId));
-        if (game == null) {
-            io.writeLine("Game not found.");
-            em.close();
-            return;
-        }
-        if (game.getDateGame() != null) {
-            io.writeLine("The game has already started.");
+        if (game == null || game.getDateGame() != null) {
             em.getTransaction().commit();
             em.close();
             return;
         }
         game.setDateGame(LocalDate.now());
+        em.merge(game);
         em.getTransaction().commit();
         em.close();
-        io.writeLine("Game started successfully!");
     }
 
     @Override
@@ -66,11 +59,14 @@ public class BullsCowsServiceImpl implements BullsCowsService {
         Game game = em.find(Game.class, Long.parseLong(gameId));
         Gamer gamer = em.find(Gamer.class, username);
 
-        if (game != null && gamer != null) {
-            List<GameGamer> existingGameGamers = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
-                                               .setParameter("gameId", game.getId())
-                                               .setParameter("username", username)
-                                               .getResultList();
+        if (game != null && gamer != null && game.getDateGame() != null && !game.isFinished()) {
+            List<GameGamer> existingGameGamers = em
+                    .createQuery(
+                            "SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username",
+                            GameGamer.class)
+                    .setParameter("gameId", game.getId())
+                    .setParameter("username", username)
+                    .getResultList();
 
             if (existingGameGamers.isEmpty()) {
                 GameGamer gameGamer = new GameGamer();
@@ -88,7 +84,19 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     @Override
     public List<Game> getAvailableGames() {
         EntityManager em = emf.createEntityManager();
-        List<Game> games = em.createQuery("SELECT g FROM Game g WHERE g.isFinished = false", Game.class).getResultList();
+        List<Game> games = em
+                .createQuery("SELECT g FROM Game g WHERE g.dateGame IS NOT NULL AND g.isFinished = false", Game.class)
+                .getResultList();
+        em.close();
+        return games;
+    }
+
+    @Override
+    public List<Game> getNonStartedGames() {
+        EntityManager em = emf.createEntityManager();
+        List<Game> games = em
+                .createQuery("SELECT g FROM Game g WHERE g.dateGame IS NULL AND g.isFinished = false", Game.class)
+                .getResultList();
         em.close();
         return games;
     }
@@ -104,19 +112,11 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     @Override
     public Gamer loginGamer(String username) {
         EntityManager em = emf.createEntityManager();
-        Gamer gamer = null;
-        try {
-            gamer = em.createQuery("SELECT g FROM Gamer g WHERE g.username = :username", Gamer.class)
-                      .setParameter("username", username)
-                      .getSingleResult();
-        } catch (NoResultException e) {
-            // No gamer found
-        } finally {
-            em.close();
-        }
+        Gamer gamer = em.find(Gamer.class, username);
+        em.close();
         return gamer;
     }
-    
+
     @Override
     public void registerGamer(Gamer gamer) {
         EntityManager em = emf.createEntityManager();
@@ -129,68 +129,91 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     @Override
     public List<Move> getMoves(String gameId) {
         EntityManager em = emf.createEntityManager();
-        List<Move> moves = em.createQuery("SELECT m FROM Move m WHERE m.gameGamer.game.id = :gameId", Move.class)
-                             .setParameter("gameId", Long.parseLong(gameId))
-                             .getResultList();
+        List<Move> moves = em
+                .createQuery("SELECT m FROM Move m WHERE m.gameGamer.game.id = :gameId ORDER BY m.id ASC", Move.class)
+                .setParameter("gameId", Long.parseLong(gameId))
+                .getResultList();
         em.close();
         return moves;
     }
 
     @Override
-    public void makeMove(String gameId, String username, String moveSequence, BullsCowsService service, InputOutput io) {
+    public void makeMove(String gameId, String username, String moveSequence) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
         GameGamer gameGamer;
         try {
-            gameGamer = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
-                          .setParameter("gameId", Long.parseLong(gameId))
-                          .setParameter("username", username)
-                          .getSingleResult();
+            gameGamer = em
+                    .createQuery(
+                            "SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username",
+                            GameGamer.class)
+                    .setParameter("gameId", Long.parseLong(gameId))
+                    .setParameter("username", username)
+                    .getSingleResult();
+            System.out.println("Found GameGamer: " + gameGamer.getId());
         } catch (NoResultException e) {
-            io.writeLine("No result found for the specified game and username.");
             em.getTransaction().commit();
             em.close();
+            System.out.println("No GameGamer found for gameId: " + gameId + " and username: " + username);
             return;
         }
 
-        if (gameGamer.getGame().isFinished()) {
-            io.writeLine("The game already has a winner.");
+        if (gameGamer == null || gameGamer.getGame().isFinished()) {
             em.getTransaction().commit();
             em.close();
             return;
         }
 
         Move move = new Move();
-        move.setGameGamer(gameGamer);
+        move.setGameGamer(gameGamer); // Убедитесь, что gameGamer установлен
         move.setSequence(moveSequence);
         move.setBulls(calculateBulls(moveSequence, gameGamer.getGame().getSequence()));
         move.setCows(calculateCows(moveSequence, gameGamer.getGame().getSequence()));
 
-        em.persist(move);
+        System.out.println("Persisting move for gameGamerId: " + gameGamer.getId());
+        System.out.println("Move details: sequence=" + move.getSequence() + ", bulls=" + move.getBulls() + ", cows="
+                + move.getCows());
+        System.out.println("Move gameGamer: " + move.getGameGamer().getId());
 
-        io.writeLine(String.format("%s - bulls: %d - cows: %d", moveSequence, move.getBulls(), move.getCows()));
+        try {
+            em.persist(move);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.err.println("Error persisting move: " + e.getMessage());
+            throw e;
+        } finally {
+            em.close();
+        }
 
         if (move.getBulls() == 4) {
             Game game = gameGamer.getGame();
             game.setFinished(true);
             gameGamer.setIsWinner(true);
-            em.merge(game);
-            em.merge(gameGamer);
-            io.writeLine("Congratulations on winning!");
+            em.getTransaction().begin();
+            try {
+                em.merge(game);
+                em.merge(gameGamer);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                System.err.println("Error updating game and gameGamer: " + e.getMessage());
+                throw e;
+            } finally {
+                em.close();
+            }
         }
-
-        em.getTransaction().commit();
-        em.close();
     }
 
     @Override
     public String getWinner(Long gameId) {
         EntityManager em = emf.createEntityManager();
-        Move lastMove = em.createQuery("SELECT m FROM Move m WHERE m.gameGamer.game.id = :gameId ORDER BY m.id DESC", Move.class)
-                          .setParameter("gameId", gameId)
-                          .setMaxResults(1)
-                          .getSingleResult();
+        Move lastMove = em
+                .createQuery("SELECT m FROM Move m WHERE m.gameGamer.game.id = :gameId ORDER BY m.id DESC", Move.class)
+                .setParameter("gameId", gameId)
+                .setMaxResults(1)
+                .getSingleResult();
         em.close();
         return lastMove.getGameGamer().getGamer().getUsername();
     }

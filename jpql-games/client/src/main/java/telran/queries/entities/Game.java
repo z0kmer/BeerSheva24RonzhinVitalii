@@ -1,5 +1,6 @@
 package telran.queries.entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -7,9 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class Game {
+@Table(name="game")
+public class Game implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +36,7 @@ public class Game {
         this.sequence = sequence;
         this.creator = creator;
         this.name = name != null && !name.isEmpty() ? name : "Game" + id;
-        this.dateGame = null; // Пока не started, поле равно null
+        this.dateGame = null;
         this.isFinished = false;
     }
 
