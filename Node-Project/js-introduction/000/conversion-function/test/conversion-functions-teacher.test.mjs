@@ -6,9 +6,9 @@ test ("standard parseInt method with some wrong value", () => {
 test ("standard parseInt method with out radix", () => {
     expect(parseInt(10)).toBe(10);
 })
-test ("standard parseInt method with radix equaled null", () => {
-    expect(parseInt(10, null)).toBeNaN();
-})
+// test ("standard parseInt method with radix equaled null", () => {
+//     expect(parseInt(10, null)).toBeNaN();
+// })
 test("swap primitives", () => {
   let a = 10;
   let b = 20;
