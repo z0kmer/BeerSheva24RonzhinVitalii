@@ -1,40 +1,43 @@
-import { expect, test } from 'vitest';
-import getOccurencesObject from '../objects.mjs';
+import { describe, expect, it } from 'vitest';
+//import getOccurencesObject from '../objects.mjs';
 
-test("getOccurencesObject with destructuring", () => {
-    const str = "aaabgbgc";
-    let {a, b, g, c} = getOccurencesObject(str);
-    expect(a).toBe(3);
-    expect(b).toBe(2);
-    expect(g).toBe(2);
-    expect(c).toBe(1);
+describe("object iteratiting", () => {
+    const person = {name: "Vasya", age: 25}
+    it("for-in iterating", () => {
+        const keys = ["name", "age"];
+        const actual = [];
+        let index = 0;
+        for(let key in person) {
+            actual[index++] = key;
+        }
+        expect(actual).toEqual(keys);
+    })
+    it("keys iterating usin for...of", () => {
+        const keys = ["name", "age"];
+        const actual = [];
+        let index = 0;
+        for(let key of Object.keys(person)) {
+            actual[index++] = key;
+        }
+        expect(actual).toEqual(keys);
+    })
+    it("values iterating using for...of constructions", () => {
+        const expectedValues = ["Vasya", 25];
+        const actualValues = [];
+        let index = 0;
+        for(let value of Object.values(person)) {
+            actualValues[index++] = value;
+        }
+        expect(actualValues).toEqual(expectedValues);
+    })
+    it("iterating entries using ofor...f construction", () => {
+        const expectedEntries = [["name", "Vasya"], ["age", 25]];
+        const actualEntries = [];
+        let index = 0;
+        for(let entity of Object.entries(person)) {
+            actualEntries[index++] = entity;
+        }
+        expect(actualEntries).toEqual(expectedEntries);
+    })
+})
 
-
-})
-test("string with digits, spaces and hyphens", () => {
-    const str = "1,d-     ";
-    const res = getOccurencesObject(str);
-    expect(res.d).toBe(1);
-    expect(res[1]).toBe(1);
-    expect(res[' ']).toBe(5)
-})
-test ("test for oject as key inside another object", () => {
-    const x = {x:5};
-    x.toString = function() {
-        return `x:${this.x}` //"x:" + this.x
-    };
-    const y = {y:10};
-    const obj1 = {}
-    obj1[x] = 200;
-    const obj2 = obj1;
-    obj2[y] = 300;
-    expect(obj2[x]).toBe(200);
-    expect(obj1["[object Object]"]).toBe(300);
-    expect(obj1[{z:100}]).toBe(300);
-    console.log("printing object using log",x);
-    console.log("printing object using method toSTring",  x.toString());
-    
-  
-  
-    
-})
