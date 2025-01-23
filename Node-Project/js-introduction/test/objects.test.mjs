@@ -1,57 +1,40 @@
-import { describe, expect, it } from "vitest";
-import { getOccurencesObject } from "../objects.mjs";
+import { expect, test } from 'vitest';
+import getOccurencesObject from '../objects.mjs';
 
-describe('getOccurencesObject', () => {
-    it('"abcadab"', () => {
-        const result = getOccurencesObject('abcadab');
-        expect(result).toEqual({
-            a: 3,
-            b: 2,
-            c: 1,
-            d: 1
-        });
-    });
-    it('empty string', () => {
-        const result = getOccurencesObject('');
-        expect(result).toEqual({});
-    });
-    it('one character', () => {
-        const result = getOccurencesObject('a');
-        expect(result).toEqual({ a: 1 });
-    });
-    it('all unique characters', () => {
-        const result = getOccurencesObject('abcd');
-        expect(result).toEqual({
-            a: 1,
-            b: 1,
-            c: 1,
-            d: 1
-        });
-    });
-    it('repeating characters', () => {
-        const result = getOccurencesObject('aaabbbccc');
-        expect(result).toEqual({
-            a: 3,
-            b: 3,
-            c: 3
-        });
-        });
-    });
-    it('repeating characters with spaces', () => {
-        const result = getOccurencesObject('aaa bbb ccc');
-        expect(result).toEqual({
-            a: 3,
-            ' ': 2,
-            b: 3,
-            c: 3
-        });
-    });
-    it('empty object for NaN input', () => {
-        const result = getOccurencesObject(NaN);
-        expect(result).toEqual({});
-    });
-    it('empty object for number input', () => {
-        const result = getOccurencesObject(12345);
-        expect(result).toEqual({});
-    });
-});
+test("getOccurencesObject with destructuring", () => {
+    const str = "aaabgbgc";
+    let {a, b, g, c} = getOccurencesObject(str);
+    expect(a).toBe(3);
+    expect(b).toBe(2);
+    expect(g).toBe(2);
+    expect(c).toBe(1);
+
+
+})
+test("string with digits, spaces and hyphens", () => {
+    const str = "1,d-     ";
+    const res = getOccurencesObject(str);
+    expect(res.d).toBe(1);
+    expect(res[1]).toBe(1);
+    expect(res[' ']).toBe(5)
+})
+test ("test for oject as key inside another object", () => {
+    const x = {x:5};
+    x.toString = function() {
+        return `x:${this.x}` //"x:" + this.x
+    };
+    const y = {y:10};
+    const obj1 = {}
+    obj1[x] = 200;
+    const obj2 = obj1;
+    obj2[y] = 300;
+    expect(obj2[x]).toBe(200);
+    expect(obj1["[object Object]"]).toBe(300);
+    expect(obj1[{z:100}]).toBe(300);
+    console.log("printing object using log",x);
+    console.log("printing object using method toSTring",  x.toString());
+    
+  
+  
+    
+})

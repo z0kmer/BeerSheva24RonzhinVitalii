@@ -1,33 +1,33 @@
 let name = 'Vasya';
 let age = 25;
-const person = { name: 'Petya', age: 40 };
-person.gender = 'male';
-delete person.age;
-let key = 'gender';
+const person = {name: 'Petya', age: 40};
+person.gender = "male";
+delete person.age
+let key = "gender";
 let field = person[key];
-key = 'age';
+key = "age";
 person[key] = 20;
-({ name, age } = person);
-let { gender } = person;
+({name, age} = person);
+let {gender} = person
 let a;
+console.log("importing of module objects");
+export default function getOccurencesObject(str) {
+    //return object with data about occurrences for each character in the given string
+    //"abcadab"
+    //data should include a encountered 3 times
+    //b - two times; c and d - one time
 
-
-export function getOccurencesObject(stringIn) {
-    /*
-        return object with data about occurence for each character in the given string
-        'abcadab'
-        data should include 'a' encounted 3 times
-        'b' - two times
-        'c' and 'd' - one time
-        and write vitest-tests
-    */
-
-    const occurrences = {};
-    
-    if (typeof stringIn === 'string') {
-        for (let char of stringIn) {
-            occurrences[char] = (occurrences[char] || 0) + 1;
+    const res = {};
+    if (str != undefined & str != null){
+        str = str.toString();
+        for(let i = 0; i < str.length; i++) {
+            let char = str[i];
+            if(!res[char]) {
+                res[char] = 0;
+            }
+            res[char]++;
         }
     }
-    return occurrences;
+    return res;
+   
 }
