@@ -1,7 +1,6 @@
 export function myBind(thisArg) {
-    const sourceFun = this;
-    
-    return function() {
-        return sourceFun.apply(thisArg, arguments)
+    const res =  (...arg ) => {
+        return this.apply(thisArg, arg)
     }
+    return res;
 }
