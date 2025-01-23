@@ -55,31 +55,34 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     public void joinGame(String gameId, String username) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-
+    
         Game game = em.find(Game.class, Long.parseLong(gameId));
         Gamer gamer = em.find(Gamer.class, username);
-
-        if (game != null && gamer != null && game.getDateGame() != null && !game.isFinished()) {
-            List<GameGamer> existingGameGamers = em
-                    .createQuery(
-                            "SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username",
-                            GameGamer.class)
-                    .setParameter("gameId", game.getId())
-                    .setParameter("username", username)
-                    .getResultList();
-
-            if (existingGameGamers.isEmpty()) {
-                GameGamer gameGamer = new GameGamer();
-                gameGamer.setGame(game);
-                gameGamer.setGamer(gamer);
-                gameGamer.setIsWinner(false);
-                em.persist(gameGamer);
-            }
+    
+        if (game == null || gamer == null || game.isFinished()) {
+            em.getTransaction().commit();
+            em.close();
+            System.out.println("Cannot join game. The game is either not found or already finished.");
+            return;
         }
-
+    
+        List<GameGamer> existingGameGamers = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
+                                               .setParameter("gameId", game.getId())
+                                               .setParameter("username", username)
+                                               .getResultList();
+    
+        if (existingGameGamers.isEmpty()) {
+            GameGamer gameGamer = new GameGamer();
+            gameGamer.setGame(game);
+            gameGamer.setGamer(gamer);
+            gameGamer.setIsWinner(false);
+            em.persist(gameGamer);
+        }
+    
         em.getTransaction().commit();
         em.close();
     }
+    
 
     @Override
     public List<Game> getAvailableGames() {
@@ -141,41 +144,36 @@ public class BullsCowsServiceImpl implements BullsCowsService {
     public void makeMove(String gameId, String username, String moveSequence) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-
+        
         GameGamer gameGamer;
         try {
-            gameGamer = em
-                    .createQuery(
-                            "SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username",
-                            GameGamer.class)
-                    .setParameter("gameId", Long.parseLong(gameId))
-                    .setParameter("username", username)
-                    .getSingleResult();
-            System.out.println("Found GameGamer: " + gameGamer.getId());
+            gameGamer = em.createQuery("SELECT gg FROM GameGamer gg WHERE gg.game.id = :gameId AND gg.gamer.username = :username", GameGamer.class)
+                          .setParameter("gameId", Long.parseLong(gameId))
+                          .setParameter("username", username)
+                          .getSingleResult();
         } catch (NoResultException e) {
             em.getTransaction().commit();
             em.close();
             System.out.println("No GameGamer found for gameId: " + gameId + " and username: " + username);
             return;
         }
-
+    
         if (gameGamer == null || gameGamer.getGame().isFinished()) {
             em.getTransaction().commit();
             em.close();
             return;
         }
-
+    
         Move move = new Move();
-        move.setGameGamer(gameGamer); // Убедитесь, что gameGamer установлен
+        move.setGameGamer(gameGamer);
         move.setSequence(moveSequence);
         move.setBulls(calculateBulls(moveSequence, gameGamer.getGame().getSequence()));
         move.setCows(calculateCows(moveSequence, gameGamer.getGame().getSequence()));
-
+    
         System.out.println("Persisting move for gameGamerId: " + gameGamer.getId());
-        System.out.println("Move details: sequence=" + move.getSequence() + ", bulls=" + move.getBulls() + ", cows="
-                + move.getCows());
+        System.out.println("Move details: sequence=" + move.getSequence() + ", bulls=" + move.getBulls() + ", cows=" + move.getCows());
         System.out.println("Move gameGamer: " + move.getGameGamer().getId());
-
+    
         try {
             em.persist(move);
             em.getTransaction().commit();
@@ -196,6 +194,7 @@ public class BullsCowsServiceImpl implements BullsCowsService {
                 em.merge(game);
                 em.merge(gameGamer);
                 em.getTransaction().commit();
+                System.out.println("Game finished and winner updated.");
             } catch (Exception e) {
                 em.getTransaction().rollback();
                 System.err.println("Error updating game and gameGamer: " + e.getMessage());
@@ -204,7 +203,9 @@ public class BullsCowsServiceImpl implements BullsCowsService {
                 em.close();
             }
         }
+            
     }
+    
 
     @Override
     public String getWinner(Long gameId) {

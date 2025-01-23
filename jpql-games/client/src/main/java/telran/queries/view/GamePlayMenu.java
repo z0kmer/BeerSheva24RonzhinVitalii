@@ -71,6 +71,11 @@ public class GamePlayMenu {
         Move lastMove = service.getMoves(gameId).stream().reduce((first, second) -> second).orElse(null);
         if (lastMove != null) {
             System.out.printf("%s - bulls: %d - cows: %d%n", lastMove.getSequence(), lastMove.getBulls(), lastMove.getCows());
+            if (lastMove.getBulls() == 4) {
+                System.out.println("Congratulations! You've won the game!");
+                GameMenu gameMenu = new GameMenu(service, scanner, username);
+                gameMenu.run();
+            }
         }
     }
 }
