@@ -1,9 +1,5 @@
 
-import logger from './logger.mjs';
-//import path from 'path';
-//import { fileURLToPath } from 'url';
-
-console.log('from module', process.env.LEVEL);
-logger.info(logger.level);
-
-//===================
+import fs from 'node:fs';
+// const data = fs.readFileSync('./index.mjs');
+// logger.info(data);
+fs.writeFileSync('./file.txt', ["kuku", "kukureku", "Hello World!"].join('\n'))
