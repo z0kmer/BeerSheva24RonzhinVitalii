@@ -1,0 +1,27 @@
+{
+  "120": {
+    "id": 120,
+    "basicSalary": 2000,
+    "department": "QA",
+    "className": "Manager",
+    "factor": 2
+  },
+  "123": {
+    "id": 123,
+    "basicSalary": 1000,
+    "department": "QA",
+    "className": "WageEmployee",
+    "wage": 100,
+    "hours": 10
+  },
+  "125": {
+    "id": 125,
+    "basicSalary": 3000,
+    "department": "Development",
+    "className": "SalesPerson",
+    "wage": 100,
+    "hours": 10,
+    "percent": 0.01,
+    "sales": 10000
+  }
+}
