@@ -35,7 +35,7 @@ export default class Company {
         }
         delete this.#employees[id];
         const deptEmployees = this.#departments[empl.department];
-        const index = deptEmployees.indexOf(empl);
+        const index = deptEmployees.indexOf(empl);//do not be working?
         if (index !== -1) {
             deptEmployees.splice(index, 1);
             if (deptEmployees.length === 0) {
@@ -65,7 +65,7 @@ export default class Company {
     }
 
     async saveToFile(fileName) {
-        await fs.writeFile(fileName, JSON.stringify(this.#employees, null, 2));
+        await fs.writeFile(fileName, JSON.stringify(this.#employees, null, 2));//values...and what is for null and 2
     }
 
     async restoreFromFile(fileName) {

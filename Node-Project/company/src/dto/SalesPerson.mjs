@@ -11,7 +11,7 @@ export default class SalesPerson extends WageEmployee {
         return super.computeSalary() + this.sales * this.percent / 100;
     }
 
-    static fromJSON(json) {
+    static fromJSON(json) {//not static...this is string
         return new SalesPerson(
             json.id, json.basicSalary, json.department,
             json.wage, json.hours, json.percent, json.sales

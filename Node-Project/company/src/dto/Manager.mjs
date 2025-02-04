@@ -10,7 +10,7 @@ export default class Manager extends Employee {
         return super.computeSalary() * this.factor;
     }
 
-    static fromJSON(json) {
+    static fromJSON(json) {//not static...this is string
         return new Manager(json.id, json.basicSalary, json.department, json.factor);
     }
 

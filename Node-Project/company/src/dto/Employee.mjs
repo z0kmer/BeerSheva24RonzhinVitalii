@@ -9,7 +9,7 @@ export default class Employee {
         return this.basicSalary;
     }
 
-    static fromJSON(json) {
+    static fromJSON(json) {//not static...this is string
         return new Employee(json.id, json.basicSalary, json.department);
     }
 

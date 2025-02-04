@@ -11,7 +11,7 @@ export default class WageEmployee extends Employee {
         return super.computeSalary() + this.wage * this.hours;
     }
 
-    static fromJSON(json) {
+    static fromJSON(json) {//not static...this is string
         return new WageEmployee(json.id, json.basicSalary, json.department, json.wage, json.hours);
     }
 
