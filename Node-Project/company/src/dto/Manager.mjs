@@ -1,24 +1,18 @@
-import Employee from './Employee.mjs';
-
+import Employee from "./Employee.mjs";
 export default class Manager extends Employee {
-    constructor(id, basicSalary, department, factor) {
-        super(id, basicSalary, department);
-        this.factor = factor;
+    static {
+        Employee.classMap.Manager = new Manager();
     }
+    constructor(id, department, basicSalary, factor, className) {
+        super(id, department, basicSalary, className ?? "Manager");
+        this.factor = factor;
 
+    }
+    getFactor() {
+        return this.factor;
+    }
     computeSalary() {
         return super.computeSalary() * this.factor;
     }
 
-    static fromJSON(json) {//not static...this is string
-        return new Manager(json.id, json.basicSalary, json.department, json.factor);
-    }
-
-    toJSON() {
-        const json = super.toJSON();
-        return {
-            ...json,
-            factor: this.factor
-        };
-    }
 }

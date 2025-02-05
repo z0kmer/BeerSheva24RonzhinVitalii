@@ -1,26 +1,20 @@
-import Employee from './Employee.mjs';
-
-export default class WageEmployee extends Employee {
-    constructor(id, basicSalary, department, wage, hours) {
-        super(id, basicSalary, department);
+import Employee from "./Employee.mjs";
+export default class WageEmployee extends Employee{
+    static {
+        Employee.classMap.WageEmployee = new WageEmployee();
+    }
+    constructor(id, department, basicSalary,  wage = 0, hours=0, className) {
+        super(id, department, basicSalary, className ?? "WageEmployee");
         this.wage = wage;
         this.hours = hours;
     }
-
-    computeSalary() {
-        return super.computeSalary() + this.wage * this.hours;
+    getWage() {
+        return this.wage;
     }
-
-    static fromJSON(json) {//not static...this is string
-        return new WageEmployee(json.id, json.basicSalary, json.department, json.wage, json.hours);
+    getHours() {
+        return this.hours
     }
-
-    toJSON() {
-        const json = super.toJSON();
-        return {
-            ...json,
-            wage: this.wage,
-            hours: this.hours
-        };
+    computeSalary () {
+        return super.computeSalary() + this.hours * this.wage
     }
 }

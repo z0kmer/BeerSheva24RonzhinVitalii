@@ -1,29 +1,18 @@
-import WageEmployee from './WageEmployee.mjs';
-
-export default class SalesPerson extends WageEmployee {
-    constructor(id, basicSalary, department, wage, hours, percent, sales) {
-        super(id, basicSalary, department, wage, hours);
-        this.percent = percent;
-        this.sales = sales;
+import Employee from "./Employee.mjs";
+export default class Manager extends Employee {
+    static {
+        Employee.classMap.Manager = new Manager();
     }
+    constructor(id, department, basicSalary, factor, className) {
+        super(id, department, basicSalary, className ?? "Manager");
+        this.factor = factor;
 
+    }
+    getFactor() {
+        return this.factor;
+    }
     computeSalary() {
-        return super.computeSalary() + this.sales * this.percent / 100;
+        return super.computeSalary() * this.factor;
     }
 
-    static fromJSON(json) {//not static...this is string
-        return new SalesPerson(
-            json.id, json.basicSalary, json.department,
-            json.wage, json.hours, json.percent, json.sales
-        );
-    }
-
-    toJSON() {
-        const json = super.toJSON();
-        return {
-            ...json,
-            percent: this.percent,
-            sales: this.sales
-        };
-    }
 }

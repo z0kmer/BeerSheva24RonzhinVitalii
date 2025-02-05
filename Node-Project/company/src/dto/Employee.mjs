@@ -1,24 +1,29 @@
+
 export default class Employee {
-    constructor(id, basicSalary, department) {
-        this.id = id;
-        this.basicSalary = basicSalary;
-        this.department = department;
+    static classMap = {
+     Employee: new Employee()
     }
-
-    computeSalary() {
-        return this.basicSalary;
+    static fromPlainObject(empl) {
+     Object.setPrototypeOf(empl, Employee.classMap[empl.className]);
+     return empl
     }
-
-    static fromJSON(json) {//not static...this is string
-        return new Employee(json.id, json.basicSalary, json.department);
-    }
-
-    toJSON() {
-        return {
-            id: this.id,
-            basicSalary: this.basicSalary,
-            department: this.department,
-            className: this.constructor.name
-        };
-    }
-}
+     constructor(id=0,department=null, basicSalary=0, className) {
+         this.basicSalary = basicSalary;
+         this.department = department;
+         this.id = id;
+         this.className = className || "Employee";
+     }
+     computeSalary() {
+         return this.basicSalary;
+     }
+     getId() {
+         return this.id;
+     }
+     getBasicSalary() {
+         return this.basicSalary
+     }
+     getDepartment(){
+         return this.department
+     }
+    
+ }
