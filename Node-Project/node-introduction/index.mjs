@@ -6,20 +6,17 @@
 // writeFile('./file.txt', ["kuku", "kukureku", "שלום"].join('\n'), 'utf-16le')
 // logger.info("function finished");
 
-import { FilterMessages } from './filterMessages.mjs';
-import { LogDistribution } from './logDistribution.mjs';
+
+import FilterLogMessages from './filterMessages.mjs';
+import DistributionMessageLevels from './logDistribution.mjs';
 import logger from './logger.mjs';
+const filter1 = new FilterLogMessages(logger,["hello"], "debug");
+const filter2 = new FilterLogMessages(logger,["hello", "kuku"], "debug");
+const distribution = new DistributionMessageLevels(logger);
+logger.log("debug", "Hello world");
+logger.log("debug", "kuku");
+logger.log('info', "kukureku");
+console.log(distribution.getDistribution());
+console.log(filter2.getMessage());
 
-const logDistribution = new LogDistribution(logger);
-const filterMessages = new FilterMessages(logger);
 
-logger.log('info', 'Hello World!');
-logger.log('debug', 'Need more attention!');
-logger.log('info', 'Another RND-message');
-
-setTimeout(() => {
-    console.log(logDistribution.getLogDistribution());
-
-    console.log(filterMessages.getMessagesWithLevelAndWords('info', ['hello']));
-    console.log(filterMessages.getMessagesWithLevelAndWords('debug', ['hello']));
-}, 400);

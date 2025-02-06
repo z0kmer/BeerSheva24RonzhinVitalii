@@ -1,17 +1,16 @@
-export class LogDistribution {
+export default class DistributionMessageLevels {
+    #distributionObject
     constructor(logger) {
-        this.messageCounts = {};
-        
-        logger.on('message', ({ level }) => {
-            if (this.messageCounts[level]) {
-                this.messageCounts[level] += 1;
-            } else {
-                this.messageCounts[level] = 1;
-            }
-        });
+        logger.on('message', ({level}) => this.#messageProcessing(level) );
+        this.#distributionObject = {};
     }
-
-    getLogDistribution() {
-        return this.messageCounts;
+    #messageProcessing(level){
+        if (!this.#distributionObject[level]) {
+            this.#distributionObject[level] = 0;
+        }
+        this.#distributionObject[level]++;
+    }
+    getDistribution() {
+        return this.#distributionObject;
     }
 }

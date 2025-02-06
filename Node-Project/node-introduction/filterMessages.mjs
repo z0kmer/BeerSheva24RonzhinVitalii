@@ -1,16 +1,22 @@
-export class FilterMessages {
-    constructor(logger) {
-        this.messages = [];
-
-        logger.on('message', ({ level, message }) => {
-            this.messages.push({ level, message });
-        });
+export default class FilterLogMessages {
+    #words;
+    #messages;
+    constructor(logger, words, level) {
+        this.#messages = [];
+        
+        this.#words = words.map(w => w.toLowerCase());
+        logger.on(level,(message) => this.#messageProcess(message));
     }
-
-    getMessagesWithLevelAndWords(level, words) {
-        words = words.map(word => word.toLowerCase());
-        return this.messages
-            .filter(msg => msg.level === level)
-            .filter(msg => words.every(word => msg.message.toLowerCase().includes(word)));
+    #messageProcess(message) {
+        if(this.#matches(message)) {
+            this.#messages.push(message);
+        }
+    }
+    getMessage() {
+        return this.#messages
+    }
+    #matches(message) {
+        message = message.toLowerCase();
+        return this.#words.some(w => message.includes(w));
     }
 }
