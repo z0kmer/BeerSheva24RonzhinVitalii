@@ -1,17 +1,24 @@
-import http from 'node:http';
-import PointService from "../service/PointService.mjs";
-import PrototypeProtocol from "./prototype-protocol.mjs";
-
-const server = http.createServer();
-const service = new PointService()
-const protocol = new PrototypeProtocol(service, server);
-
-server.listen(3500);
-server.on('request', async (req, res) => {
-   let data = '';
-   for await (const part of req) {
-      data += part;
+ /* 
+ here should be actual service code
+ */
+ class PointService {
+   #points
+   constructor() {
+       this.#points = {}
    }
-   server.emit(req.url, data, res); 
-  
-})
+   addPoint({id,x}) {
+       if (this.#points[id]) {
+           throw Error(`point with id ${id} already exists`)
+       }
+       this.#points[id] = {id, x}
+       
+   }
+   getPoint(id) {
+       if (!this.#points[id]) {
+           throw Error(`point with id ${id} doesn't exist`)
+       }
+       return this.#points[id];
+   }
+}
+const service = new PointService();
+export default service;
