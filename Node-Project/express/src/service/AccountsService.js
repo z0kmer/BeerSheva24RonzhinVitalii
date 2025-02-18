@@ -13,7 +13,20 @@ const time_units = {
 };
 
 class AccountsService {
-  #accounts = {};
+  #accounts = {
+   "yuri@tel-ran.com": {
+      "username": "yuri@tel-ran.com",
+      "role": "USER",
+      "hashPassword": "$2b$10$7g/S6Yc58amy6ssPAY/0ue2y9jgRyf8tbtl0noVqMCK0DzRhiMHLe",
+      "expiration": 8742379604563
+  },
+ "vasya@tel-ran.com": {
+    "username": "vasya@tel-ran.com",
+    "role": "ADMIN",
+    "hashPassword": "$2b$10$MbdRKwWtxQE30zbZYesDJurrnOC7feN.MojoBc3xdVLFABzEocW2y",
+    "expiration": 8742379806746
+}
+  };
 
   addAdminAccount(account) {
     this.#addAccount(account, account.role ?? adminRole);
@@ -22,7 +35,7 @@ class AccountsService {
     this.#addAccount(account, userRole);
   }
   #addAccount(account, role) {
-    if (this.#accounts[account.email]) {
+    if (this.#accounts[account.email] || account.email == process.env.ADMIN_USERNAME) {
       throw createError(409, `account ${account.email} already exists`);
     }
     const serviceAccount = this.#toServiceAccount(account, role);
@@ -40,10 +53,10 @@ class AccountsService {
     }
     return serviceAccount;
   }
-  login(account) {
+ async login(account) {
     const { email, password } = account;
     const serviceAccount = this.#accounts[email];
-    this.checkLogin(serviceAccount, password);
+    await this.checkLogin(serviceAccount, password);
     return JwtUtils.getJwt(this.#accounts[email]);
   }
   delete(username) {
@@ -77,10 +90,10 @@ class AccountsService {
     );
     serviceAccount.expiration = getExpiration();
   }
- checkLogin(serviceAccount, password) {
+ async checkLogin(serviceAccount, password) {
     if (
       !serviceAccount ||
-      !bcrypt.compareSync(password, serviceAccount.hashPassword)
+      !await bcrypt.compare(password, serviceAccount.hashPassword)
     ) {
       throw createError(400, "Wrong credentials");
     }
