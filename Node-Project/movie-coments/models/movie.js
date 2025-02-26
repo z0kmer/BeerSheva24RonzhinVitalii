@@ -1,41 +1,53 @@
 const mongoose = require('mongoose');
 
+const imdbSchema = new mongoose.Schema({
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  votes: {
+    type: Number,
+    default: 0,
+  },
+  id: {
+    type: Number,
+    required: true,
+  }
+});
+
 const movieSchema = new mongoose.Schema({
-  imdb: {
-    id: { type: String, required: true },
-    rating: { type: Number, default: 0 },
-    votes: { type: Number, default: 0 }
-  },
-  plot: { type: String },
-  genres: [{ type: String }],
-  runtime: { type: Number },
-  rated: { type: String },
-  cast: [{ type: String }],
-  title: { type: String, required: true },
-  fullplot: { type: String },
-  languages: [{ type: String }],
-  released: { type: Date },
-  directors: [{ type: String }],
-  writers: [{ type: String }],
+  title: String,
+  year: Number,
+  genres: [String],
+  runtime: Number,
+  rated: String,
+  cast: [String],
+  fullplot: String,
+  languages: [String],
+  released: Date,
+  directors: [String],
+  writers: [String],
   awards: {
-    wins: { type: Number, default: 0 },
-    nominations: { type: Number, default: 0 },
-    text: { type: String }
+    wins: Number,
+    nominations: Number,
+    text: String,
   },
-  lastupdated: { type: String },
-  year: { type: Number },
-  countries: [{ type: String }],
-  type: { type: String },
+  lastupdated: String,
+  num_mflix_comments: {
+    type: Number,
+    default: 0,
+  },
+  imdb: imdbSchema,
+  countries: [String],
+  type: String,
   tomatoes: {
     viewer: {
-      rating: { type: Number },
-      numReviews: { type: Number }
+      rating: Number,
+      numReviews: Number,
     },
-    dvd: { type: Date },
-    production: { type: String },
-    lastUpdated: { type: Date }
+    production: String,
+    lastUpdated: Date,
   },
-  num_mflix_comments: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Movie', movieSchema);

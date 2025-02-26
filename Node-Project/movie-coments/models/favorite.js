@@ -3,20 +3,23 @@ const mongoose = require('mongoose');
 const favoriteSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true
+    required: true,
   },
   movie_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Movie',
-    required: true
+    required: true,
   },
   feed_back: {
-    type: String
+    type: String,
+    default: '',
   },
   viewed: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
+
+favoriteSchema.index({ email: 1, movie_id: 1 }, { unique: true });
 
 module.exports = mongoose.model('Favorite', favoriteSchema);

@@ -10,21 +10,22 @@ exports.addAccount = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(409).json({ message: 'Учетная запись уже существует' });
+      return res.status(400).json({ message: 'Учетная запись уже существует' });
     }
+
+    const hashPassword = await bcrypt.hash(password, 10);
 
     user = new User({
       _id: email,
       name,
       role: 'USER',
-      hashPassword: await bcrypt.hash(password, 10),
+      hashPassword,
       blocked: false
     });
 
     await user.save();
-    res.status(201).json(user);
+    res.json(user);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 };
@@ -79,18 +80,21 @@ exports.setRole = async (req, res) => {
 exports.updatePassword = async (req, res) => {
   const { email, password } = req.body;
 
-  // Проверка наличия пользователя
-  let user = await User.findById(email);
-  if (!user) {
-    return res.status(404).json({ message: 'Пользователь не найден' });
+  try {
+    let user = await User.findById(email);
+    if (!user) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    user.hashPassword = hashPassword;
+    await user.save();
+
+    res.json({ message: 'Пароль обновлен', user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка сервера' });
   }
-
-  // Хэширование нового пароля
-  const hashPassword = await bcrypt.hash(password, 10);
-  user.hashPassword = hashPassword;
-  await user.save();
-
-  res.json({ message: 'Пароль обновлен', user });
 };
 
 // Получение учетной записи
@@ -109,21 +113,20 @@ exports.getAccount = async (req, res) => {
 
 // Блокировка учетной записи
 exports.blockAccount = async (req, res) => {
-  const { email } = req.body;
+  try {
+    const user = await User.findById(req.params.email);
+    if (!user) {
+      return res.status(404).json({ message: 'Учетная запись не найдена' });
+    }
 
-  console.log('Email для блокировки:', email); // Логирование email для отладки
+    user.blocked = true;
+    await user.save();
 
-  // Проверка наличия пользователя
-  let user = await User.findById(email);
-  if (!user) {
-    return res.status(404).json({ message: 'Пользователь не найден' });
+    res.json({ message: 'Аккаунт заблокирован', user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка сервера' });
   }
-
-  // Блокировка пользователя
-  user.blocked = true;
-  await user.save();
-
-  res.json({ message: 'Аккаунт заблокирован', user });
 };
 
 // Разблокировка учетной записи
@@ -137,7 +140,7 @@ exports.unblockAccount = async (req, res) => {
     user.blocked = false;
     await user.save();
 
-    res.send('Учетная запись разблокирована');
+    res.json({ message: 'Учетная запись разблокирована', user });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Ошибка сервера' });
@@ -152,7 +155,7 @@ exports.deleteAccount = async (req, res) => {
       return res.status(404).json({ message: 'Учетная запись не найдена' });
     }
 
-    res.send('Учетная запись удалена');
+    res.json({ message: 'Учетная запись удалена' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Ошибка сервера' });

@@ -1,9 +1,10 @@
 const Favorite = require('../models/favorite');
+const Movie = require('../models/movie');
 
 // Получение всех избранных фильмов пользователя
 exports.getUserFavorites = async (req, res) => {
   try {
-    const favorites = await Favorite.find({ email: req.params.email });
+    const favorites = await Favorite.find({ email: req.params.email }).populate('movie_id');
     res.json(favorites);
   } catch (err) {
     console.error(err);
@@ -16,6 +17,16 @@ exports.addFavorite = async (req, res) => {
   const { email, movie_id, feed_back, viewed = false } = req.body;
 
   try {
+    const movie = await Movie.findById(movie_id);
+    if (!movie) {
+      return res.status(404).json({ message: 'Фильм не найден' });
+    }
+
+    const existingFavorite = await Favorite.findOne({ email, movie_id });
+    if (existingFavorite) {
+      return res.status(409).json({ message: 'Фильм уже добавлен в избранное' });
+    }
+
     const favorite = new Favorite({
       email,
       movie_id,

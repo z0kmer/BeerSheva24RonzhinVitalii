@@ -4,17 +4,12 @@ const Movie = require('../models/movie');
 // Получение всех комментариев к фильму
 exports.getMovieComments = async (req, res) => {
   try {
-    let movie;
     let comments;
 
-    // Сначала пытаемся найти фильм по названию
-    movie = await Movie.findOne({ title: req.params.movieid });
-
+    const movie = await Movie.findById(req.params.movieid);
     if (movie) {
-      // Если фильм найден по названию, используем его _id для поиска комментариев
       comments = await Comment.find({ movie_id: movie._id }).select('email text');
     } else {
-      // Если фильм не найден по названию, пытаемся использовать movie_id из параметров запроса
       comments = await Comment.find({ movie_id: req.params.movieid }).select('email text');
     }
 

@@ -1,5 +1,6 @@
 const Movie = require('../models/movie');
 const mongoose = require('mongoose');
+const Comment = require('../models/comment');
 
 // Получение фильма по ID
 exports.getMovie = async (req, res) => {
@@ -17,26 +18,6 @@ exports.getMovie = async (req, res) => {
 
 // Получение самых рейтинговых фильмов по заданному фильтру
 exports.getMostRated = async (req, res) => {
-  const { amount } = req.body;
-
-  try {
-    const movies = await Movie.find()
-      .limit(amount)
-      .sort({ 'imdb.rating': -1 });
-
-    if (movies.length === 0) {
-      return res.status(404).json({ message: 'Фильмы не найдены' });
-    }
-
-    res.json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Ошибка сервера', error: err.message });
-  }
-};
-
-// Получение самых комментируемых фильмов по заданному фильтру
-exports.getMostCommented = async (req, res) => {
   const { year, actor, genres, language, amount } = req.body;
 
   try {
@@ -47,13 +28,44 @@ exports.getMostCommented = async (req, res) => {
     if (language) query.language = language;
 
     const movies = await Movie.find(query)
-      .sort({ num_mflix_comments: -1 })
+      .sort({ 'imdb.rating': -1 })
       .limit(amount)
-      .select('_id title imdb.id num_mflix_comments');
+      .select('_id title imdb.rating imdb.id');
 
     res.json(movies);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: 'Ошибка сервера', error: err.message });
+  }
+};
+
+// Получение самых комментируемых фильмов по заданному фильтру
+exports.getMostCommented = async (req, res) => {
+  const { amount } = req.body;
+
+  console.log('Получение самых комментируемых фильмов. Запрошенное количество:', amount);
+
+  try {
+    const commentCountMap = {};
+
+    const comments = await Comment.find({});
+    comments.forEach(comment => {
+      if (comment.movie_id in commentCountMap) {
+        commentCountMap[comment.movie_id]++;
+      } else {
+        commentCountMap[comment.movie_id] = 1;
+      }
+    });
+
+    const sortedMovieIds = Object.keys(commentCountMap).sort((a, b) => commentCountMap[b] - commentCountMap[a]);
+    const topMovieIds = sortedMovieIds.slice(0, amount);
+
+    const movies = await Movie.find({ _id: { $in: topMovieIds } });
+
+    console.log('Полученные фильмы:', movies);
+    res.json(movies);
+  } catch (err) {
+    console.error('Ошибка при получении самых комментируемых фильмов:', err);
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 };
