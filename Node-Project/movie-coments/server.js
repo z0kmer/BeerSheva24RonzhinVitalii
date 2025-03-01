@@ -40,4 +40,6 @@ mongoose.connect(config.get('mongoURI'), {
 }).then(() => winston.info('MongoDB connected'))
   .catch(err => winston.error('MongoDB connection error:', err));
 
-app.listen(PORT, () => winston.info(`Server running on port ${PORT}`));
+const server = app.listen(PORT, () => winston.info(`Server running on port ${PORT}`));
+
+module.exports = { app, server };

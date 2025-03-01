@@ -44,9 +44,9 @@ exports.getMostCommentedMovies = async (filter) => {
   if (language) query.language = language;
 
   const movies = await Movie.find(query)
-    .sort({ num_mflix_comments: -1 })
+    .sort({ db_for_pet_comments: -1 })
     .limit(amount)
-    .select('_id title imdb.id num_mflix_comments');
+    .select('_id title imdb.id db_for_pet_comments');
 
   return movies;
 };
