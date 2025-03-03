@@ -3,21 +3,20 @@ const mongoose = require('mongoose');
 const favoriteSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
+    required: true
   },
   movie_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Movie',
-    required: true,
-  },
-  feed_back: {
-    type: String,
-    default: '',
+    required: true
   },
   viewed: {
     type: Boolean,
-    default: false,
+    default: false
   },
+  feed_back: {
+    type: String
+  }
 });
 
 favoriteSchema.index({ email: 1, movie_id: 1 }, { unique: true });

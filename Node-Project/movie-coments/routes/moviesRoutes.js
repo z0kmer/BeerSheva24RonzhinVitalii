@@ -1,20 +1,14 @@
 const express = require('express');
-const router = express.Router();
-const moviesController = require('../controllers/moviesController');
+const { getMovie, getMostRated, getMostCommented, addRate } = require('../controllers/moviesController');
 const { auth, authorize } = require('../middleware/authMiddleware');
-const rateLimiter = require('../middleware/rateLimiter');
-const { validateAmount, validateObjectId, validateMovieFilter, validateRating } = require('../middleware/validationMiddleware');
+const validateRequest = require('../middleware/validationMiddleware');
+const movieValidation = require('../validation/movieValidation');
 
-// Получение фильма по ID (доступно для всех, кроме ADMIN)
-router.get('/:id', auth, authorize('USER', 'PREMIUM_USER'), validateObjectId, moviesController.getMovie);
+const router = express.Router();
 
-// Получение самых рейтинговых фильмов по заданному фильтру (доступно для всех, кроме ADMIN)
-router.post('/most-rated', auth, authorize('USER', 'PREMIUM_USER'), rateLimiter('USER'), validateMovieFilter, moviesController.getMostRated);
-
-// Получение самых комментируемых фильмов по заданному фильтру (доступно для всех, кроме ADMIN)
-router.post('/most-commented', auth, authorize('USER', 'PREMIUM_USER', 'ADMIN'), validateAmount, moviesController.getMostCommented);
-
-// Обновление рейтинга фильма (доступно только для PREMIUM_USER)
-router.put('/rate', auth, authorize('PREMIUM_USER'), validateRating, moviesController.addRate);
+router.get('/:id', auth, authorize('USER', 'PREMIUM_USER', 'ADMIN'), getMovie);
+router.post('/most-rated', auth, authorize('USER', 'PREMIUM_USER', 'ADMIN'), validateRequest(movieValidation.getMostRated), getMostRated);
+router.post('/most-commented', auth, authorize('USER', 'PREMIUM_USER', 'ADMIN'), validateRequest(movieValidation.getMostCommented), getMostCommented);
+router.post('/rate', auth, authorize('PREMIUM_USER'), validateRequest(movieValidation.addRate), addRate);
 
 module.exports = router;

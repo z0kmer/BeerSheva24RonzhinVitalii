@@ -1,12 +1,8 @@
 const Movie = require('../models/movie');
-const mongoose = require('mongoose');
+const Comment = require('../models/comment');
 
 // Получение фильма по ID
-exports.getMovieById = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new Error('Неверный идентификатор объекта');
-  }
-
+exports.getMovie = async (id) => {
   const movie = await Movie.findById(id);
   if (!movie) {
     throw new Error('Фильм не найден');
@@ -16,9 +12,7 @@ exports.getMovieById = async (id) => {
 };
 
 // Получение самых рейтинговых фильмов по заданному фильтру
-exports.getMostRatedMovies = async (filter) => {
-  const { year, actor, genres, language, amount } = filter;
-
+exports.getMostRated = async (year, actor, genres, language, amount) => {
   const query = {};
   if (year) query.year = year;
   if (actor) query.actors = { $regex: new RegExp(actor, 'i') };
@@ -34,29 +28,28 @@ exports.getMostRatedMovies = async (filter) => {
 };
 
 // Получение самых комментируемых фильмов по заданному фильтру
-exports.getMostCommentedMovies = async (filter) => {
-  const { year, actor, genres, language, amount } = filter;
+exports.getMostCommented = async (amount) => {
+  const commentCountMap = {};
 
-  const query = {};
-  if (year) query.year = year;
-  if (actor) query.actors = { $regex: new RegExp(actor, 'i') };
-  if (genres) query.genres = { $in: genres };
-  if (language) query.language = language;
+  const comments = await Comment.find({});
+  comments.forEach(comment => {
+    if (comment.movie_id in commentCountMap) {
+      commentCountMap[comment.movie_id]++;
+    } else {
+      commentCountMap[comment.movie_id] = 1;
+    }
+  });
 
-  const movies = await Movie.find(query)
-    .sort({ db_for_pet_comments: -1 })
-    .limit(amount)
-    .select('_id title imdb.id db_for_pet_comments');
+  const sortedMovieIds = Object.keys(commentCountMap).sort((a, b) => commentCountMap[b] - commentCountMap[a]);
+  const topMovieIds = sortedMovieIds.slice(0, amount);
+
+  const movies = await Movie.find({ _id: { $in: topMovieIds } });
 
   return movies;
 };
 
 // Обновление рейтинга фильма
-exports.updateMovieRating = async (id, rating) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new Error('Неверный идентификатор объекта');
-  }
-
+exports.addRate = async (id, rating) => {
   const movie = await Movie.findById(id);
   if (!movie) {
     throw new Error('Фильм не найден');

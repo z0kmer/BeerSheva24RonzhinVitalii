@@ -30,7 +30,7 @@ const authorize = (...roles) => {
   };
 };
 
-// добавления учетной записи админа
+// Добавления учетной записи админа
 const basicAuth = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader) {

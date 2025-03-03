@@ -1,10 +1,14 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-exports.generateToken = (email, role) => {
-  return jwt.sign({ email, role }, config.get('jwtSecret'), { expiresIn: '1h' });
+// Генерация JWT токена
+exports.generateToken = (payload) => {
+  const token = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: '1h' });
+  return token;
 };
 
+// Верификация JWT токена
 exports.verifyToken = (token) => {
-  return jwt.verify(token, config.get('jwtSecret'));
+  const decoded = jwt.verify(token, config.get('jwtSecret'));
+  return decoded;
 };

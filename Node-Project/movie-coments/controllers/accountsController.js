@@ -10,7 +10,7 @@ exports.addAccount = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'Учетная запись уже существует' });
+      return res.status(409).json({ message: 'Учетная запись уже существует' });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -24,13 +24,14 @@ exports.addAccount = async (req, res) => {
     });
 
     await user.save();
-    res.json(user);
+    res.status(201).json(user);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 };
 
-// Добавление учетной записи адм
+// Добавление учетной записи администратора
 exports.addAdminAccount = async (req, res) => {
   const { email, name, password } = req.body;
 
@@ -40,11 +41,13 @@ exports.addAdminAccount = async (req, res) => {
       return res.status(409).json({ message: 'Учетная запись уже существует' });
     }
 
+    const hashPassword = await bcrypt.hash(password, 10);
+
     user = new User({
       _id: email,
       name,
       role: 'ADMIN',
-      hashPassword: await bcrypt.hash(password, 10),
+      hashPassword,
       blocked: false
     });
 
@@ -58,9 +61,9 @@ exports.addAdminAccount = async (req, res) => {
 
 // Изменение роли пользователя
 exports.setRole = async (req, res) => {
-  try {
-    const { email, role } = req.body;
+  const { email, role } = req.body;
 
+  try {
     let user = await User.findById(email);
     if (!user) {
       return res.status(404).json({ message: 'Пользователь не найден' });

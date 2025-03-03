@@ -1,37 +1,22 @@
 const Comment = require('../models/comment');
 const Movie = require('../models/movie');
-const mongoose = require('mongoose');
 
 // Получение всех комментариев к фильму
-exports.getCommentsByMovieId = async (movieId) => {
-  if (!mongoose.Types.ObjectId.isValid(movieId)) {
-    throw new Error('Неверный идентификатор объекта');
-  }
-
+exports.getMovieComments = async (movieId) => {
   const comments = await Comment.find({ movie_id: movieId }).select('email text');
-  if (!comments || comments.length === 0) {
-    throw new Error('Комментарии к этому фильму не найдены');
-  }
-
   return comments;
 };
 
-// Добавление комментария к фильму
-exports.addComment = async (commentData) => {
-  const { email, movie_id, text } = commentData;
-
-  if (!mongoose.Types.ObjectId.isValid(movie_id)) {
-    throw new Error('Неверный идентификатор объекта');
-  }
-
-  const movie = await Movie.findById(movie_id);
+// Добавление комментария
+exports.addComment = async (email, movieId, text) => {
+  const movie = await Movie.findById(movieId);
   if (!movie) {
     throw new Error('Фильм не найден');
   }
 
   const comment = new Comment({
     email,
-    movie_id,
+    movie_id: movieId,
     text,
     date: new Date()
   });
@@ -45,13 +30,7 @@ exports.addComment = async (commentData) => {
 };
 
 // Обновление комментария
-exports.updateComment = async (commentData) => {
-  const { commentId, email, text } = commentData;
-
-  if (!mongoose.Types.ObjectId.isValid(commentId)) {
-    throw new Error('Неверный идентификатор объекта');
-  }
-
+exports.updateComment = async (commentId, email, text) => {
   const comment = await Comment.findById(commentId);
   if (!comment) {
     throw new Error('Комментарий не найден');
@@ -68,21 +47,13 @@ exports.updateComment = async (commentData) => {
 };
 
 // Получение всех комментариев пользователя
-exports.getCommentsByEmail = async (email) => {
+exports.getUserComments = async (email) => {
   const comments = await Comment.find({ email });
-  if (!comments || comments.length === 0) {
-    throw new Error('Комментарии не найдены');
-  }
-
   return comments;
 };
 
 // Удаление комментария
 exports.deleteComment = async (commentId, user) => {
-  if (!mongoose.Types.ObjectId.isValid(commentId)) {
-    throw new Error('Неверный идентификатор объекта');
-  }
-
   const comment = await Comment.findById(commentId);
   if (!comment) {
     throw new Error('Комментарий не найден');
@@ -99,6 +70,5 @@ exports.deleteComment = async (commentId, user) => {
   }
 
   await comment.remove();
-
   return { message: 'Комментарий удален' };
 };

@@ -1,57 +1,37 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 
 // Добавление учетной записи пользователя
-exports.addUserAccount = async (accountData) => {
-  const { email, name, password } = accountData;
-
-  let user = await User.findOne({ email });
+exports.addAccount = async (email, name, password) => {
+  let user = await User.findOne({ _id: email });
   if (user) {
     throw new Error('Учетная запись уже существует');
   }
 
-  user = new User({
-    _id: email,
-    name,
-    role: 'USER',
-    hashPassword: await bcrypt.hash(password, 10),
-    blocked: false
-  });
-
+  const hashPassword = await bcrypt.hash(password, 10);
+  user = new User({ _id: email, name, role: 'USER', hashPassword });
   await user.save();
 
   return user;
 };
 
 // Добавление учетной записи администратора
-exports.addAdminAccount = async (accountData) => {
-  const { email, name, password } = accountData;
-
-  let user = await User.findOne({ email });
+exports.addAdminAccount = async (email, name, password) => {
+  let user = await User.findOne({ _id: email });
   if (user) {
     throw new Error('Учетная запись уже существует');
   }
 
-  user = new User({
-    _id: email,
-    name,
-    role: 'ADMIN',
-    hashPassword: await bcrypt.hash(password, 10),
-    blocked: false
-  });
-
+  const hashPassword = await bcrypt.hash(password, 10);
+  user = new User({ _id: email, name, role: 'ADMIN', hashPassword });
   await user.save();
 
   return user;
 };
 
 // Изменение роли пользователя
-exports.setUserRole = async (roleData) => {
-  const { email, role } = roleData;
-
-  let user = await User.findById(email);
+exports.setRole = async (email, role) => {
+  const user = await User.findById(email);
   if (!user) {
     throw new Error('Пользователь не найден');
   }
@@ -62,24 +42,23 @@ exports.setUserRole = async (roleData) => {
   return user;
 };
 
-// Обновление пароля пользователя
-exports.updateUserPassword = async (passwordData) => {
-  const { email, password } = passwordData;
-
-  let user = await User.findById(email);
+// Обновление пароля
+exports.updatePassword = async (email, newPassword) => {
+  const user = await User.findById(email);
   if (!user) {
     throw new Error('Пользователь не найден');
   }
 
-  user.hashPassword = await bcrypt.hash(password, 10);
+  const hashPassword = await bcrypt.hash(newPassword, 10);
+  user.hashPassword = hashPassword;
   await user.save();
 
   return user;
 };
 
-// Получение учетной записи пользователя
-exports.getUserAccount = async (email) => {
-  let user = await User.findById(email);
+// Получение учетной записи
+exports.getAccount = async (email) => {
+  const user = await User.findById(email);
   if (!user) {
     throw new Error('Учетная запись не найдена');
   }
@@ -87,9 +66,9 @@ exports.getUserAccount = async (email) => {
   return user;
 };
 
-// Блокировка учетной записи пользователя
-exports.blockUserAccount = async (email) => {
-  let user = await User.findById(email);
+// Блокировка учетной записи
+exports.blockAccount = async (email) => {
+  const user = await User.findById(email);
   if (!user) {
     throw new Error('Учетная запись не найдена');
   }
@@ -100,9 +79,9 @@ exports.blockUserAccount = async (email) => {
   return user;
 };
 
-// Разблокировка учетной записи пользователя
-exports.unblockUserAccount = async (email) => {
-  let user = await User.findById(email);
+// Разблокировка учетной записи
+exports.unblockAccount = async (email) => {
+  const user = await User.findById(email);
   if (!user) {
     throw new Error('Учетная запись не найдена');
   }
@@ -113,9 +92,9 @@ exports.unblockUserAccount = async (email) => {
   return user;
 };
 
-// Удаление учетной записи пользователя
-exports.deleteUserAccount = async (email) => {
-  let user = await User.findByIdAndDelete(email);
+// Удаление учетной записи
+exports.deleteAccount = async (email) => {
+  const user = await User.findByIdAndDelete(email);
   if (!user) {
     throw new Error('Учетная запись не найдена');
   }
@@ -123,10 +102,8 @@ exports.deleteUserAccount = async (email) => {
   return { message: 'Учетная запись удалена' };
 };
 
-// Логин пользователя
-exports.userLogin = async (loginData) => {
-  const { email, password } = loginData;
-
+// Логин
+exports.login = async (email, password, jwtSecret) => {
   const user = await User.findOne({ _id: email });
   if (!user) {
     throw new Error('Неверные учетные данные');
@@ -137,14 +114,8 @@ exports.userLogin = async (loginData) => {
     throw new Error('Неверные учетные данные');
   }
 
-  const payload = {
-    user: {
-      id: user._id,
-      role: user.role
-    }
-  };
+  const payload = { user: { id: user._id, role: user.role } };
+  const token = jwt.sign(payload, jwtSecret, { expiresIn: '1h' });
 
-  const token = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: '1h' });
-
-  return { token };
+  return token;
 };
