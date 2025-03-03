@@ -30,7 +30,7 @@ exports.addAccount = async (req, res) => {
   }
 };
 
-// Добавление учетной записи администратора
+// Добавление учетной записи адм
 exports.addAdminAccount = async (req, res) => {
   const { email, name, password } = req.body;
 

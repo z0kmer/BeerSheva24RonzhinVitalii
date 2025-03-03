@@ -1,7 +1,6 @@
 const rateLimit = require('express-rate-limit');
 const config = require('config');
 
-// Middleware для ограничения запросов
 module.exports = (role) => {
   const limits = config.get(`requestLimit.${role}`);
   return rateLimit({

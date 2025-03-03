@@ -30,7 +30,7 @@ const authorize = (...roles) => {
   };
 };
 
-// Middleware для базовой аутентификации (Basic Auth) для добавления учетной записи администратора
+// добавления учетной записи админа
 const basicAuth = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
