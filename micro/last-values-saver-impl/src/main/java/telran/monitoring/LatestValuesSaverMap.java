@@ -1,39 +1,41 @@
 package telran.monitoring;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import telran.monitoring.api.LatestValuesSaver;
 import telran.monitoring.api.SensorData;
 
-public class LatestValuesSaverMap implements LatestValuesSaver{
-//TODO
+public class LatestValuesSaverMap implements LatestValuesSaver {
+    private Map<Long, SensorData> latestValues = new HashMap<>();
+
     @Override
     public void addValue(SensorData sensorData) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addValue'");
+        latestValues.put(sensorData.patientId(), sensorData);
     }
 
     @Override
     public List<SensorData> getAllValues(long patientId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllValues'");
+        return latestValues.values().stream()
+                .filter(data -> data.patientId() == patientId)
+                .collect(Collectors.toList());
     }
 
     @Override
     public SensorData getLastValue(long patientId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLastValue'");
+        return latestValues.get(patientId);
     }
 
     @Override
     public void clearValues(long patientId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clearValues'");
+        latestValues.remove(patientId);
     }
 
     @Override
     public void clearAndAddValue(long patientId, SensorData sensorData) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clearAndAddValue'");
+        clearValues(patientId);
+        addValue(sensorData);
     }
-
 }
