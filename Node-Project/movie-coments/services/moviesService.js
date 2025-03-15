@@ -12,20 +12,23 @@ exports.getMovie = async (id) => {
 };
 
 // Получение самых рейтинговых фильмов по заданному фильтру
-exports.getMostRated = async (year, actor, genres, language, amount) => {
+const getMostRated = async (year, actor, genres, language, amount) => {
   const query = {};
   if (year) query.year = year;
   if (actor) query.actors = { $regex: new RegExp(actor, 'i') };
   if (genres) query.genres = { $in: genres };
   if (language) query.language = language;
 
+  // Убедиться, что rating приводится к числу
   const movies = await Movie.find(query)
     .sort({ 'imdb.rating': -1 })
     .limit(amount)
-    .select('_id title imdb.rating imdb.id');
+    .select('_id title imdb.rating imdb.id')
+    .lean();
 
-  return movies;
+  return movies.filter(movie => movie.imdb.rating && !isNaN(movie.imdb.rating));
 };
+
 
 // Получение самых комментируемых фильмов по заданному фильтру
 exports.getMostCommented = async (amount) => {
@@ -49,16 +52,18 @@ exports.getMostCommented = async (amount) => {
 };
 
 // Обновление рейтинга фильма
-exports.addRate = async (id, rating) => {
-  const movie = await Movie.findById(id);
-  if (!movie) {
-    throw new Error('Фильм не найден');
+const addRate = async (imdbId, rating) => {
+  const movies = await Movie.find({ 'imdb.id': imdbId });
+  if (!movies.length) {
+    throw new Error('Фильмы не найдены');
   }
 
-  const newRating = (movie.imdb.rating * movie.imdb.votes + rating) / (movie.imdb.votes + 1);
-  movie.imdb.rating = newRating;
-  movie.imdb.votes += 1;
-  await movie.save();
+  for (const movie of movies) {
+    const newRating = (movie.imdb.rating * movie.imdb.votes + rating) / (movie.imdb.votes + 1);
+    movie.imdb.rating = newRating;
+    movie.imdb.votes += 1;
+    await movie.save();
+  }
 
-  return movie;
+  return movies.length; 
 };

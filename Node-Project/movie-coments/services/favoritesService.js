@@ -8,7 +8,7 @@ exports.getUserFavorites = async (email) => {
 };
 
 // Добавление в избранное
-exports.addFavorite = async (email, movieId, feedBack, viewed = false) => {
+const addFavorite = async (email, movieId, feedBack, viewed = false) => {
   const movie = await Movie.findById(movieId);
   if (!movie) {
     throw new Error('Фильм не найден');
@@ -29,6 +29,7 @@ exports.addFavorite = async (email, movieId, feedBack, viewed = false) => {
   await favorite.save();
   return favorite;
 };
+
 
 // Обновление избранного
 exports.updateFavorite = async (favoriteId, viewed, feedBack) => {

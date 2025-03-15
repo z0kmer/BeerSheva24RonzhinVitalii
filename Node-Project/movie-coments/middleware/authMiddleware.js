@@ -15,6 +15,11 @@ const auth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, config.get('jwtSecret'));
     req.user = decoded.user;
+
+    if (req.user.blocked) {
+      return res.status(401).json({ message: 'Аккаунт заблокирован' });
+    }
+
     next();
   } catch (err) {
     res.status(401).json({ message: 'Токен недействителен' });

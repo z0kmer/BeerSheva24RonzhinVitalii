@@ -71,3 +71,11 @@
 {"level":"info","message":"MongoDB connected","timestamp":"2025-03-03T11:51:04.449Z"}
 {"level":"info","message":"Server running on port 5000","timestamp":"2025-03-03T13:47:18.664Z"}
 {"level":"info","message":"MongoDB connected","timestamp":"2025-03-03T13:47:22.538Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2025-03-15T09:28:19.603Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-03-15T09:28:21.472Z"}
+{"level":"debug","message":"\u001b[0mPOST /api/accounts/login \u001b[32m200\u001b[0m 246.008 ms - 216\u001b[0m","timestamp":"2025-03-15T09:28:57.729Z"}
+{"level":"debug","message":"\u001b[0mGET /api/accounts/copy@test.com \u001b[33m403\u001b[0m 2.587 ms - 43\u001b[0m","timestamp":"2025-03-15T09:29:14.261Z"}
+{"level":"debug","message":"\u001b[0mPOST /api/accounts/login \u001b[32m200\u001b[0m 219.025 ms - 207\u001b[0m","timestamp":"2025-03-15T09:29:23.424Z"}
+{"level":"debug","message":"\u001b[0mGET /api/accounts/copy@test.com \u001b[32m200\u001b[0m 144.468 ms - 178\u001b[0m","timestamp":"2025-03-15T09:29:39.082Z"}
+{"level":"debug","message":"\u001b[0mGET /api/favorites/example@example.com \u001b[33m401\u001b[0m 0.660 ms - 76\u001b[0m","timestamp":"2025-03-15T09:29:56.671Z"}
+{"level":"debug","message":"\u001b[0mGET /api/favorites/example@example.com \u001b[32m200\u001b[0m 306.904 ms - 133\u001b[0m","timestamp":"2025-03-15T09:30:11.892Z"}

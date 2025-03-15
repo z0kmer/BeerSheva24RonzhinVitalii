@@ -25,10 +25,22 @@ if (process.env.NODE_ENV === 'production') {
     level: 'warn',
     handleExceptions: true,
     json: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 5242880,
     maxFiles: 5,
     colorize: false,
+    format: winston.format((info) => {
+      if (info.statusCode === 401 || info.statusCode === 403) {
+        return info;
+      }
+      return false;
+    })()
   }));
 }
+
+logger.stream = {
+  write: (message) => {
+    logger.info(message.trim());
+  }
+};
 
 module.exports = logger;
