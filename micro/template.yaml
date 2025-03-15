@@ -42,7 +42,7 @@ Resources:
       Policies:
         - Statement:
           - Effect: Allow
-            Resource: '*' 
+            Resource: '*'
             Action:
             - dynamodb:*
       Environment:
@@ -94,7 +94,7 @@ Resources:
         - AttributeName: patientId
           AttributeType: N
         - AttributeName: timestamp
-          AttributeType: N     
+          AttributeType: N
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
@@ -112,9 +112,9 @@ Resources:
         - AttributeName: patientId
           AttributeType: N
         - AttributeName: timestamp
-          AttributeType: N     
+          AttributeType: N
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_IMAGE        
+        StreamViewType: NEW_IMAGE

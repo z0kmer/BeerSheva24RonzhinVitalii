@@ -3,14 +3,14 @@ package telran.monitoring;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.Context;
-
+import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
 import com.amazonaws.services.lambda.runtime.events.models.dynamodb.AttributeValue;
 
 import telran.monitoring.api.LatestValuesSaver;
 import telran.monitoring.api.SensorData;
+import telran.monitoring.logging.Logger;
 import telran.monitoring.logging.LoggerStandard;
 
 public class AppReducer {
