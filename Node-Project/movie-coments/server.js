@@ -21,7 +21,7 @@ morganMiddleware(app);
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Ограничение числа запросов для всех пользователей
+// Ограничение числа запросов для пользователей
 app.use(rateLimiter('USER'));
 
 // Маршруты

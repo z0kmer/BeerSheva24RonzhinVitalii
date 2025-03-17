@@ -79,3 +79,16 @@
 {"level":"debug","message":"\u001b[0mGET /api/accounts/copy@test.com \u001b[32m200\u001b[0m 144.468 ms - 178\u001b[0m","timestamp":"2025-03-15T09:29:39.082Z"}
 {"level":"debug","message":"\u001b[0mGET /api/favorites/example@example.com \u001b[33m401\u001b[0m 0.660 ms - 76\u001b[0m","timestamp":"2025-03-15T09:29:56.671Z"}
 {"level":"debug","message":"\u001b[0mGET /api/favorites/example@example.com \u001b[32m200\u001b[0m 306.904 ms - 133\u001b[0m","timestamp":"2025-03-15T09:30:11.892Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2025-03-16T08:14:50.822Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-03-16T08:14:52.988Z"}
+{"level":"debug","message":"\u001b[0mPOST /api/accounts/login \u001b[32m200\u001b[0m 255.196 ms - 216\u001b[0m","timestamp":"2025-03-16T08:15:01.111Z"}
+{"level":"debug","message":"\u001b[0mGET /api/comments/user/ronald_cox@fakegmail.com \u001b[33m401\u001b[0m 0.786 ms - 76\u001b[0m","timestamp":"2025-03-16T08:15:36.945Z"}
+{"level":"debug","message":"\u001b[0mGET /api/comments/user/ronald_cox@fakegmail.com \u001b[32m200\u001b[0m 574.589 ms - 71128\u001b[0m","timestamp":"2025-03-16T08:15:42.181Z"}
+{"level":"debug","message":"\u001b[0mPOST /api/accounts/login \u001b[32m200\u001b[0m 224.965 ms - 207\u001b[0m","timestamp":"2025-03-16T08:15:53.894Z"}
+{"level":"debug","message":"\u001b[0mGET /api/accounts/copy@test.com \u001b[32m200\u001b[0m 157.583 ms - 178\u001b[0m","timestamp":"2025-03-16T08:16:11.601Z"}
+{"level":"debug","message":"\u001b[0mGET /api/movies/573a1391f29313caabcd7e6e \u001b[32m200\u001b[0m 162.122 ms - 2031\u001b[0m","timestamp":"2025-03-16T08:16:26.836Z"}
+{"level":"info","message":"Server running on port 5000","timestamp":"2025-03-16T08:25:34.425Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-03-16T08:25:36.471Z"}
+{"level":"debug","message":"\u001b[0mPOST /api/accounts/login \u001b[32m200\u001b[0m 235.865 ms - 216\u001b[0m","timestamp":"2025-03-16T08:25:42.031Z"}
+{"level":"debug","message":"\u001b[0mPOST /api/accounts/login \u001b[32m200\u001b[0m 229.694 ms - 216\u001b[0m","timestamp":"2025-03-16T09:20:46.471Z"}
+{"level":"debug","message":"\u001b[0mGET /api/comments/user/ronald_cox@fakegmail.com \u001b[32m200\u001b[0m 543.798 ms - 71128\u001b[0m","timestamp":"2025-03-16T09:20:58.268Z"}
