@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
+import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
 import com.amazonaws.services.lambda.runtime.events.models.dynamodb.AttributeValue;
 
 import telran.monitoring.api.JumpPulseData;
@@ -13,68 +14,112 @@ import telran.monitoring.logging.Logger;
 import telran.monitoring.logging.LoggerStandard;
 
 public class App {
-    Logger logger = new LoggerStandard("jump-pulse-recognizer");
-    LatestValuesSaver saver = new LatestValuesSaverMap();
-    MiddlewareDataStream<JumpPulseData> jumpStream;
+  private static final String DEFAULT_STREAM_CLASS_NAME = "telran.monitoring.DynamoDbStreamJumpPulseData";
+  private static final String DEFAULT_STREAM_NAME = "jump_pulse_values";
+  private static final float DEFAULT_JUMP_FACTOR = 0.5f;
+  private Map<String, String> env = System.getenv();
+  private String streamName = getStreamName();
+  Logger logger = new LoggerStandard(streamName);
+  MiddlewareDataStream<JumpPulseData> dataStream;
+ 
+  LatestValuesSaver latestValuesSaver = new LatestValuesSaverMap(logger);
 
-    float factor = Float.parseFloat(System.getenv().getOrDefault("FACTOR", "0.5"));
+  @SuppressWarnings("unchecked")
+  public App() {
+    try {
 
-    public App() {
-        try {
-            jumpStream = MiddlewareDataStreamFactory.getStream("telran.monitoring.DynamoDbStreamJumpPulseData", "jump-pulse-values");
-        } catch (Exception e) {
-            logger.log("severe", "Failed to initialize jumpStream: " + e.toString());
-        }
+      dataStream = (MiddlewareDataStream<JumpPulseData>) MiddlewareDataStreamFactory.getStream(getStreamClassName(),
+          getStreamName());
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void handleRequest(final DynamodbEvent event, final Context context) {
+    event.getRecords().forEach(r -> {
+      sensorDataProcessing(r);
+    });
+
+  }
+
+  private String getStreamName() {
+    String result = env.getOrDefault("STREAM_NAME", DEFAULT_STREAM_NAME);
+    return result;
+  }
+
+  private String getStreamClassName() {
+    String result = env.getOrDefault("STREAM_CLASS_NAME", DEFAULT_STREAM_CLASS_NAME);
+    return result;
+  }
+
+  private void sensorDataProcessing(DynamodbStreamRecord r) {
+    String eventName = r.getEventName();
+    if (eventName.equalsIgnoreCase("INSERT")) {
+      Map<String, AttributeValue> map = r.getDynamodb().getNewImage();
+      if(map != null) {
+        SensorData sensorData = getSensorData(map);
+      logger.log("finest", sensorData.toString());
+      JumpPulseData jumpData = jumpRecognition(sensorData);
+      if (jumpData != null) {
+        dataStream.publish(jumpData);
+        logger.log("debug", "Published Jump with data: " + jumpData);
+      }
+      } else {
+        logger.log("severe", "no new image found in event");
+      }
+      
+
+    } else {
+      logger.log("severe", eventName + " not supposed for processing");
+    }
+  }
+
+  private JumpPulseData jumpRecognition(SensorData sensorData) {
+    long patientId = sensorData.patientId();
+    SensorData latestSensorData = latestValuesSaver.getLastValue(patientId);
+    JumpPulseData jumpDataResult = null;
+
+    int currentValue = sensorData.value();
+    int oldValue = 0;
+    ;
+    if (latestSensorData != null) {
+      oldValue = latestSensorData.value();
     }
 
-    public void handleRequest(final DynamodbEvent event, final Context context) {
-        logger.log("info", "Event received: " + event);
-        event.getRecords().forEach(r -> {
-            try {
-                Map<String, AttributeValue> map = r.getDynamodb().getNewImage();
-                logger.log("info", "Record: " + map);
-
-                AttributeValue patientIdAttr = map.get("patientId");
-                AttributeValue valueAttr = map.get("value");
-                AttributeValue timestampAttr = map.get("timestamp");
-
-                if (patientIdAttr != null && valueAttr != null && timestampAttr != null) {
-                    long patientId = Long.parseLong(patientIdAttr.getN());
-                    int value = Integer.parseInt(valueAttr.getN());
-                    long timestamp = Long.parseLong(timestampAttr.getN());
-
-                    SensorData sensorData = new SensorData(patientId, value, timestamp);
-                    logger.log("info", "SensorData: " + sensorData);
-
-                    recognizeAndHandleJump(sensorData);
-                } else {
-                    logger.log("warning", "One of the attributes is null: patientId=" + patientIdAttr + ", value=" + valueAttr + ", timestamp=" + timestampAttr);
-                }
-            } catch (Exception e) {
-                logger.log("severe", "Error processing record: " + e.toString());
-            }
-        });
+    if (oldValue != 0 && isJump(oldValue, currentValue)) {
+      jumpDataResult = new JumpPulseData(patientId, oldValue, currentValue,
+          System.currentTimeMillis());
+         
     }
-
-    private void recognizeAndHandleJump(SensorData sensorData) {
-        long patientId = sensorData.patientId();
-        SensorData lastValue = saver.getLastValue(patientId);
-        if (lastValue != null) {
-            float diff = Math.abs(lastValue.value() - sensorData.value()) / (float) lastValue.value();
-            logger.log("info", "Last value: " + lastValue.value() + " | Current value: " + sensorData.value() + " | Diff: " + diff + " | Factor: " + factor);
-            if (diff >= factor) {
-                JumpPulseData jumpData = new JumpPulseData(patientId, lastValue.value(), sensorData.value(), sensorData.timestamp());
-                logger.log("info", "Jump detected: " + jumpData);
-                try {
-                    jumpStream.publish(jumpData);
-                    logger.log("info", "Jump data published to DynamoDB: " + jumpData);
-                } catch (Exception e) {
-                    logger.log("severe", "Failed to publish jump data: " + e.toString());
-                }
-            }
-        } else {
-            logger.log("info", "No previous value found for patientId: " + patientId);
-        }
-        saver.clearAndAddValue(patientId, sensorData);
+    if (oldValue != currentValue) {
+      latestValuesSaver.clearAndAddValue(patientId, sensorData);
     }
+    return jumpDataResult;
+  }
+
+  private boolean isJump(int oldValue, int currentValue) {
+    float factor = getFactor();
+    boolean res = Math.abs(currentValue - oldValue) / (float) oldValue >= factor;
+    return res;
+  }
+
+  private float getFactor() {
+    float res = DEFAULT_JUMP_FACTOR;
+    String factorStr = env.getOrDefault("JUMP_FACTOR", DEFAULT_JUMP_FACTOR + "");
+    try {
+      res = Float.parseFloat(factorStr);
+    } catch(NumberFormatException e) {
+      logger.log("severe", "Wrong jump factor env value, default value is taken " + DEFAULT_JUMP_FACTOR);
+    }
+    return res;
+  }
+
+  private SensorData getSensorData(Map<String, AttributeValue> map) {
+    long patientId = Long.parseLong(map.get("patientId").getN());
+    int value = Integer.parseInt(map.get("value").getN());
+    long timestamp = Long.parseLong(map.get("timestamp").getN());
+    SensorData sensorData = new SensorData(patientId, value, timestamp);
+    return sensorData;
+  }
+
 }

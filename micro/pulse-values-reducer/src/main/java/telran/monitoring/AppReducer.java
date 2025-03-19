@@ -26,7 +26,7 @@ public class AppReducer {
     MiddlewareDataStream<SensorData> dataStream;
     int reducingSize = getReducingSize();
     long reducingTimeWindow = getReducingTimeWindow();
-    LatestValuesSaver latestValuesSaver = new LatestValuesSaverMap();
+    LatestValuesSaver latestValuesSaver = new LatestValuesSaverMap(logger);
 
     @SuppressWarnings("unchecked")
     public AppReducer() {
