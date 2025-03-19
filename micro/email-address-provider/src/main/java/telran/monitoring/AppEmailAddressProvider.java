@@ -7,9 +7,13 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.Context;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 
-import telran.monitoring.logging.*;
+import telran.monitoring.logging.Logger;
+import telran.monitoring.logging.LoggerStandard;
 
 public class AppEmailAddressProvider implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private static final String DB_URL = System.getenv("DB_CONNECTION_STRING");

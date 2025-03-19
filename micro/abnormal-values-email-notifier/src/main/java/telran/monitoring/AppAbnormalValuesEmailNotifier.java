@@ -7,14 +7,20 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.naming.Context;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.json.JSONObject;
 
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
 import com.amazonaws.services.lambda.runtime.events.models.dynamodb.AttributeValue;
-import com.sun.jdi.connect.Transport;
 
 import telran.monitoring.logging.Logger;
 import telran.monitoring.logging.LoggerStandard;
@@ -89,6 +95,7 @@ public class AppAbnormalValuesEmailNotifier implements RequestHandler<DynamodbEv
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("noreply@example.com")); 
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
+            message.setSubject("Abnormal Pulse Value Notification");
             message.setText("Dear user,\n\nPatient ID: " + patientId +
                     " has recorded an abnormal pulse value of: " + value + ".\n\nBest regards,\nMonitoring Team");
 
