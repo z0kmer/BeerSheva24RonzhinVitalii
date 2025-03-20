@@ -15,15 +15,18 @@ Resources:
       Handler: telran.monitoring.App::handleRequest
       Policies:
         - Statement:
-          - Effect: Allow
-            Resource: '*' 
-            Action:
-            - dynamodb:*
+            - Effect: Allow
+              Resource: '*' 
+              Action:
+              - dynamodb:*
+        - S3FullAccess # Новая политика для работы с S3
       Environment:
         Variables:
           LOGGER_LEVEL: finest
           STREAM_NAME: !Ref JumpDataStream
           STREAM_CLASS_NAME: telran.monitoring.DynamoDbStreamJumpPulseData
+          LATEST_VALUES_SAVER_CLASS: telran.monitoring.LatestDataSaverS3 # Использование нового класса
+          S3_BUCKET_NAME: "your-s3-bucket-name" # Переменная среды для S3
       Events:
         DynamoDbItemInsert:
           Type: DynamoDB
@@ -34,6 +37,7 @@ Resources:
             FilterCriteria:
               Filters:
               - Pattern: '{"eventName": ["INSERT"]}'
+
   PulseValuesReducerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -41,10 +45,11 @@ Resources:
       Handler: telran.monitoring.AppReducer::handleRequest
       Policies:
         - Statement:
-          - Effect: Allow
-            Resource: '*' 
-            Action:
-            - dynamodb:*
+            - Effect: Allow
+              Resource: '*' 
+              Action:
+              - dynamodb:*
+        - S3FullAccess # политика для работы с S3
       Environment:
         Variables:
           LOGGER_LEVEL: finest
@@ -52,6 +57,8 @@ Resources:
           REDUCING_SIZE: 5
           REDUCING_TIME_WINDOW: 600000
           STREAM_CLASS_NAME: telran.monitoring.DynamoDbStreamSensorData
+          LATEST_VALUES_SAVER_CLASS: telran.monitoring.LatestDataSaverS3
+          S3_BUCKET_NAME: "my-s3-bucket" # Переменная среды для S3
       Events:
         DynamoDbItemInsert:
           Type: DynamoDB
@@ -62,7 +69,7 @@ Resources:
             FilterCriteria:
               Filters:
               - Pattern: '{"eventName": ["INSERT"]}'
-            
+
   PulseValuesStream:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -82,6 +89,7 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_IMAGE
+
   JumpDataStream:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -100,6 +108,7 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_IMAGE
+
   AvgValuesDataStream:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -118,6 +127,7 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_IMAGE        
+
   AbnormalValuesDataStream:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -136,6 +146,7 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_IMAGE 
+
   PulseAbnormalValuesRecognizerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -144,10 +155,10 @@ Resources:
       FunctionName: abnormal-values-recognizer
       Policies:
         - Statement:
-          - Effect: Allow
-            Resource: '*' 
-            Action:
-            - dynamodb:*
+            - Effect: Allow
+              Resource: '*' 
+              Action:
+              - dynamodb:*
       Environment:
         Variables:
           LOGGER_LEVEL: finest
@@ -165,12 +176,12 @@ Resources:
             FilterCriteria:
               Filters:
               - Pattern: '{"eventName": ["INSERT"]}'      
+
   RangeDataProviderFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: range-data-provider
       Handler: telran.monitoring.AppRangeDataProvider::handleRequest
-      
       Environment: 
         Variables:
           DB_PASSWORD: 12345.Com
@@ -182,15 +193,6 @@ Resources:
             Method: get
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   RangeDataProviderApi:
     Description: "API Gateway endpoint URL for Prod stage for Range Data Provider Function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/range/"
-          
-          
-
-      
-        
-  

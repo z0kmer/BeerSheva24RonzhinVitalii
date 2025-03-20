@@ -18,6 +18,8 @@ public class AppReducer {
     private static final String DEFAULT_STREAM_CLASS_NAME = "telran.monitoring.DynamoDbStreamSensorData";
     private static final long DEFAULT_REDUCING_TIME_WINDOW = 10 * 60 * 1000;
     private static final int DEFAULT_REDUCING_SIZE = 100;
+    private static final String DEFAULT_LATEST_VALUES_SAVER_CLASS = "telran.monitoring.LatestValuesSaverMap";
+
     private Map<String, String> env = System.getenv();
     private String streamName = getStreamName();
 
@@ -26,18 +28,23 @@ public class AppReducer {
     MiddlewareDataStream<SensorData> dataStream;
     int reducingSize = getReducingSize();
     long reducingTimeWindow = getReducingTimeWindow();
-    LatestValuesSaver latestValuesSaver = new LatestValuesSaverMap(logger);
+    LatestValuesSaver latestValuesSaver = getLatestValuesSaver();
 
     @SuppressWarnings("unchecked")
     public AppReducer() {
         logger.log("config", "Stream name is " + streamName);
         try {
-
             dataStream = (MiddlewareDataStream<SensorData>) MiddlewareDataStreamFactory.getStream(streamClassName,
                     streamName);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    // авто-загрузка реализации LatestValuesSaver на основе переменной среды
+    private LatestValuesSaver getLatestValuesSaver() {
+        String latestValuesSaverClassName = env.getOrDefault("LATEST_VALUES_SAVER_CLASS", DEFAULT_LATEST_VALUES_SAVER_CLASS);
+        logger.log("config", "LatestValuesSaver class is " + latestValuesSaverClassName);
+        return LatestValuesSaver.getLatestValuesSaver(latestValuesSaverClassName);
     }
 
     private long getReducingTimeWindow() {
@@ -45,7 +52,6 @@ public class AppReducer {
         String resStr = env.get("REDUCING_TIME_WINDOW");
         try {
             res = resStr == null ? DEFAULT_REDUCING_TIME_WINDOW : Long.parseLong(resStr);
-
         } catch (NumberFormatException e) {
             res = DEFAULT_REDUCING_TIME_WINDOW;
             logger.log("severe", "Wrong env variable ReducingTimeWindow value - taken default value");
@@ -59,7 +65,6 @@ public class AppReducer {
         String resStr = env.get("REDUCING_SIZE");
         try {
             res = resStr == null ? DEFAULT_REDUCING_SIZE : Integer.parseInt(resStr);
-
         } catch (NumberFormatException e) {
             res = DEFAULT_REDUCING_SIZE;
             logger.log("severe", "Wrong env variable ReducingSize value - taken default value");
@@ -69,15 +74,11 @@ public class AppReducer {
     }
 
     public void handleRequest(final DynamodbEvent event, final Context context) {
-        event.getRecords().forEach(r -> {
-            sensorDataProcessing(r);
-        });
-
+        event.getRecords().forEach(r -> sensorDataProcessing(r));
     }
 
     private String getStreamName() {
         String result = env.getOrDefault("STREAM_NAME", DEFAULT_STREAM_NAME);
-
         return result;
     }
 
@@ -102,7 +103,6 @@ public class AppReducer {
             } else {
                 logger.log("severe", "no new image found in event");
             }
-
         } else {
             logger.log("severe", eventName + " not supposed for processing");
         }
@@ -114,16 +114,15 @@ public class AppReducer {
 
         SensorData sensorDataResult = null;
         if (!latestData.isEmpty()) {
-            long lastTimestamp = latestData.getLast().timestamp();
+            long lastTimestamp = latestData.get(latestData.size() - 1).timestamp();
             if (latestData.size() >= reducingSize ||
                     System.currentTimeMillis() - lastTimestamp >= reducingTimeWindow) {
-                sensorDataResult = new SensorData(patientId, getAvgValue(latestData),
-                 lastTimestamp);
+                sensorDataResult = new SensorData(patientId, getAvgValue(latestData), lastTimestamp);
                 latestValuesSaver.clearValues(patientId);
             }
         }
         latestValuesSaver.addValue(sensorData);
-        logger.log("finest", "adding  value in saver " + sensorData);
+        logger.log("finest", "adding value in saver " + sensorData);
 
         return sensorDataResult;
     }
@@ -138,8 +137,6 @@ public class AppReducer {
         long patientId = Long.parseLong(map.get("patientId").getN());
         int value = Integer.parseInt(map.get("value").getN());
         long timestamp = Long.parseLong(map.get("timestamp").getN());
-        SensorData sensorData = new SensorData(patientId, value, timestamp);
-        return sensorData;
+        return new SensorData(patientId, value, timestamp);
     }
-
 }
