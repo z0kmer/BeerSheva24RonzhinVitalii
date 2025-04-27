@@ -1,23 +1,24 @@
-.trafficLight {
-    border-radius: 50%; /* Закругленные края, чтобы элементы выглядели кругами */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .chessboard {
+    display: flex;
+    flex-wrap: wrap;
     border: 2px solid black;
-    height: 200px;
-    width: 200px;
-    margin: 20px auto; /* Выравнивание элементов по центру страницы */
-    background-color: gray; /* Серый цвет для неактивных состояний */
-}
-
-/* Красный свет */
-.trafficLight-red {
-    background-color: red; /* Активно-красное состояние */
-}
-
-/* Желтый свет */
-.trafficLight-yellow {
-    background-color: yellow; /* Активно-желтое состояние */
-}
-
-/* Зеленый свет */
-.trafficLight-green {
-    background-color: green; /* Активно-зеленоое состояние */
-}
+  }
+  .cell {
+    display: flex;
+  }
+  .cell.black {
+    background-color: black;
+  }
+  .cell.white {
+    background-color: white;
+  }
+  
