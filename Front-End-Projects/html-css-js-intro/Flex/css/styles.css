@@ -1,35 +1,52 @@
-body {
+/* Стили страницы Flex */
+.flex-page {
+  margin: 0;
+  padding: 0;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  height: 100vh;
   background-color: #f4f4f4;
 }
 
+/* Контейнер для шахматной доски */
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Шахматная доска */
 .chessboard {
   display: flex;
   flex-direction: column; /* Строки располагаются вертикально */
-  width: 90vmin;
-  height: 90vmin;
+  width: min(90vw, 90vh); /* Адаптивный размер */
+  height: min(90vw, 90vh);
   border: 2px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+/* Строки доски */
 .row {
   display: flex; /* Каждая строка — горизонтальный контейнер */
   flex: 1; /* Все строки одинаковой высоты */
 }
 
+/* Клетки доски */
 .row div {
   flex: 1; /* Все клетки одинаковой ширины */
 }
 
+/* Чёрные клетки */
 .row.even div:nth-child(odd),
 .row.odd div:nth-child(even) {
-  background-color: black; /* Чёрные клетки */
+  background-color: black;
 }
 
+/* Белые клетки */
 .row.even div:nth-child(even),
 .row.odd div:nth-child(odd) {
-  background-color: white; /* Белые клетки */
+  background-color: white;
 }

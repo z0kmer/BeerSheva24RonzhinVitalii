@@ -3,11 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChessBoard</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>Динамическое меню</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="chessboard"></div>
-  <script src="src/main.js"></script>
+
+<!-- Верхняя полоса (меню) -->
+<header class="top-bar">
+  <div id="top-menu">
+    <button class="menu-btn" onclick="loadPage('Flex/index.html')">Flex</button>
+    <button class="menu-btn" onclick="loadPage('Grid/index.html')">Grid</button>
+    <button class="menu-btn" onclick="loadPage('Areas/index.html')">Areas</button>
+  </div>
+</header>
+
+<!-- Центральная область -->
+<main>
+  <div id="content-placeholder">
+    <!-- Стартовый контент -->
+  </div>
+</main>
+
+<!-- Нижняя полоска (надпись) -->
+<footer class="bottom-bar">
+  <p class="created-by">created by Z0kmer</p>
+</footer>
+
 </body>
 </html>

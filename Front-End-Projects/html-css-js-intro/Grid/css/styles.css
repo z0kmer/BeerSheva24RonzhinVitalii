@@ -1,0 +1,61 @@
+/* Стили для всей страницы Grid */
+.grid-page {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+/* Контейнер для шахматной доски */
+.grid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Шахматная доска */
+.chessboard {
+  position: relative;
+  width: min(90vw, 90vh); /* Динамический размер в зависимости от экрана */
+  height: min(90vw, 90vh);
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border: 2px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* Вертикальные полосы на клетках */
+.chessboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    black 0%,
+    black 12.5%,
+    white 12.5%,
+    white 25%
+  );
+  mix-blend-mode: difference;
+}
+
+/* Горизонтальные полосы на клетках */
+.chessboard {
+  background: repeating-linear-gradient(
+    90deg,
+    white 0%,
+    white 12.5%,
+    black 12.5%,
+    black 25%
+  );
+}
