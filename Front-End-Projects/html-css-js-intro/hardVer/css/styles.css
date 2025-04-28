@@ -1,0 +1,35 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.chessboard {
+  display: flex;
+  flex-direction: column; /* Строки располагаются вертикально */
+  width: 90vmin;
+  height: 90vmin;
+  border: 2px solid black;
+}
+
+.row {
+  display: flex; /* Каждая строка — горизонтальный контейнер */
+  flex: 1; /* Все строки одинаковой высоты */
+}
+
+.row div {
+  flex: 1; /* Все клетки одинаковой ширины */
+}
+
+.row.even div:nth-child(odd),
+.row.odd div:nth-child(even) {
+  background-color: black; /* Чёрные клетки */
+}
+
+.row.even div:nth-child(even),
+.row.odd div:nth-child(odd) {
+  background-color: white; /* Белые клетки */
+}
