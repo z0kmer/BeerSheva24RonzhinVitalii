@@ -1,7 +1,19 @@
 console.log("script.js успешно загружен");
 
+/**
+ * Функция для загрузки страниц в контейнер #content-placeholder.
+ * Если URL содержит "life-game-states-matrix", используется <iframe>,
+ * поскольку загруженная страница содержит полную HTML-разметку и бандл Vite.
+ */
 async function loadPage(url) {
   const placeholder = document.getElementById("content-placeholder");
+
+  // Если URL содержит life-game-states-matrix, используем iframe для изоляции приложения
+  if (url.includes("life-game-states-matrix")) {
+    placeholder.innerHTML = `<iframe src="${url}" style="width: 100%; height: 100%; border: none;"></iframe>`;
+    return;
+  }
+
   placeholder.innerHTML = "<p>Загрузка...</p>"; // Индикация загрузки
 
   try {
@@ -10,7 +22,7 @@ async function loadPage(url) {
       const content = await response.text();
       placeholder.innerHTML = content;
       
-      // Находим и выполняем все скрипты из загруженного контента
+      // Выполняем скрипты, если они присутствуют в загруженной разметке
       const scripts = placeholder.querySelectorAll("script");
       scripts.forEach(oldScript => {
         const newScript = document.createElement("script");
@@ -33,11 +45,11 @@ async function loadPage(url) {
   }
 }
 
-// По умолчанию показываем приветствие
+// Отображение стартового контента материнской страницы
 window.addEventListener("DOMContentLoaded", () => {
   const placeholder = document.getElementById("content-placeholder");
   placeholder.innerHTML = `
-    <p class="welcome">Добро пожаловать.<br> Выбери в меню, что тебе интересно.</p>
+    <p class="welcome">Добро пожаловать.<br>Выберите, что вам интересно.</p>
     <img src="welcome.jpg" alt="Welcome Image" class="welcome-img">
   `;
 });
