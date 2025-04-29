@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOMContentLoaded: Скрипт загружен");
+// Функция инициализации динамической таблицы
+function initDynamicTable() {
+  console.log("script.js Areas загружен");
 
   const table = document.getElementById("dynamic-table");
   if (!table) {
@@ -23,9 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       table.appendChild(tr);
     }
-    console.log("Таблица обновлена: ", table);
-  }  
+    console.log("Таблица обновлена:", table);
+  }
+  
+  generateTable(); // Первичная генерация таблицы
+  setInterval(generateTable, 1000); // Обновление таблицы каждые 1 секунду
+}
 
-  generateTable(); // Генерация таблицы при загрузке
-  setInterval(generateTable, 1000); // Обновление таблицы каждые 2 секунды
-});
+// Если документ уже загружен, инициализируем сразу,
+// иначе ждём событие загрузки.
+if (document.readyState !== "loading") {
+  initDynamicTable();
+} else {
+  document.addEventListener("DOMContentLoaded", initDynamicTable);
+}
