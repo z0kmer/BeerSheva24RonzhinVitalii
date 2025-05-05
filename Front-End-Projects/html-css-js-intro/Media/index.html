@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Галерея</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <img src="images/logo.jpeg" alt="Логотип" class="logo">
+  </header>
+
+  <div class="container">
+    <!-- Радиокнопки для смены изображения -->
+    <input type="radio" name="gallery" id="img1" checked>
+    <input type="radio" name="gallery" id="img2">
+    <input type="radio" name="gallery" id="img3">
+    <input type="radio" name="gallery" id="img4">
+
+    <!-- Кнопки-миниатюры -->
+    <div class="thumbnails">
+      <label for="img1" class="thumbnail">
+        <img src="images/img01.jpeg" alt="Картинка 1">
+        <div class="title">Картинка 1</div>
+      </label>
+      <label for="img2" class="thumbnail">
+        <img src="images/img02.jpeg" alt="Картинка 2">
+        <div class="title">Картинка 2</div>
+      </label>
+      <label for="img3" class="thumbnail">
+        <img src="images/img03.jpeg" alt="Картинка 3">
+        <div class="title">Картинка 3</div>
+      </label>
+      <label for="img4" class="thumbnail">
+        <img src="images/img04.jpeg" alt="Картинка 4">
+        <div class="title">Картинка 4</div>
+      </label>
+    </div>
+
+    <!-- Окно отображения -->
+    <div class="image-container">
+      <img src="images/img01.jpeg" alt="Главное изображение">
+      <div class="image-title-box"></div>
+    </div>
+  </div>
+</body>
+</html>
