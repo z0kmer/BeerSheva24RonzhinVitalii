@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Галерея</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
-    <img src="images/logo.jpeg" alt="Логотип" class="logo">
-  </header>
+    <header>
+        <img src="images/logo.jpeg" alt="Логотип" class="logo">
+    </header>
 
-  <div class="container">
-    <!-- Радиокнопки для смены изображения -->
-    <input type="radio" name="gallery" id="img1" checked>
-    <input type="radio" name="gallery" id="img2">
-    <input type="radio" name="gallery" id="img3">
-    <input type="radio" name="gallery" id="img4">
+    <div class="container">
+        <!-- Кнопки-миниатюры -->
+        <div class="thumbnails">
+            <div class="thumbnail" onclick="changeImage('images/img01.jpeg', 'txt/img01.txt')">
+                <img src="images/img01.jpeg" alt="Картинка 1">
+                <div class="title">Ork</div>
+            </div>
+            <div class="thumbnail" onclick="changeImage('images/img02.jpeg', 'txt/img02.txt')">
+                <img src="images/img02.jpeg" alt="Картинка 2">
+                <div class="title">Troll</div>
+            </div>
+            <div class="thumbnail" onclick="changeImage('images/img03.jpeg', 'txt/img03.txt')">
+                <img src="images/img03.jpeg" alt="Картинка 3">
+                <div class="title">Elf</div>
+            </div>
+            <div class="thumbnail" onclick="changeImage('images/img04.jpeg', 'txt/img04.txt')">
+                <img src="images/img04.jpeg" alt="Картинка 4">
+                <div class="title">Dwarf</div>
+            </div>
+        </div>
 
-    <!-- Кнопки-миниатюры -->
-    <div class="thumbnails">
-      <label for="img1" class="thumbnail">
-        <img src="images/img01.jpeg" alt="Картинка 1">
-        <div class="title">Картинка 1</div>
-      </label>
-      <label for="img2" class="thumbnail">
-        <img src="images/img02.jpeg" alt="Картинка 2">
-        <div class="title">Картинка 2</div>
-      </label>
-      <label for="img3" class="thumbnail">
-        <img src="images/img03.jpeg" alt="Картинка 3">
-        <div class="title">Картинка 3</div>
-      </label>
-      <label for="img4" class="thumbnail">
-        <img src="images/img04.jpeg" alt="Картинка 4">
-        <div class="title">Картинка 4</div>
-      </label>
+        <!-- Окно просмотра -->
+        <div class="image-container" onclick="changeImage('images/img05.jpeg', 'txt/img05.txt')">
+            <img id="main-image" src="images/img05.jpeg" alt="Главное изображение">
+            <div class="image-title-box">Human</div>
+            <div class="hover-text">
+                <p id="image-text"></p>
+            </div>
+        </div>
     </div>
 
-    <!-- Окно отображения -->
-    <div class="image-container">
-      <img src="images/img01.jpeg" alt="Главное изображение">
-      <div class="image-title-box"></div>
-    </div>
-  </div>
+    <script src="src/script.js"></script>
 </body>
 </html>
