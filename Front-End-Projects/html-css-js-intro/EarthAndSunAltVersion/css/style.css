@@ -1,0 +1,94 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: black;
+}
+
+.solar-system {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+/* Нижняя половина Солнца за Землей */
+.sun-bottom {
+  position: absolute;
+  width: 300px;
+  height: 150px;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+  background-color: yellow;
+  border-bottom-left-radius: 300px;
+  border-bottom-right-radius: 300px;
+  z-index: 1;
+}
+
+/* Верхняя половина Солнца поверх Земли */
+.sun-top {
+  position: absolute;
+  width: 300px;
+  height: 150px;
+  left: 50%;
+  top: calc(50% - 150px);
+  transform: translateX(-50%);
+  background-color: yellow;
+  border-top-left-radius: 300px;
+  border-top-right-radius: 300px;
+  z-index: 3;
+}
+
+/* Контейнер орбиты */
+.orbit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  animation: orbit-rotate 8s linear infinite;
+  animation-play-state: paused;
+  z-index: 2;
+}
+
+.earth {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  background-color: blue;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) translateX(200px);
+}
+
+@keyframes orbit-rotate {
+  from {
+    transform: scale(1, 0.6) rotate(0deg);
+  }
+  to {
+    transform: scale(1, 0.6) rotate(360deg);
+  }
+}
+
+.buttons {
+  margin-top: 20px;
+}
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 5px;
+}
+.start {
+  background-color: green;
+  color: white;
+}
+.stop {
+  background-color: red;
+  color: white;
+}

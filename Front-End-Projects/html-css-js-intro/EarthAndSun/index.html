@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Солнечная система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="solar-system">
+        <div class="sun"></div>
+        <div class="earth-orbit">
+            <div class="earth"></div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="button start" onclick="startRotation()">Start</button>
+        <button class="button stop" onclick="stopRotation()">Stop</button>
+    </div>
+
+    <script>
+        function startRotation() {
+            document.querySelector('.earth-orbit').style.animationPlayState = 'running';
+        }
+
+        function stopRotation() {
+            document.querySelector('.earth-orbit').style.animationPlayState = 'paused';
+        }
+    </script>
+
+</body>
+</html>
