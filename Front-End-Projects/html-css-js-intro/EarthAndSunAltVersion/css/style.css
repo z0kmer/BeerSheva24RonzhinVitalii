@@ -14,8 +14,9 @@ body {
   height: 500px;
 }
 
-/* Нижняя половина Солнца за Землей */
-.sun-bottom {
+/* Нижняя половина Солнца */
+.solar-system::before {
+  content: "";
   position: absolute;
   width: 300px;
   height: 150px;
@@ -28,8 +29,9 @@ body {
   z-index: 1;
 }
 
-/* Верхняя половина Солнца поверх Земли */
-.sun-top {
+/* Верхняя половина Солнца */
+.solar-system::after {
+  content: "";
   position: absolute;
   width: 300px;
   height: 150px;
@@ -53,6 +55,7 @@ body {
   z-index: 2;
 }
 
+/* Земля */
 .earth {
   position: absolute;
   top: 50%;
@@ -64,6 +67,7 @@ body {
   transform: translate(-50%, -50%) translateX(200px);
 }
 
+/* Анимация вращения */
 @keyframes orbit-rotate {
   from {
     transform: scale(1, 0.6) rotate(0deg);
@@ -76,6 +80,7 @@ body {
 .buttons {
   margin-top: 20px;
 }
+
 .button {
   padding: 10px 20px;
   font-size: 16px;
@@ -84,10 +89,12 @@ body {
   cursor: pointer;
   margin: 5px;
 }
+
 .start {
   background-color: green;
   color: white;
 }
+
 .stop {
   background-color: red;
   color: white;
