@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Галерея</title>
   <link rel="stylesheet" href="css/styles.css">
+  <!-- Подключаем Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
 <body>
   <header>
@@ -12,34 +14,31 @@
   </header>
 
   <div class="container">
-    <!-- Бокс для миниатюр -->
-    <div class="thumbnail-box">
-      <div class="thumbnails">
-        <div class="thumbnail" onclick="changeImage('images/img01.jpeg', 'txt/img01.txt', 'Ork')">
-          <img src="images/img01.jpeg" alt="Картинка 1">
-          <div class="title">Ork</div>
-        </div>
-        <div class="thumbnail" onclick="changeImage('images/img02.jpeg', 'txt/img02.txt', 'Troll')">
-          <img src="images/img02.jpeg" alt="Картинка 2">
-          <div class="title">Troll</div>
-        </div>
-        <div class="thumbnail" onclick="changeImage('images/img03.jpeg', 'txt/img03.txt', 'Elf')">
-          <img src="images/img03.jpeg" alt="Картинка 3">
-          <div class="title">Elf</div>
-        </div>
-        <div class="thumbnail" onclick="changeImage('images/img04.jpeg', 'txt/img04.txt', 'Dwarf')">
-          <img src="images/img04.jpeg" alt="Картинка 4">
-          <div class="title">Dwarf</div>
-        </div>
+    <div class="thumbnails">
+      <div class="thumbnail" onclick="changeImage('images/img01.jpeg', 'txt/img01.txt')">
+        <img src="images/img01.jpeg" alt="Картинка 1">
+        <div class="title">Ork</div>
+      </div>
+      <div class="thumbnail" onclick="changeImage('images/img02.jpeg', 'txt/img02.txt')">
+        <img src="images/img02.jpeg" alt="Картинка 2">
+        <div class="title">Troll</div>
+      </div>
+      <div class="thumbnail" onclick="changeImage('images/img03.jpeg', 'txt/img03.txt')">
+        <img src="images/img03.jpeg" alt="Картинка 3">
+        <div class="title">Elf</div>
+      </div>
+      <div class="thumbnail" onclick="changeImage('images/img04.jpeg', 'txt/img04.txt')">
+        <img src="images/img04.jpeg" alt="Картинка 4">
+        <div class="title">Dwarf</div>
       </div>
     </div>
 
     <!-- Окно просмотра -->
-    <div class="image-container" onclick="changeImage('images/img05.jpeg','txt/img05.txt', 'Human')">
+    <div class="image-container" onclick="changeImage('images/img05.jpeg', 'txt/img05.txt')">
       <img id="main-image" src="images/img05.jpeg" alt="Главное изображение">
       <div class="image-title-box"></div>
       <div class="hover-text">
-        <p id="image-text"></p>
+        <p id="image-text">...</p>
       </div>
     </div>
   </div>

@@ -25,43 +25,11 @@ header {
   align-items: flex-start;
 }
 
-/* Бокс для миниатюр */
-.thumbnail-box {
-  overflow: auto;
-}
-
-/* Альбомная ориентация (боковое размещение) */
-@media (min-aspect-ratio: 1/1) {
-  .thumbnail-box {
-    width: 150px;
-    height: 300px;
-  }
-}
-
-/* Вертикальная ориентация (нижнее размещение) */
-@media (max-aspect-ratio: 1/1) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
-  .thumbnail-box {
-    width: 400px;
-    height: 150px;
-  }
-}
-
 /* Кнопки-миниатюры */
 .thumbnails {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-@media (max-aspect-ratio: 1/1) {
-  .thumbnails {
-    flex-direction: row;
-    justify-content: center;
-  }
 }
 
 .thumbnail {
@@ -111,15 +79,14 @@ header {
   height: 100%;
   object-fit: cover;
   border-radius: 15px;
-  /* Для эффекта растворения */
   transition: opacity 1s;
 }
 
 /* Динамическое название изображения */
 .image-title-box {
   position: absolute;
-  bottom: 264px;
-  left: 10%;
+  bottom: -4px;
+  left: 50%;
   transform: translateX(calc(-50% - 3px));
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
@@ -129,7 +96,7 @@ header {
   white-space: nowrap;
 }
 
-/* Окно с текстом (появляется при наведении) */
+/* Окно с текстом */
 .hover-text {
   position: absolute;
   width: 100%;
@@ -147,12 +114,31 @@ header {
   display: block;
 }
 
-/* Вертикальная ориентация персонально для контейнера */
+/* Анимация появления текста Animate.css */
+.hover-text p {
+  opacity: 0;
+}
+
+.image-container:hover .hover-text p {
+  opacity: 1;
+  animation-name: backInRight;
+  animation-duration: 1.5s;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+/* Вертикальная ориентация */
 @media (max-aspect-ratio: 1/1) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .thumbnails {
+    flex-direction: row;
+    justify-content: center;
+    order: 2;
+  }
   .image-container {
     order: 1;
-  }
-  .thumbnail-box {
-    order: 2;
   }
 }
