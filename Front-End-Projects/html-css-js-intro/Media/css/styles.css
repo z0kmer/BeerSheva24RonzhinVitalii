@@ -16,7 +16,7 @@ header {
   width: 120px;
 }
 
-/* Основной контейнер */
+/* Основной контейнер галереи */
 .container {
   display: flex;
   padding: 20px;
@@ -25,13 +25,26 @@ header {
   align-items: flex-start;
 }
 
-/* Кнопки-миниатюры */
+/* Если галерея в режиме "viewer-hidden" – область просмотра скрыта, 
+   а миниатюры занимают доступное пространство */
+.viewer-hidden .viewer-wrapper {
+  display: none;
+}
+.viewer-hidden .thumbnails {
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Блок миниатюр */
 .thumbnails {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Миниатюры */
 .thumbnail {
   position: relative;
   border-radius: 10px;
@@ -62,7 +75,13 @@ header {
   opacity: 1;
 }
 
-/* Окно просмотра */
+/* Область просмотра (сохраняем исходные размеры) */
+.viewer-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .image-container {
   position: relative;
   width: 400px;
@@ -96,7 +115,7 @@ header {
   white-space: nowrap;
 }
 
-/* Окно с текстом */
+/* Оверлей с текстом */
 .hover-text {
   position: absolute;
   width: 100%;
@@ -114,7 +133,7 @@ header {
   display: block;
 }
 
-/* Анимация появления текста Animate.css */
+/* Анимация появления текста – Animate.css (backInRight) */
 .hover-text p {
   opacity: 0;
 }
@@ -124,6 +143,13 @@ header {
   animation-name: backInRight;
   animation-duration: 1.5s;
   animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+/* Анимация исчезновения: при снятии курсора текст уходит с эффектом backOutLeft */
+.image-container:not(:hover) .hover-text p {
+  animation-name: backOutLeft;
+  animation-duration: 0.8s;
   animation-fill-mode: both;
 }
 
@@ -138,7 +164,7 @@ header {
     justify-content: center;
     order: 2;
   }
-  .image-container {
+  .viewer-wrapper {
     order: 1;
   }
 }
